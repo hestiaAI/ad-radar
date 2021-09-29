@@ -1,0 +1,44 @@
+{
+  "manifest_version": 2,
+  "name": "MyWorth",
+  "description": "An extension that shows you the price that advertisers are willing to pay for an ad on your browser.",
+  "version": "0.0.1",
+  "icons": {
+    "64": "icons/icon.png"
+  },
+  "permissions": [
+    "webNavigation",
+		"activeTab",
+		"storage",
+		"tabs",
+		"<all_urls>",
+		"http://*/*",
+		"https://*/*",
+		"*://*/*"
+	],
+  "background": {
+    "scripts": [
+      "background_script.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "content_script.js"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_icon": {
+      "64": "icons/icon.png"
+    },
+    "default_popup": "browserAction/index.html",
+    "default_title": "MyWorth"
+  },
+  "options_ui": {
+    "page": "options/index.html"
+  }
+}
