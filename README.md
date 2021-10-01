@@ -18,7 +18,7 @@ My Worth checks if the visited webpage uses an open-source library called *Prebi
 ## Installation
 Download the files of this repository into a folder called `My Worth`.
 
-The next steps are depend on your web browser:
+The next steps depend on your web browser:
 ### Mozilla Firefox
 Go to `Settings (upper right) > Extensions & Themes (bottom left) > Tools for all add-ons (upper right) > Load Temporary Add-on` and choose the file `My Worth/manifest.json`.
 Note that My Worth will be uninstalled whenever you close the browser.
