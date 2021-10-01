@@ -94,3 +94,6 @@ Our browser extension is known to work on the following webpages:
 
 ## License
 My Worth is under the GNU Affero General Public License.
+
+## Partners
+My Worth was built under the banner of [_The Eyeballs_](https://eyeballs.hestialabs.org/en/), a project that is part of the [HestiaLabs](https://www.hestialabs.org) project. We can anticipate multiple opportunities for further collaboration with groups of people who want to use technology to better understand the ways attention is monetized online. Please email [eyeballs@hestialabs.org](mailto:eyeballs@hestialabs.org). 
