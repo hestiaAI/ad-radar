@@ -18,7 +18,7 @@
 	],
   "background": {
     "scripts": [
-      "background_script.js"
+      "js/background_script.js"
     ]
   },
   "content_scripts": [
@@ -27,8 +27,8 @@
         "*://*/*"
       ],
       "js": [
-        "injected_script.js",
-        "content_script.js"
+        "js/injected_script.js",
+        "js/content_script.js"
       ]
     }
   ],
