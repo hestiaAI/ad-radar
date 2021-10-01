@@ -1,4 +1,4 @@
-# My Worth - Browser extension
+# My Worth - https://Browser extension
 
 ## About
 My Worth is a browser extension that allows you to better understand how advertisers target you and how much they are willing to pay for you to see their ad.
@@ -29,47 +29,47 @@ Under `My Worth`, click `Remove`.
 Our browser extension is known to work on the following webpages:
 
 ### International
-- <espn.com>
-- <cnn.com>
-- <accuweather.com>
+- https://espn.com
+- https://cnn.com
+- https://accuweather.com
 
 ### Switzerland
-- <20min.ch>
-- <blick.ch>
-- <ricardo.ch>
-- <tutti.ch>
-- <autoscout24.ch>
-- <bluewin.ch>
+- https://20min.ch
+- https://blick.ch
+- https://ricardo.ch
+- https://tutti.ch
+- https://autoscout24.ch
+- https://bluewin.ch
 
 ### France
-- <latribune.fr>
-- <telestar.fr>
-- <valeursactuelles.com>
-- <varmatin.com>
-- <ledauphine.com>
-- <vosgesmatin.fr>
+- https://latribune.fr
+- https://telestar.fr
+- https://valeursactuelles.com
+- https://varmatin.com
+- https://ledauphine.com
+- https://vosgesmatin.fr
 
 ### Belgium
-- <standaard.be>
-- <levif.be>
+- https://standaard.be
+- https://levif.be
 
 ### Finland
-- <aamuposti.fi>
-- <kraatti.fi>
-- <esaimaa.fi>
-- <forssanlehti.fi>
-- <hs.fi>
-- <hameensanomat.fi>
-- <iltalehti.fi>
-- <ita-savo.fi>
-- <kouvolansanomat.fi>
-- <loviisansanomat.fi>
-- <lansi-savo.fi>
-- <maaseuduntulevaisuus.fi>
-- <savonsanomat.fi>
-- <is.fi>
-- <uusisuomi.fi>
-- <uusimaa.fi>
+- https://aamuposti.fi
+- https://kraatti.fi
+- https://esaimaa.fi
+- https://forssanlehti.fi
+- https://hs.fi
+- https://hameensanomat.fi
+- https://iltalehti.fi
+- https://ita-savo.fi
+- https://kouvolansanomat.fi
+- https://loviisansanomat.fi
+- https://lansi-savo.fi
+- https://maaseuduntulevaisuus.fi
+- https://savonsanomat.fi
+- https://is.fi
+- https://uusisuomi.fi
+- https://uusimaa.fi
 
 
 ## How does My Worth work?
