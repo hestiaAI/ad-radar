@@ -112,7 +112,7 @@ function addAdBanners(adDivs, allPrebids, winningPrebids) {
     <div class='${bannerClass}' style='all: unset; text-color: black; text-align:center; width: ${adIframe.width};'>
       <p style='background-color: red;'>
         ${bannerText}
-        <a href='https://github.com/hestiaAI/my-worth-extension'>[?]</a>
+        <a href='https://github.com/hestiaAI/my-worth-extension/blob/main/README.md#understanding-the-banners'>[?]</a>
       </p>
     </div>
     `);
