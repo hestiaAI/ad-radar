@@ -32,7 +32,7 @@ To uninstall My Worth, on the installation screen, click `Remove` under `My Wort
 
 ## How to use My Worth
 0. If you have an ad blocker, deactivate it temporarily
-1. Go to one of the webpages in our [list of compatible webpages](##list-of-compatible-webpages)
+1. Go to one of the webpages in our [list of compatible webpages](#list-of-compatible-webpages)
 2. Wait for the page and its ads to finish loading
 3. If the extension icon shows a green exclamation mark, click on it
 4. My Worth shows a red banner next to the ads that it detected and show the prices that were paid for them
