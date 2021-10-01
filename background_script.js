@@ -1,9 +1,5 @@
 let extensionName = 'MyWorth';
 
-browser.browserAction.setBadgeBackgroundColor({
-  color: 'orange'
-});
-
 browser.runtime.onMessage.addListener((data, sender) => {
   if (typeof data === 'object' && data !== null && data.app === extensionName) {
     if (data.destination === 'background') {
@@ -11,10 +7,32 @@ browser.runtime.onMessage.addListener((data, sender) => {
         console.debug('background received scout message');
         browser.browserAction.setIcon({
           path: {
-            64: `icons/icon${data.detectableAds ? '' : '_bw'}.png`
+            64: `icons/icon_${data.detectableAds ? 'color' : 'bw'}.png`
           },
           tabId: sender.tab.id
         });
+        browser.browserAction.setBadgeText({
+          text: '!',
+          tabId: sender.tab.id
+        });
+        browser.browserAction.setTitle({
+          title: data.detectableAds ? 'Click to find your worth!' : 'No ads detected on this page',
+          tabId: sender.tab.id
+        });
+        browser.browserAction.setBadgeBackgroundColor({
+          color: data.detectableAds ? 'green' : 'red',
+          tabId: sender.tab.id
+        });
+        if (data.detectableAds) {
+          browser.browserAction.onClicked.addListener((tab) => {
+            browser.tabs.sendMessage(tab.id, {
+              app: extensionName,
+              destination: 'injected',
+              type: 'request'
+            });
+            console.debug('background sent request message');
+          });
+        }
       }
       else if (data.type === 'result') {
         console.debug('background received result message');
@@ -29,13 +47,4 @@ browser.runtime.onMessage.addListener((data, sender) => {
       }
     }
   }
-});
-
-browser.browserAction.onClicked.addListener((tab) => {
-  browser.tabs.sendMessage(tab.id, {
-    app: extensionName,
-    destination: 'injected',
-    type: 'request'
-  });
-  console.debug('background sent request message');
 });

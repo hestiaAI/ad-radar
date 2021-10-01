@@ -87,6 +87,7 @@ function findDivsForAdUnits(adUnitToDivs) {
 }
 
 
+
 /**
  * Modifies the DOM by adding a red banner on top of ads,
  * indicating the price paid for an ad, or a lower bound estimate.
@@ -109,26 +110,26 @@ function addAdBanners(adDivs, allPrebids, winningPrebids) {
     }
     let adDiv = adIframe.parentNode;
 
-    let bannerDiv = document.createElement('div');
-    bannerDiv.style = 'background-color: red;';
-    bannerDiv.classList.add(bannerClass);
-    let banner = document.createElement('p');
-    bannerDiv.appendChild(banner);
+    let bannerText = '';
 
     let winningBid = winningPrebids[adUnitCode];
     if (winningBid) {
-      banner.innerHTML = `CPM of ${(winningBid.cpm).toFixed(4)} ${winningBid.currency} paid via ${winningBid.bidder}`;
+      bannerText = `CPM of ${(winningBid.cpm).toFixed(4)} ${winningBid.currency} paid via ${winningBid.bidder}`;
     } else if (allPrebids[adUnitCode]) {
       let bidToShow = (numberOfCurrencies(allPrebids[adUnitCode].bids) > 1) ?
         allPrebids[adUnitCode].bids[0] : // show first bid for this ad if the currencies are not comparable
         allPrebids[adUnitCode].bids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
 
-      banner.innerHTML = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
+      bannerText = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
     } else {
-      banner.innerHTML = `No information`;
+      bannerText = `No information`;
     }
 
-    adDiv.prepend(bannerDiv);
+    adDiv.insertAdjacentHTML('afterbegin', `
+    <div class='${bannerClass}' style='all: unset; text-color: black; text-align:center; width: ${adIframe.width};'>
+      <p style='background-color: red;'>${bannerText}</p>
+    </div>
+    `);
     Object.assign(adDiv.style, {
       'height': 'auto'
     });

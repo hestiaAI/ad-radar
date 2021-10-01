@@ -4,7 +4,7 @@
   "description": "An extension that shows you the price that advertisers are willing to pay for an ad on your browser.",
   "version": "0.0.1",
   "icons": {
-    "64": "icons/icon.png"
+    "64": "icons/icon_color.png"
   },
   "permissions": [
     "webNavigation",
@@ -34,9 +34,9 @@
   ],
   "browser_action": {
     "default_icon": {
-      "64": "icons/icon.png"
+      "64": "icons/icon_color.png"
     },
-    "default_title": "Click to discover your worth!"
+    "default_title": "Waiting for the webpage to load"
   },
   "options_ui": {
     "page": "options/index.html"
