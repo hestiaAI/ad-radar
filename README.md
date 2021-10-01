@@ -1,4 +1,4 @@
-# My Worth - https://Browser extension
+# My Worth - Browser extension
 
 ## About
 My Worth is a browser extension that allows you to better understand how advertisers target you and how much they are willing to pay for you to see their ad.
