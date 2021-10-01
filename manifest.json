@@ -37,8 +37,5 @@
       "64": "icons/icon_color.png"
     },
     "default_title": "Waiting for the webpage to load"
-  },
-  "options_ui": {
-    "page": "options/index.html"
   }
 }

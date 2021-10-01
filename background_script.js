@@ -1,5 +1,9 @@
 let extensionName = 'MyWorth';
 
+if (typeof browser === 'undefined') {
+  var browser = chrome;
+}
+
 browser.runtime.onMessage.addListener((data, sender) => {
   if (typeof data === 'object' && data !== null && data.app === extensionName) {
     if (data.destination === 'background') {

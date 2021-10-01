@@ -1,6 +1,10 @@
 let extensionName = 'MyWorth';
 let bannerClass = 'my-worth-ad-information';
 
+if (typeof browser === 'undefined') {
+  var browser = chrome;
+}
+
 // Injects the function 'injected' from the file injected_script.js into the environment of the main page.
 let script = document.createElement('script');
 script.appendChild(document.createTextNode('(' + injected + ')();'));
