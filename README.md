@@ -4,14 +4,14 @@
 My Worth is a browser extension that allows you to better understand how advertisers target you and how much they are willing to pay for you to see their ad.
 
 ## How does My Worth work?
-My Worth relies on an Ad Tech technology known as *Header Bidding*.
+My Worth relies on an Ad Tech technology known as *Header Bidding*, or *Pre-Bidding*.
 
 Usually, when you go to a webpage that displays ads, the ads that are shown to you are determined almost instantaneously through a real time auction, and **your personal data is used by the advertisers** to determine how much they are willing to pay for a particular ad impression.
 Most of the time, this auction for your attention takes place outside of the browser, in a network of complicated Ad Tech entities such as Supply Side Platforms, Ad Exchanges, and Demand Side Platforms.
 The only thing that the browser sees are the ads that won the auction, and we can't really know how much a particular ad impression cost.
 
 With *Header Bidding*, an auction for the different ad spaces of the webpage also take place in real time, but all the bids coming from the advertisers are gathered in the browser.
-In this case, My Worth can observe the bids that were received for each ad space, and display the value of these bids.
+In this case, My Worth can observe the (pre)bids that were received for each ad space, and display the value of these bids.
 
 My Worth checks if the visited webpage uses an open-source library called *Prebid.js* (often imported as `pbjs`) that implements Header Bidding, and thus only works on webpages that do.
 
@@ -37,6 +37,13 @@ To uninstall My Worth, on the installation screen, click `Remove` under `My Wort
 3. If the extension icon shows a green exclamation mark, click on it
 4. My Worth shows a red banner next to the ads that it detected and show the prices that were paid for them
 
+## Understanding the banners
+My Worth shows a red banner next to the ads that it detected, showing the cost of the ad in CPM (cost per mille, e.g. the price paid for a thousand impressions).
+
+There are 3 possibilities when My Worth detects an ad:
+1. My Worth couldn't find any information about the ad cost. The banner shows `No information`.
+2. My Worth observed the prebid that won the auction for this ad space and knows exactly how much was paid, and through which advertiser network. The banner shows `CPM of {price} paid via {network}`.
+3. My Worth observed prebids but the auction was won through another ad channel, so it retrieves the prebid with the highest cost. The banner shows `CPM of at least {price}`.
 
 ## List of compatible webpages
 Our browser extension is known to work on the following webpages:
