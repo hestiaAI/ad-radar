@@ -25,7 +25,7 @@ Note that My Worth will be uninstalled whenever you close the browser.
 ### Google Chrome
 Go to `Settings (upper right) > Extensions (bottom left)`.
 Activate developer mode by clicking on `Developer mode (upper right)`.
-Click on `Load unpacked` and select the `My Worth` folder.
+Click on `Load unpacked (top left)` and select the `My Worth` folder.
 
 To uninstall My Worth, on the installation screen, click `Remove` under `My Worth`.
 
