@@ -20,7 +20,7 @@ Download the files of this repository into a folder called `My Worth`.
 
 The next steps depend on your web browser:
 ### Mozilla Firefox
-Go to `Settings (upper right) > Extensions & Themes (bottom left) > Tools for all add-ons (upper right) > Load Temporary Add-on` and choose the file `My Worth/manifest.json`.
+Go to `Settings (upper right) > Extensions & Themes (bottom left) > Tools for all add-ons (upper right) > Debug Add-ons > Load Temporary Add-on` and choose the file `My Worth/manifest.json`.
 Note that My Worth will be uninstalled whenever you close the browser.
 ### Google Chrome
 Go to `Settings (upper right) > Extensions (bottom left)`.
