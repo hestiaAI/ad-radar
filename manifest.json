@@ -7,14 +7,8 @@
     "64": "icons/icon_color.png"
   },
   "permissions": [
-    "webNavigation",
-		"activeTab",
-		"storage",
 		"tabs",
-		"<all_urls>",
-		"http://*/*",
-		"https://*/*",
-		"*://*/*"
+		"<all_urls>"
 	],
   "background": {
     "scripts": [
