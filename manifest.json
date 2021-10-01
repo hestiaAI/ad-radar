@@ -27,6 +27,7 @@
         "*://*/*"
       ],
       "js": [
+        "injected_script.js",
         "content_script.js"
       ]
     }
@@ -35,8 +36,7 @@
     "default_icon": {
       "64": "icons/icon.png"
     },
-    "default_popup": "browserAction/index.html",
-    "default_title": "MyWorth"
+    "default_title": "Click to discover your worth!"
   },
   "options_ui": {
     "page": "options/index.html"

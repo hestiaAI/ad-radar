@@ -1,47 +1,44 @@
+let extensionName = 'MyWorth';
+let bannerClass = 'my-worth-ad-information';
 
-// Injects the function sendPbjsFromPageToContent into the environment of the main page.
-let injectedScript = document.createElement('script');
-injectedScript.appendChild(document.createTextNode('('+ sendPbjsFromPageToContent +')();'));
-(document.body || document.head || document.documentElement).appendChild(injectedScript);
+// Injects the function 'injected' from the file injected_script.js into the environment of the main page.
+let script = document.createElement('script');
+script.appendChild(document.createTextNode('(' + injected + ')();'));
+(document.body || document.head || document.documentElement).appendChild(script);
 
-/**
- * This function is injected into the main page script,
- * and sends pbjs information to our extension environment.
- */
-function sendPbjsFromPageToContent() {
-  console.debug('[MyWorth] script injected');
-  try { pbjs; } catch (error) {
-    console.debug('[MyWorth] pbjs not detected');
-    return;
-  }
-  try { googletag; } catch (error) {
-      console.debug('[MyWorth] googletag not detected');
-      return;
-  }
-  pbjs.onEvent('auctionEnd', auction => {
-    window.postMessage({
-      type: 'pbjs',
-      winningPrebids: JSON.parse(JSON.stringify(Object.fromEntries(pbjs.getAllPrebidWinningBids().map(bid => [bid.adUnitCode, bid])))),
-      allPrebids: JSON.parse(JSON.stringify(pbjs.getBidResponses())),
-      adUnitToDivs: Object.fromEntries(googletag.pubads().getSlots().map(slot => [slot.getAdUnitPath(), slot.getSlotElementId()]))
-    });
-    console.debug('[MyWorth] pbjs sent');
-  });
-}
 
-// Our extension listens to the incoming messages and catches the pbjs one.
-window.addEventListener('message', (event) => {
-  let data = event.data;
-  if (typeof data === 'object' && data !== null && data.type === 'pbjs') {
-    console.debug('[MyWorth] pbjs received');
-    console.debug(data);
-    try {
-      showAdPrices(data.adUnitToDivs, data.allPrebids, data.winningPrebids);
+window.addEventListener('message', (message) => {
+  if (typeof message.data === 'object' && message.data !== null && message.data.app === extensionName) {
+    // relays messages from the main execution environment to the background script
+    if (message.data.destination === 'background') {
+      console.debug('content received message to background');
+      browser.runtime.sendMessage(message.data);
+      console.debug('content relayed message to background');
     }
-    catch (error) {
-      console.error(error);
+    else if (message.data.destination === 'content') {
+      // catches the message with pbjs and googletag data
+      if (message.data.type === 'ad-data') {
+        try {
+          showAdPrices(message.data.adUnitToDivs, message.data.allPrebids, message.data.winningPrebids);
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
   }
+});
+
+browser.runtime.onMessage.addListener((data, sender) => {
+  // relays messages from the background execution environment to the injected script
+  if (typeof data === 'object' && data !== null && data.app === extensionName) {
+    if (data.destination === 'injected') {
+      console.debug('content received message to injected');
+      window.postMessage(data);
+      console.debug('content received message to injected');
+      return Promise.resolve('');
+    }
+  }
+  return false;
 });
 
 
@@ -55,7 +52,18 @@ window.addEventListener('message', (event) => {
  */
 function showAdPrices(adUnitToDivs, allPrebids, winningPrebids) {
   let adDivs = findDivsForAdUnits(adUnitToDivs);
-  addAdBanners(adDivs, allPrebids, winningPrebids);
+  // remove any previously added banners
+  document.querySelectorAll(`.${bannerClass}`).forEach(banner => banner.remove());
+  let numberOfAds = addAdBanners(adDivs, allPrebids, winningPrebids);
+
+  browser.runtime.sendMessage({
+    app: extensionName,
+    destination: 'background',
+    type: 'result',
+    numberofAds: numberOfAds
+  });
+
+  console.debug('content relayed message to injected');
 }
 
 
@@ -87,6 +95,7 @@ function findDivsForAdUnits(adUnitToDivs) {
  * @param {[type]} winningPrebids - the result of pbjs.getAllPrebidWinningBids() but in the same format as allPrebids
  */
 function addAdBanners(adDivs, allPrebids, winningPrebids) {
+  let numberOfAds = 0;
   Object.keys(adDivs).forEach((adUnitCode, i) => {
     let div = adDivs[adUnitCode];
     if (div == null) {
@@ -102,25 +111,30 @@ function addAdBanners(adDivs, allPrebids, winningPrebids) {
 
     let bannerDiv = document.createElement('div');
     bannerDiv.style = 'background-color: red;';
+    bannerDiv.classList.add(bannerClass);
+    let banner = document.createElement('p');
+    bannerDiv.appendChild(banner);
 
     let winningBid = winningPrebids[adUnitCode];
     if (winningBid) {
-      bannerDiv.innerHTML = `<p>CPM of ${(winningBid.cpm).toFixed(4)} ${winningBid.currency} paid via ${winningBid.bidder}</p>`;
-    }
-    else if (allPrebids[adUnitCode]) {
-      let bidToShow = (numberOfCurrencies(allPrebids[adUnitCode].bids) > 1)
-        ? allPrebids[adUnitCode].bids[0]
-        : allPrebids[adUnitCode].bids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr);
+      banner.innerHTML = `CPM of ${(winningBid.cpm).toFixed(4)} ${winningBid.currency} paid via ${winningBid.bidder}`;
+    } else if (allPrebids[adUnitCode]) {
+      let bidToShow = (numberOfCurrencies(allPrebids[adUnitCode].bids) > 1) ?
+        allPrebids[adUnitCode].bids[0] : // show first bid for this ad if the currencies are not comparable
+        allPrebids[adUnitCode].bids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
 
-      bannerDiv.innerHTML = `<p>CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}</p>`;
-    }
-    else {
-      bannerDiv.innerHTML = `<p>No information</p>`;
+      banner.innerHTML = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
+    } else {
+      banner.innerHTML = `No information`;
     }
 
     adDiv.prepend(bannerDiv);
-    Object.assign(adDiv.style, {'height': 'auto'});
+    Object.assign(adDiv.style, {
+      'height': 'auto'
+    });
+    numberOfAds ++;
   });
+  return numberOfAds;
 }
 
 /**
