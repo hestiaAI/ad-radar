@@ -15,11 +15,8 @@ window.addEventListener('message', (message) => {
   if (typeof message.data === 'object' && message.data !== null && message.data.app === extensionName) {
     // relays messages from the main execution environment to the background script
     if (message.data.destination === 'background') {
-      console.debug('content received message to background');
       browser.runtime.sendMessage(message.data);
-      console.debug('content relayed message to background');
-    }
-    else if (message.data.destination === 'content') {
+    } else if (message.data.destination === 'content') {
       // catches the message with pbjs and googletag data
       if (message.data.type === 'ad-data') {
         try {
@@ -36,10 +33,7 @@ browser.runtime.onMessage.addListener((data, sender) => {
   // relays messages from the background execution environment to the injected script
   if (typeof data === 'object' && data !== null && data.app === extensionName) {
     if (data.destination === 'injected') {
-      console.debug('content received message to injected');
       window.postMessage(data);
-      console.debug('content received message to injected');
-      return Promise.resolve('');
     }
   }
   return false;
@@ -66,8 +60,6 @@ function showAdPrices(adUnitToDivs, allPrebids, winningPrebids) {
     type: 'result',
     numberofAds: numberOfAds
   });
-
-  console.debug('content relayed message to injected');
 }
 
 
@@ -77,17 +69,12 @@ function showAdPrices(adUnitToDivs, allPrebids, winningPrebids) {
  * @return {[type]} an object mapping adUnitCode to DOM element
  */
 function findDivsForAdUnits(adUnitToDivs) {
-  let adDivs = {};
-  Object.keys(adUnitToDivs).forEach((adUnitCode, i) => {
-    let div = document.getElementById(adUnitToDivs[adUnitCode])
-    if (div != null) {
-      adDivs[adUnitCode] = div;
-    }
-  });
-  console.debug(`[MyWorth] found ${Object.keys(adDivs).length} / ${Object.keys(adUnitToDivs).length} ad slots.`)
-  console.debug(adDivs);
-
-  return adDivs;
+  return Object.fromEntries(
+    Object.keys(adUnitToDivs).flatMap(adUnitCode => {
+      let div = document.getElementById(adUnitToDivs[adUnitCode]);
+      return (div != null) ? [[adUnitCode, div]] : [];
+    })
+  );
 }
 
 
@@ -102,16 +89,8 @@ function findDivsForAdUnits(adUnitToDivs) {
 function addAdBanners(adDivs, allPrebids, winningPrebids) {
   let numberOfAds = 0;
   Object.keys(adDivs).forEach((adUnitCode, i) => {
-    let div = adDivs[adUnitCode];
-    if (div == null) {
-      console.debug(`[MyWorth] ${adUnitCode} div not found`);
-      return;
-    }
-    let adIframe = div.querySelector('iframe');
-    if (adIframe == null) {
-      console.debug(`[MyWorth] ${adUnitCode} iframe not found`);
-      return;
-    }
+    let div = adDivs[adUnitCode]; if (div == null) return;
+    let adIframe = div.querySelector('iframe'); if (adIframe == null) return;
     let adDiv = adIframe.parentNode;
 
     let bannerText = '';
@@ -126,18 +105,21 @@ function addAdBanners(adDivs, allPrebids, winningPrebids) {
 
       bannerText = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
     } else {
-      bannerText = `No information`;
+      bannerText = 'No information';
     }
 
     adDiv.insertAdjacentHTML('afterbegin', `
     <div class='${bannerClass}' style='all: unset; text-color: black; text-align:center; width: ${adIframe.width};'>
-      <p style='background-color: red;'>${bannerText}</p>
+      <p style='background-color: red;'>
+        ${bannerText}
+        <a href='https://github.com/hestiaAI/my-worth-extension'>[?]</a>
+      </p>
     </div>
     `);
     Object.assign(adDiv.style, {
       'height': 'auto'
     });
-    numberOfAds ++;
+    numberOfAds++;
   });
   return numberOfAds;
 }

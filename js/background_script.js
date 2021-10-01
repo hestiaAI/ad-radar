@@ -8,7 +8,6 @@ browser.runtime.onMessage.addListener((data, sender) => {
   if (typeof data === 'object' && data !== null && data.app === extensionName) {
     if (data.destination === 'background') {
       if (data.type === 'scout') {
-        console.debug('background received scout message');
         browser.browserAction.setIcon({
           path: {
             64: `icons/icon_${data.detectableAds ? 'color' : 'bw'}.png`
@@ -34,12 +33,9 @@ browser.runtime.onMessage.addListener((data, sender) => {
               destination: 'injected',
               type: 'request'
             });
-            console.debug('background sent request message');
           });
         }
-      }
-      else if (data.type === 'result') {
-        console.debug('background received result message');
+      } else if (data.type === 'result') {
         browser.browserAction.setBadgeText({
           text: data.numberofAds.toString(),
           tabId: sender.tab.id
