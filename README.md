@@ -16,16 +16,17 @@ In this case, My Worth can observe the (pre)bids that were received for each ad 
 My Worth checks if the visited webpage uses an open-source library called *Prebid.js* (often imported as `pbjs`) that implements Header Bidding, and thus only works on webpages that do.
 
 ## Installation
-Download the files of this repository into a folder called My Worth. For this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/my-worth-extension/archive/refs/heads/main.zip) and then unzip the file on your computer.
+Download the files of this repository into a folder called My Worth.
+For this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/my-worth-extension/archive/refs/heads/main.zip) and then unzip the file on your computer. 
 
 The next steps depend on your web browser:
 ### Mozilla Firefox
-Go to `Settings (upper right) > Extensions & Themes (bottom left) > Tools for all add-ons (upper right) > Debug Add-ons > Load Temporary Add-on` and choose the file `My Worth/manifest.json`.
+Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `My Worth/manifest.json`.
 Note that My Worth will be uninstalled whenever you close the browser.
 ### Google Chrome
-Go to `Settings (upper right) > Extensions (bottom left)`.
-Activate developer mode by clicking on `Developer mode (upper right)`.
-Click on `Load unpacked (top left)` and select the `My Worth` folder.
+Go to `Settings > Extensions`.
+Activate developer mode by clicking on `Developer mode`.
+Click on `Load unpacked` and select the `My Worth` folder.
 
 To uninstall My Worth, on the installation screen, click `Remove` under `My Worth`.
 
