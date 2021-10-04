@@ -1,26 +1,28 @@
 let extensionName = 'MyWorth';
 let bannerClass = 'my-worth-ad-information';
 
+// Makes the extension compatible with Chrome
 if (typeof browser === 'undefined') {
   var browser = chrome;
 }
 
-// Injects the function 'injected' from the file injected_script.js into the environment of the main page.
+// Injects the function 'injected' from the injected_script.js into the environment of the main page
 let script = document.createElement('script');
 script.appendChild(document.createTextNode('(' + injected + ')();'));
 (document.body || document.head || document.documentElement).appendChild(script);
 
 
 window.addEventListener('message', (message) => {
-  if (typeof message.data === 'object' && message.data !== null && message.data.app === extensionName) {
+  let data = message.data;
+  if (data !== null && typeof data === 'object' && data.app === extensionName) {
     // relays messages from the main execution environment to the background script
-    if (message.data.destination === 'background') {
+    if (data.destination === 'background') {
       browser.runtime.sendMessage(message.data);
-    } else if (message.data.destination === 'content') {
-      // catches the message with pbjs and googletag data
-      if (message.data.type === 'ad-data') {
+    } else if (data.destination === 'content') {
+      // catches the message with pbjs and googletag data and tries to show ad banners
+      if (data.type === 'ad-data') {
         try {
-          showAdPrices(message.data.adUnitToDivs, message.data.allPrebids, message.data.winningPrebids);
+          showMyWorth(data);
         } catch (error) {
           console.error(error);
         }
@@ -29,85 +31,80 @@ window.addEventListener('message', (message) => {
   }
 });
 
-browser.runtime.onMessage.addListener((data, sender) => {
-  // relays messages from the background execution environment to the injected script
-  if (typeof data === 'object' && data !== null && data.app === extensionName) {
+browser.runtime.onMessage.addListener((data) => {
+  if (data !== null && typeof data === 'object' && data.app === extensionName) {
+    // Relays messages from the background execution environment to the injected script
     if (data.destination === 'injected') {
-      window.postMessage(data);
+      window.postMessage(data, '*');
     }
   }
-  return false;
 });
 
 
 /**
  * The main function of the extension.
- * From the pbjs data, finds the DOM elements that contain the ads,
+ * From the found pbjs / googletag data, finds the DOM elements that contain the ads,
  * and add banners that show information about the ads' prices.
- * @param {[type]} adUnitToDivs   - optional mapping of adUnitCode to div id
- * @param {[type]} allPrebids     - the result of pbjs.getBidResponses()
- * @param {[type]} winningPrebids - the result of pbjs.getAllPrebidWinningBids() but in the same format as allPrebids
+ * @param {object} adData - object containing fields adUnits, adUnitToDivs, allPrebids, winningPrebids
  */
-function showAdPrices(adUnitToDivs, allPrebids, winningPrebids) {
-  let adDivs = findDivsForAdUnits(adUnitToDivs);
+function showMyWorth(adData) {
+  let adDivs = findAdUnitDivs(adData);
   // remove any previously added banners
   document.querySelectorAll(`.${bannerClass}`).forEach(banner => banner.remove());
-  let numberOfAds = addAdBanners(adDivs, allPrebids, winningPrebids);
+  let numberOfAds = addAdBanners(adDivs, adData);
 
   browser.runtime.sendMessage({
     app: extensionName,
     destination: 'background',
     type: 'result',
-    numberofAds: numberOfAds
+    numberOfAds: numberOfAds
   });
 }
 
 
 /**
- * Returns an object with the divs associated to the given ad units.
- * @param  {[type]} adUnitToDivs - optional mapping of adUnitCode to div id
- * @return {[type]} an object mapping adUnitCode to DOM element
+ * Returns an object with the DOM elements associated to the ad units found in the data.
+ * @param {object} adData - object containing fields adUnits, adUnitToDivs, allPrebids, winningPrebids
  */
-function findDivsForAdUnits(adUnitToDivs) {
+function findAdUnitDivs(adData) {
   return Object.fromEntries(
-    Object.keys(adUnitToDivs).flatMap(adUnitCode => {
-      let div = document.getElementById(adUnitToDivs[adUnitCode]);
-      return (div != null) ? [[adUnitCode, div]] : [];
+    adData.adUnits.flatMap(adUnitCode => {
+      let nodes = document.querySelectorAll(`[id*='${adUnitCode}']`);
+      return (nodes.length > 0) ? [[adUnitCode, nodes[0]]] : [];
     })
   );
 }
 
 
-
 /**
  * Modifies the DOM by adding a red banner on top of ads,
  * indicating the price paid for an ad, or a lower bound estimate.
- * @param {[type]} adSlots        - an object mapping adUnitCode to DOM element
- * @param {[type]} allPrebids     - the result of pbjs.getBidResponses()
- * @param {[type]} winningPrebids - the result of pbjs.getAllPrebidWinningBids() but in the same format as allPrebids
+ * @param {object} adDivs - an object mapping adUnitCode to DOM element
+ * @param {object} adData - object containing fields adUnits, adUnitToDivs, allPrebids, winningPrebids
  */
-function addAdBanners(adDivs, allPrebids, winningPrebids) {
+function addAdBanners(adDivs, adData) {
   let numberOfAds = 0;
   Object.keys(adDivs).forEach((adUnitCode, i) => {
-    let div = adDivs[adUnitCode]; if (div == null) return;
-    let adIframe = div.querySelector('iframe'); if (adIframe == null) return;
+    // We look for the div immediately above the ad iframe
+    let div = adDivs[adUnitCode]; if (div === null) return;
+    let adIframe = div.querySelector('iframe'); if (adIframe === null) return;
     let adDiv = adIframe.parentNode;
 
+    // We choose the text to show based on the information we have available
     let bannerText = '';
-
-    let winningBid = winningPrebids[adUnitCode];
-    if (winningBid) {
+    if (adUnitCode in adData.winningPrebids) {
+      let winningBid = adData.winningPrebids[adUnitCode];
       bannerText = `CPM of ${(winningBid.cpm).toFixed(4)} ${winningBid.currency} paid via ${winningBid.bidder}`;
-    } else if (allPrebids[adUnitCode]) {
-      let bidToShow = (numberOfCurrencies(allPrebids[adUnitCode].bids) > 1) ?
-        allPrebids[adUnitCode].bids[0] : // show first bid for this ad if the currencies are not comparable
-        allPrebids[adUnitCode].bids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
-
+    } else if (adUnitCode in adData.allPrebids) {
+      let bidToShow = (numberOfCurrencies(adData.allPrebids[adUnitCode].bids) > 1) ?
+        adData.allPrebids[adUnitCode].bids[0] : // show first bid for this ad if the currencies are not comparable
+        adData.allPrebids[adUnitCode].bids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
       bannerText = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
     } else {
       bannerText = 'No information';
     }
 
+    // We insert the red banner and its text inside the div containing the iframe ad
     adDiv.insertAdjacentHTML('afterbegin', `
     <div class='${bannerClass}' style='all: unset; text-color: black; text-align:center; width: ${adIframe.width};'>
       <p style='background-color: red;'>
@@ -126,12 +123,9 @@ function addAdBanners(adDivs, allPrebids, winningPrebids) {
 
 /**
  * Counts the number of different currencies amongst the given array of bids.
- * @param  {[type]} bids - an array of bids (e.g. one entry of pbjs.getAllPrebidWinningBids())
- * @return {[type]} an integer, the number of distinct currencies
+ * @param  {[object]} bids - an array of bids (e.g. one entry of pbjs.getAllPrebidWinningBids())
+ * @return {number} the number of distinct currencies
  */
 function numberOfCurrencies(bids) {
-  return bids.reduce(
-    (set, bid) => set.add(bid.currency),
-    new Set()
-  ).size;
+  return bids.reduce((set, bid) => set.add(bid.currency), new Set()).size;
 }

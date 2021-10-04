@@ -6,17 +6,17 @@ My Worth is a browser extension that allows you to better understand how adverti
 ## How does My Worth work?
 My Worth relies on an Ad Tech technology known as *Header Bidding*, or *Pre-Bidding*.
 
-Usually, when you go to a webpage that displays ads, the ads that are shown to you are determined almost instantaneously through a real time auction, and **your personal data is used by the advertisers** to determine how much they are willing to pay for a particular ad impression. This is often called [Real-Time Bidding](https://en.wikipedia.org/wiki/Real-time_bidding). 
+Usually, when you go to a webpage that displays ads, the ads that are shown to you are determined almost instantaneously through a real time auction, and **your personal data is used by the advertisers** to determine how much they are willing to pay for a particular ad impression. This is often called [Real-Time Bidding](https://en.wikipedia.org/wiki/Real-time_bidding).
 Most of the time, this auction for your attention takes place outside of the browser, in a network of complicated Ad Tech entities such as [Supply Side Platforms](https://en.wikipedia.org/wiki/Supply-side_platform), [Ad Exchanges](https://en.wikipedia.org/wiki/Ad_exchange), and [Demand Side Platforms](https://en.wikipedia.org/wiki/Demand-side_platform).
 The only thing that the browser sees are the ads that won the auction, and we can't really know how much a particular ad impression cost.
 
-With *Header Bidding*, an auction for the different ad spaces of the webpage also take place in real time, but all the bids coming from the advertisers are gathered in the browser.
+With *Header Bidding*, an auction for the different ad spaces of the webpage also takes place in real time, but all the bids coming from the advertisers are gathered in the browser.
 In this case, My Worth can observe the (pre)bids that were received for each ad space, and display the value of these bids.
 
 My Worth checks if the visited webpage uses an open-source library called *Prebid.js* (often imported as `pbjs`) that implements Header Bidding, and thus only works on webpages that do.
 
 ## Installation
-Download the files of this repository into a folder called My Worth. For this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/my-worth-extension/archive/refs/heads/main.zip) and then unzip the file on your computer. 
+Download the files of this repository into a folder called My Worth. For this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/my-worth-extension/archive/refs/heads/main.zip) and then unzip the file on your computer.
 
 The next steps depend on your web browser:
 ### Mozilla Firefox
@@ -96,4 +96,4 @@ Our browser extension is known to work on the following webpages:
 My Worth is under the GNU Affero General Public License.
 
 ## Partners
-My Worth was built under the banner of [_The Eyeballs_](https://eyeballs.hestialabs.org/en/), a project that is part of the [HestiaLabs](https://www.hestialabs.org) project. We can anticipate multiple opportunities for further collaboration with groups of people who want to use technology to better understand the ways attention is monetized online. Please email [eyeballs@hestialabs.org](mailto:eyeballs@hestialabs.org). 
+My Worth was built under the banner of [_The Eyeballs_](https://eyeballs.hestialabs.org/en/), a project that is part of the [HestiaLabs](https://www.hestialabs.org) project. We can anticipate multiple opportunities for further collaboration with groups of people who want to use technology to better understand the ways attention is monetized online. Please email [eyeballs@hestialabs.org](mailto:eyeballs@hestialabs.org).
