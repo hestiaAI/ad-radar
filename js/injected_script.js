@@ -52,7 +52,7 @@ function injected() {
       winningPrebids: JSON.parse(JSON.stringify(Object.fromEntries(pbjs.getAllPrebidWinningBids().map(bid => [bid.adUnitCode, bid])))),
       allPrebids: JSON.parse(JSON.stringify(pbjs.getBidResponses())),
       adUnits: pbjs.adUnits.map(ad => ad.code),
-      adUnitToDivs: Object.fromEntries(googletag.pubads().getSlots().map(slot => [slot.getAdUnitPath(), slot.getSlotElementId()]))
+      adUnitToSlotId: Object.fromEntries(googletag.pubads().getSlots().map(slot => [slot.getAdUnitPath(), slot.getSlotElementId()]))
     }, '*');
   }
 

@@ -45,7 +45,7 @@ browser.runtime.onMessage.addListener((data) => {
  * The main function of the extension.
  * From the found pbjs / googletag data, finds the DOM elements that contain the ads,
  * and add banners that show information about the ads' prices.
- * @param {object} adData - object containing fields adUnits, adUnitToDivs, allPrebids, winningPrebids
+ * @param {object} adData - object containing fields adUnits, adUnitToSlotId, allPrebids, winningPrebids
  */
 function showMyWorth(adData) {
   let adDivs = findAdUnitDivs(adData);
@@ -61,16 +61,29 @@ function showMyWorth(adData) {
   });
 }
 
-
 /**
  * Returns an object with the DOM elements associated to the ad units found in the data.
- * @param {object} adData - object containing fields adUnits, adUnitToDivs, allPrebids, winningPrebids
+ * Note that this function does not always find the dom element corresponding to a particular ad unit code.
+ * @param {object} adData - object containing fields adUnits, adUnitToSlotId, allPrebids, winningPrebids
+ * @return {object} a mapping from adUnitCode to DOM element
  */
 function findAdUnitDivs(adData) {
   return Object.fromEntries(
     adData.adUnits.flatMap(adUnitCode => {
+      // First search for a node whose id contains the ad unit code
       let nodes = document.querySelectorAll(`[id*='${adUnitCode}']`);
-      return (nodes.length > 0) ? [[adUnitCode, nodes[0]]] : [];
+      if (nodes.length === 1) {
+        return [[adUnitCode, nodes[0]]];
+      }
+      // Then search for a node whose id matches exactly the googletag slot id
+      if (adUnitCode in adData.adUnitToSlotId) {
+        let divId = adData.adUnitToSlotId[adUnitCode];
+        nodes = document.querySelectorAll(`[id='${divId}']`);
+        if (nodes.length === 1) {
+          return [[adUnitCode, nodes[0]]];
+        }
+      }
+      return [];
     })
   );
 }
@@ -80,7 +93,7 @@ function findAdUnitDivs(adData) {
  * Modifies the DOM by adding a red banner on top of ads,
  * indicating the price paid for an ad, or a lower bound estimate.
  * @param {object} adDivs - an object mapping adUnitCode to DOM element
- * @param {object} adData - object containing fields adUnits, adUnitToDivs, allPrebids, winningPrebids
+ * @param {object} adData - object containing fields adUnits, adUnitToSlotId, allPrebids, winningPrebids
  */
 function addAdBanners(adDivs, adData) {
   let numberOfAds = 0;
