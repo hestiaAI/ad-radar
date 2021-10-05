@@ -53,24 +53,26 @@ browser.runtime.onMessage.addListener((data, sender) => {
           text: data.numberOfAds.toString()
         });
       } else if (data.type === 'reset') {
-        browser.browserAction.setIcon({
-          tabId: sender.tab.id,
-          path: {
-            64: 'icons/icon_color.png'
-          }
-        });
-        browser.browserAction.setTitle({
-          tabId: sender.tab.id,
-          title: 'Waiting for the webpage to load'
-        });
-        browser.browserAction.setBadgeText({
-          tabId: sender.tab.id,
-          text: null
-        });
-        browser.browserAction.setBadgeBackgroundColor({
-          tabId: sender.tab.id,
-          color: 'gray'
-        });
+        try {
+          browser.browserAction.setIcon({
+            tabId: sender.tab.id,
+            path: {
+              64: 'icons/icon_color.png'
+            }
+          });
+          browser.browserAction.setTitle({
+            tabId: sender.tab.id,
+            title: 'Waiting for the webpage to load'
+          });
+          browser.browserAction.setBadgeText({
+            tabId: sender.tab.id,
+            text: null
+          });
+          browser.browserAction.setBadgeBackgroundColor({
+            tabId: sender.tab.id,
+            color: 'gray'
+          });
+        } catch (error) {} // tab was just closed
       }
     }
   }
