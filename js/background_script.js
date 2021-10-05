@@ -5,6 +5,19 @@ if (typeof browser === 'undefined') {
   var browser = chrome;
 }
 
+/**
+ * Function to be called when the browser action button is clicked.
+ * Sends a message to the main page requesting pbjs and googletag data.
+ * @param tab - the tab where the action was clicked
+ */
+function askForPageData(tab) {
+  browser.tabs.sendMessage(tab.id, {
+    app: extensionName,
+    destination: 'injected',
+    type: 'request'
+  });
+}
+
 // Listen for messages coming from content_script.js
 browser.runtime.onMessage.addListener((data, sender) => {
   if (data !== null && typeof data === 'object' && data.app === extensionName) {
@@ -31,13 +44,7 @@ browser.runtime.onMessage.addListener((data, sender) => {
         });
         // If ads are detectable, add a behaviour to the click of the button
         if (data.detectableAds) {
-          browser.browserAction.onClicked.addListener((tab) => {
-            browser.tabs.sendMessage(tab.id, {
-              app: extensionName,
-              destination: 'injected',
-              type: 'request'
-            });
-          });
+          browser.browserAction.onClicked.addListener(askForPageData);
         }
       } else if (data.type === 'result') {
         browser.browserAction.setTitle({
@@ -47,6 +54,26 @@ browser.runtime.onMessage.addListener((data, sender) => {
         browser.browserAction.setBadgeText({
           tabId: sender.tab.id,
           text: data.numberOfAds.toString()
+        });
+      } else if (data.type === 'reset') {
+        browser.browserAction.onClicked.removeListener(askForPageData);
+        browser.browserAction.setIcon({
+          tabId: sender.tab.id,
+          path: {
+            64: 'icons/icon_color.png'
+          }
+        });
+        browser.browserAction.setTitle({
+          tabId: sender.tab.id,
+          title: 'Waiting for the webpage to load'
+        });
+        browser.browserAction.setBadgeText({
+          tabId: sender.tab.id,
+          text: null
+        });
+        browser.browserAction.setBadgeBackgroundColor({
+          tabId: sender.tab.id,
+          color: 'gray'
         });
       }
     }

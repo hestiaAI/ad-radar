@@ -31,6 +31,15 @@ window.addEventListener('message', (message) => {
   }
 });
 
+// When the page changes, tell extension to reset the browser action properties
+window.addEventListener('beforeunload', () => {
+  browser.runtime.sendMessage({
+    app: extensionName,
+    destination: 'background',
+    type: 'reset'
+  })
+});
+
 browser.runtime.onMessage.addListener((data) => {
   if (data !== null && typeof data === 'object' && data.app === extensionName) {
     // Relays messages from the background execution environment to the injected script
@@ -90,15 +99,15 @@ function findAdUnitDivs(adData) {
 
 
 /**
- * Modifies the DOM by adding a red banner on top of ads,
- * indicating the price paid for an ad, or a lower bound estimate.
+ * Modifies the DOM by adding a red banner above ads, indicating the price paid for an ad, or a lower bound estimate.
  * @param {object} adDivs - an object mapping adUnitCode to DOM element
  * @param {object} adData - object containing fields adUnits, adUnitToSlotId, allPrebids, winningPrebids
+ * @return {number} number of ads banners that were injected into the page
  */
 function addAdBanners(adDivs, adData) {
   let numberOfAds = 0;
   Object.keys(adDivs).forEach((adUnitCode, i) => {
-    // We look for the div immediately above the ad iframe
+    // We look for the div immediately parent to the ad iframe
     let div = adDivs[adUnitCode]; if (div === null) return;
     let adIframe = div.querySelector('iframe'); if (adIframe === null) return;
     let adDiv = adIframe.parentNode;
@@ -120,14 +129,15 @@ function addAdBanners(adDivs, adData) {
     // We insert the red banner and its text inside the div containing the iframe ad
     adDiv.insertAdjacentHTML('afterbegin', `
     <div class='${bannerClass}' style='all: unset; text-color: black; text-align:center; width: ${adIframe.width};'>
-      <p style='background-color: red;'>
+      <p style='background-color: red; line-height: normal;'>
         ${bannerText}
         <a href='https://github.com/hestiaAI/my-worth-extension/blob/main/README.md#understanding-the-banners'>[?]</a>
       </p>
     </div>
     `);
     Object.assign(adDiv.style, {
-      'height': 'auto'
+      'height': 'auto',
+      'display': null // TODO check if this makes sense ? sometimes an ad div will have display:none although an ad is there
     });
     numberOfAds++;
   });
