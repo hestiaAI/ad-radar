@@ -13,9 +13,8 @@ function injected() {
     let re = new RegExp(`[\s\S]*${name}[\s\S]*`);
     // Finds all variables with 'name' in their name, that have all the properties in 'properties'
     let candidates = Object.keys(window).filter(v => re.test(v) && properties.map(p => window[v][p]).reduce((a, b) => a && b));
-    // Returns correctly when a single candidate was found, otherwise throw error
-    if (candidates.length === 1) return window[candidates[0]];
-    else if (candidates.length > 1) throw `found more than 1 ${name} candidate: ${candidates}`;
+    // Returns correctly when at least one candidate was found, otherwise throw error
+    if (candidates.length > 0 ) return window[candidates[0]];
     else throw `${name} not found`;
   }
 
