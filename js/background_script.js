@@ -17,6 +17,7 @@ function askForPageData(tab) {
     type: 'request'
   });
 }
+browser.browserAction.onClicked.addListener(askForPageData);
 
 // Listen for messages coming from content_script.js
 browser.runtime.onMessage.addListener((data, sender) => {
@@ -42,10 +43,6 @@ browser.runtime.onMessage.addListener((data, sender) => {
           tabId: sender.tab.id,
           color: data.detectableAds ? 'green' : 'red'
         });
-        // If ads are detectable, add a behaviour to the click of the button
-        if (data.detectableAds) {
-          browser.browserAction.onClicked.addListener(askForPageData);
-        }
       } else if (data.type === 'result') {
         browser.browserAction.setTitle({
           tabId: sender.tab.id,
@@ -56,7 +53,6 @@ browser.runtime.onMessage.addListener((data, sender) => {
           text: data.numberOfAds.toString()
         });
       } else if (data.type === 'reset') {
-        browser.browserAction.onClicked.removeListener(askForPageData);
         browser.browserAction.setIcon({
           tabId: sender.tab.id,
           path: {

@@ -2,20 +2,33 @@ function injected() {
   let extensionName = 'MyWorth';
 
   /**
-   * Searches the current window for a variable whose name contains 'name' and
-   * and that contains all properties from the list 'properties'.
-   * @param  {string}   name                     string name to search for
-   * @param  {[string]} properties               array of string properties
-   * @return {object}   If variable found, return it, otherwise throw an error.
+   * Searches the current window for a variable whose name contains 'pbjs' and that contains all properties we expect.
+   * @return {object} If pbjs found, return it, otherwise throw an error.
    */
-  function findObjectWithProperties(name, properties) {
-    // Matches any variable name that contains 'name'
-    let re = new RegExp(`[\s\S]*${name}[\s\S]*`);
-    // Finds all variables with 'name' in their name, that have all the properties in 'properties'
-    let candidates = Object.keys(window).filter(v => re.test(v) && properties.map(p => window[v][p]).reduce((a, b) => a && b));
+  function findPbjs() {
+    // Matches any variable name that contains 'pbjs'
+    let re = new RegExp(`[\s\S]*pbjs[\s\S]*`);
+    // Finds all variables with 'pbjs' in their name, that have all the properties we expect to find in pbjs (plus non empty adUnits)
+    let candidates = Object.keys(window).filter(v => re.test(v) && window[v].adUnits && window[v].adUnits.length
+      && window[v].getBidResponses && window[v].getAllPrebidWinningBids);
     // Returns correctly when at least one candidate was found, otherwise throw error
-    if (candidates.length > 0 ) return window[candidates[0]];
-    else throw `${name} not found`;
+    if (candidates.length > 0) return window[candidates[0]];
+    else throw 'pbjs not found';
+  }
+
+  /**
+   * Searches the current window for a variable whose name contains 'googletag' and that contains all properties we expect.
+   * @return {object} If googletag found, return it, otherwise throw an error.
+   */
+  function findGoogleTag() {
+    // Matches any variable name that contains 'googletag'
+    let re = new RegExp(`[\s\S]*googletag[\s\S]*`);
+    // Finds all variables with 'pbjs' in their name, that have all the properties we expect to find in pbjs (plus non empty adUnits)
+    let candidates = Object.keys(window).filter(v => re.test(v) && window[v].pubads && window[v].pubads().getSlots
+      && window[v].pubads().getSlots().length);
+    // Returns correctly when at least one candidate was found, otherwise throw error
+    if (candidates.length > 0) return window[candidates[0]];
+    else throw 'googletag not found';
   }
 
   /**
@@ -25,8 +38,10 @@ function injected() {
   function sendScoutMessage() {
     let scoutResult = false;
     try {
-      window.pbjs = findObjectWithProperties('pbjs', ['adUnits', 'getBidResponses', 'getAllPrebidWinningBids']);
-      window.googletag = findObjectWithProperties('googletag', ['pubads']);
+      let my_worth_pbjs = findPbjs();
+      let my_worth_googletag = findGoogleTag();
+      window.pbjs = my_worth_pbjs;
+      window.googletag = my_worth_googletag;
       scoutResult = true;
     } catch (error) {
       console.error(error);
@@ -57,8 +72,26 @@ function injected() {
   }
 
   // Check if page is loaded, and if not, add listener for load event to send a scout message
-  if (document.readyState === 'complete') sendScoutMessage();
-  else window.addEventListener('load', sendScoutMessage);
+  let loaded = false;
+  if (document.readyState === 'complete') {
+    sendScoutMessage();
+    loaded = true;
+  }
+  else {
+    window.addEventListener('load', () => {
+      sendScoutMessage();
+      loaded = true;
+    });
+  }
+
+  // When the page changes, tell extension to reset the browser action properties
+  window.addEventListener('beforeunload', () => {
+    window.postMessage({
+      app: extensionName,
+      destination: 'background',
+      type: 'reset'
+    });
+  });
 
   // Set up an event listener to reply to the message requesting pbjs and googletag data by sending it
   window.addEventListener('message', (message) => {
@@ -66,7 +99,9 @@ function injected() {
     if (data !== null && typeof data === 'object' && data.app === extensionName) {
       if (data.destination === 'injected') {
         if (data.type === 'request') {
-          sendAdDataMessage();
+          if (loaded) {
+            sendAdDataMessage();
+          }
         }
       }
     }

@@ -31,15 +31,6 @@ window.addEventListener('message', (message) => {
   }
 });
 
-// When the page changes, tell extension to reset the browser action properties
-window.addEventListener('beforeunload', () => {
-  browser.runtime.sendMessage({
-    app: extensionName,
-    destination: 'background',
-    type: 'reset'
-  })
-});
-
 browser.runtime.onMessage.addListener((data) => {
   if (data !== null && typeof data === 'object' && data.app === extensionName) {
     // Relays messages from the background execution environment to the injected script
@@ -137,7 +128,7 @@ function addAdBanners(adDivs, adData) {
     `);
     Object.assign(adDiv.style, {
       'height': 'auto',
-      'display': null // TODO check if this makes sense ? sometimes an ad div will have display:none although an ad is there
+      'display': adDiv.style.display === 'none' ? null : adDiv.style.display // TODO check if this makes sense ? sometimes an ad div will have display:none although an ad is there
     });
     numberOfAds++;
   });
