@@ -120,7 +120,7 @@ function addAdBanners(adDivs, adData) {
     // We insert the red banner and its text inside the div containing the iframe ad
     adDiv.insertAdjacentHTML('afterbegin', `
     <div class='${bannerClass}' style='all: unset; text-color: black; text-align:center; width: ${adIframe.width};'>
-      <p style='background-color: red; line-height: normal;'>
+      <p style='background-color: red; line-height: normal; font-size: medium; height: auto;'>
         ${bannerText}
         <a href='https://github.com/hestiaAI/my-worth-extension/blob/main/README.md#understanding-the-banners'>[?]</a>
       </p>
