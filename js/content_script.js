@@ -68,8 +68,10 @@ function showMyWorth(adData) {
  * @return {object} a mapping from adUnitCode to DOM element
  */
 function findAdUnitDivs(adData) {
+  // Combine codes from getBidResponses() and adUnits (either can be empty)
+  let adUnitCodes = [...new Set([...Object.keys(adData.allPrebids), ...adData.adUnits])];
   return Object.fromEntries(
-    adData.adUnits.flatMap(adUnitCode => {
+    adUnitCodes.flatMap(adUnitCode => {
       // First search for a node whose id contains the ad unit code
       let nodes = document.querySelectorAll(`[id*='${adUnitCode}']`);
       if (nodes.length === 1) {
@@ -109,9 +111,9 @@ function addAdBanners(adDivs, adData) {
       let winningBid = adData.winningPrebids[adUnitCode];
       bannerText = `CPM of ${(winningBid.cpm).toFixed(4)} ${winningBid.currency} paid via ${winningBid.bidder}`;
     } else if (adUnitCode in adData.allPrebids) {
-      let bidToShow = (numberOfCurrencies(adData.allPrebids[adUnitCode].bids) > 1) ?
-        adData.allPrebids[adUnitCode].bids[0] : // show first bid for this ad if the currencies are not comparable
-        adData.allPrebids[adUnitCode].bids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
+      let bidToShow = (numberOfCurrencies(adData.allPrebids[adUnitCode]) > 1) ?
+        adData.allPrebids[adUnitCode][0] : // show first bid for this ad if the currencies are not comparable
+        adData.allPrebids[adUnitCode].reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
       bannerText = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
     } else {
       bannerText = 'No information';

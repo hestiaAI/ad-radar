@@ -8,9 +8,9 @@ function injected() {
   function findPbjs() {
     // Matches any variable name that contains 'pbjs'
     let re = new RegExp(`[\s\S]*pbjs[\s\S]*`);
-    // Finds all variables with 'pbjs' in their name, that have all the properties we expect to find in pbjs (plus non empty adUnits)
-    let candidates = Object.keys(window).filter(v => re.test(v) && window[v].adUnits && window[v].adUnits.length
-      && window[v].getBidResponses && window[v].getAllPrebidWinningBids);
+    // Finds all variables with 'pbjs' in their name, that have all the properties we expect to find in pbjs
+    let candidates = Object.keys(window).filter(v => re.test(v) && window[v].adUnits
+      && window[v].getBidResponses && window[v].getAllWinningBids);
     // Returns correctly when at least one candidate was found, otherwise throw error
     if (candidates.length > 0) return window[candidates[0]];
     else throw 'pbjs not found';
@@ -23,9 +23,8 @@ function injected() {
   function findGoogleTag() {
     // Matches any variable name that contains 'googletag'
     let re = new RegExp(`[\s\S]*googletag[\s\S]*`);
-    // Finds all variables with 'pbjs' in their name, that have all the properties we expect to find in pbjs (plus non empty adUnits)
-    let candidates = Object.keys(window).filter(v => re.test(v) && window[v].pubads && window[v].pubads().getSlots
-      && window[v].pubads().getSlots().length);
+    // Finds all variables with 'googletag' in their name, that have all the properties we expect to find
+    let candidates = Object.keys(window).filter(v => re.test(v) && window[v].pubads && window[v].pubads().getSlots);
     // Returns correctly when at least one candidate was found, otherwise throw error
     if (candidates.length > 0) return window[candidates[0]];
     else throw 'googletag not found';
@@ -64,7 +63,7 @@ function injected() {
       app: extensionName,
       destination: 'content',
       type: 'ad-data',
-      winningPrebids: JSON.parse(JSON.stringify(Object.fromEntries(pbjs.getAllPrebidWinningBids().map(bid => [bid.adUnitCode, bid])))),
+      winningPrebids: JSON.parse(JSON.stringify(Object.fromEntries(pbjs.getAllWinningBids().map(bid => [bid.adUnitCode, bid])))),
       allPrebids: JSON.parse(JSON.stringify(pbjs.getBidResponses())),
       adUnits: pbjs.adUnits.map(ad => ad.code),
       adUnitToSlotId: Object.fromEntries(googletag.pubads().getSlots().map(slot => [slot.getAdUnitPath(), slot.getSlotElementId()]))
