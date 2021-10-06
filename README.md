@@ -40,6 +40,7 @@ Then:
 2. Wait for the page and its ads to finish loading
 3. If the extension icon shows a green exclamation mark, click on it
 4. My Worth shows a red banner next to the ads that it detected and show the prices that were paid for them
+5. If you see new ads appear on the page, click on the extension icon again to see their information
 
 ## Understanding the banners
 My Worth shows a red banner next to the ads that it detected, showing the cost of the ad in CPM (cost per mille, e.g. the price paid for a thousand impressions).

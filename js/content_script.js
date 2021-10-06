@@ -14,11 +14,12 @@ script.appendChild(document.createTextNode('(' + injected + ')();'));
 
 window.addEventListener('message', (message) => {
   let data = message.data;
-  if (data !== null && typeof data === 'object' && data.app === extensionName) {
+  if (data?.app === extensionName) {
     // relays messages from the main execution environment to the background script
     if (data.destination === 'background') {
       browser.runtime.sendMessage(message.data);
-    } else if (data.destination === 'content') {
+    }
+    else if (data.destination === 'content') {
       // catches the message with pbjs and googletag data and tries to show ad banners
       if (data.type === 'ad-data') {
         try {
@@ -68,13 +69,16 @@ function showMyWorth(adData) {
  * @return {object} a mapping from adUnitCode to DOM element
  */
 function findAdUnitDivs(adData) {
+  // Combine codes from getBidResponses() and adUnits (either can be empty)
+  let adUnitCodes = [...new Set([...Object.keys(adData.allPrebids), ...adData.adUnits])];
   return Object.fromEntries(
-    adData.adUnits.flatMap(adUnitCode => {
+    adUnitCodes.flatMap(adUnitCode => {
       // First search for a node whose id contains the ad unit code
       let nodes = document.querySelectorAll(`[id*='${adUnitCode}']`);
       if (nodes.length === 1) {
         return [[adUnitCode, nodes[0]]];
       }
+      console.debug(`${adUnitCode}: did not find div with this id`)
       // Then search for a node whose id matches exactly the googletag slot id
       if (adUnitCode in adData.adUnitToSlotId) {
         let divId = adData.adUnitToSlotId[adUnitCode];
@@ -82,7 +86,9 @@ function findAdUnitDivs(adData) {
         if (nodes.length === 1) {
           return [[adUnitCode, nodes[0]]];
         }
+        console.debug(`${adUnitCode}: did not find div with id ${divId} (${nodes.length} cands)`)
       }
+      console.debug(`${adUnitCode}: failed`)
       return [];
     })
   );
@@ -99,37 +105,35 @@ function addAdBanners(adDivs, adData) {
   let numberOfAds = 0;
   Object.keys(adDivs).forEach((adUnitCode, i) => {
     // We look for the div immediately parent to the ad iframe
-    let div = adDivs[adUnitCode]; if (div === null) return;
-    let adIframe = div.querySelector('iframe'); if (adIframe === null) return;
-    let adDiv = adIframe.parentNode;
+    let adIframe = adDivs[adUnitCode]?.querySelector('iframe');
+    let adDiv = adIframe?.parentNode;
+    if (!adDiv) return;
 
     // We choose the text to show based on the information we have available
     let bannerText = '';
     if (adUnitCode in adData.winningPrebids) {
       let winningBid = adData.winningPrebids[adUnitCode];
       bannerText = `CPM of ${(winningBid.cpm).toFixed(4)} ${winningBid.currency} paid via ${winningBid.bidder}`;
-    } else if (adUnitCode in adData.allPrebids) {
+    }
+    else if (adUnitCode in adData.allPrebids) {
       let bidToShow = (numberOfCurrencies(adData.allPrebids[adUnitCode].bids) > 1) ?
         adData.allPrebids[adUnitCode].bids[0] : // show first bid for this ad if the currencies are not comparable
         adData.allPrebids[adUnitCode].bids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
       bannerText = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
-    } else {
-      bannerText = 'No information';
     }
+    else bannerText = 'No information';
 
     // We insert the red banner and its text inside the div containing the iframe ad
+    let iframeWidth = adIframe.style.width ? adIframe.style.width : `${adIframe.width}px`;
     adDiv.insertAdjacentHTML('afterbegin', `
-    <div class='${bannerClass}' style='all: unset; text-color: black; text-align:center; width: ${adIframe.width};'>
-      <p style='background-color: red; line-height: normal; font-size: medium; height: auto;'>
+    <div class='${bannerClass}' style='all: unset; display: table; text-align: center; margin: 0 auto; width: ${iframeWidth}'>
+      <p style='all: unset; background-color: red; color: black; display: inline-block; margin: auto; line-height: normal; font-size: medium; height: auto; width: 100%'>
         ${bannerText}
         <a href='https://github.com/hestiaAI/my-worth-extension/blob/main/README.md#understanding-the-banners'>[?]</a>
       </p>
     </div>
     `);
-    Object.assign(adDiv.style, {
-      'height': 'auto',
-      'display': adDiv.style.display === 'none' ? null : adDiv.style.display // TODO check if this makes sense ? sometimes an ad div will have display:none although an ad is there
-    });
+    Object.assign(adDiv.style, {'height': 'auto'});
     numberOfAds++;
   });
   return numberOfAds;
