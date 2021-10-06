@@ -33,70 +33,78 @@ function injected() {
     else throw 'googletag not found';
   }
 
-  /**
-   * Searches for the pbjs and googletag objects, and adds them to the window with these names when they exist.
-   */
-  function findAdData() {
-    try {
-      let my_worth_pbjs = findPbjs();
-      let my_worth_googletag = findGoogleTag();
-      window.pbjs = my_worth_pbjs;
-      window.googletag = my_worth_googletag;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  /**
-   * Sends a message to the background to inform the extension of whether pbjs and googletag were found on the webpage or not.
-   * It only makes sense to call this function after findAdData.
-   */
-  function sendScoutMessage() {
+  function sendAdUnits() {
     window.postMessage({
       app: extensionName,
-      destination: 'background',
-      type: 'scout',
-      detectableAds: !!(pbjs && googletag)
+      destination: 'content',
+      content: 'adUnits',
+      adUnits: pbjs.adUnits.map(ad => ad.code)
     }, '*');
   }
 
-  /**
-   * Sends a message to the background with relevant information from pbjs and googletag.
-   * It only makes sense to call this function after findAdData.
-   */
-  function sendAdDataMessage() {
-    try {
-      window.postMessage({
-        app: extensionName,
-        destination: 'content',
-        type: 'ad-data',
-        winningPrebids: JSON.parse(JSON.stringify(Object.fromEntries(pbjs.getAllWinningBids().map(bid => [bid.adUnitCode, bid])))),
-        allPrebids: JSON.parse(JSON.stringify(pbjs.getBidResponses())),
-        adUnits: pbjs.adUnits.map(ad => ad.code),
-        adUnitToSlotId: Object.fromEntries(googletag.pubads().getSlots().map(slot => [slot.getAdUnitPath(), slot.getSlotElementId()]))
-      }, '*');
-    } catch (error) {
-      window.postMessage({
-        app: extensionName,
-        destination: 'background',
-        type: 'scout',
-        detectableAds: false
-      });
-    }
+  function sendBidInfo(bid, winner) {
+    window.postMessage({
+      app: extensionName,
+      destination: 'content',
+      content: 'bid',
+      type: winner ? 'winningBid': 'bid',
+      bid: {
+        adUnitCode: bid.adUnitCode,
+        cpm: bid.cpm,
+        currency: bid.currency,
+        bidder: bid.bidder
+      }
+    }, '*');
   }
 
-  // Set up an event listener to reply to the message requesting pbjs and googletag data by sending it
-  window.addEventListener('message', (message) => {
-    let data = message.data;
-    if (data?.app === extensionName && data?.destination === 'injected') {
-      if (data.type === 'request') {
-        findAdData();
-        sendAdDataMessage();
+  function sendSlotInfo(slot) {
+    window.postMessage({
+      app: extensionName,
+      destination: 'content',
+      content: 'slot',
+      type: 'rendered',
+      slot: {
+        id: slot.getSlotElementId(),
+        adUnitPath: slot.getAdUnitPath()
       }
-      else if (data.type === 'scout') {
-        findAdData();
-        sendScoutMessage();
-      }
-    }
-  });
+    }, '*');
+  }
+
+
+  let searchPbjsInterval = setInterval(() => {
+    try {
+      findPbjs();
+
+      clearInterval(searchPbjsInterval);
+
+      sendAdUnits();
+      pbjs.onEvent('addAdUnit', () => sendAdUnits());
+      pbjs.onEvent('bidResponse', (bid) => sendBidInfo(bid, false));
+      pbjs.onEvent('bidWon', (bid) => sendBidInfo(bid, true));
+      pbjs.onEvent('adUnitAdded', (adUnit) => console.debug(adUnit));
+    } catch (error) {}
+  }, 1);
+
+  let searchGoogleTagInterval = setInterval(() => {
+    try {
+      findGoogleTag();
+
+      clearInterval(searchGoogleTagInterval);
+      googletag.pubads().getSlots().forEach((slot) => sendSlotInfo(slot));
+      googletag.pubads().addEventListener('slotOnload', (event) => sendSlotInfo(event.slot));
+    } catch (error) {}
+  }, 1);
+
+  if (document.readyState === 'complete') {
+    setTimeout(() => {
+      clearInterval(searchPbjsInterval);
+      clearInterval(searchGoogleTagInterval);
+    }, 2);
+  }
+  else {
+    window.addEventListener('load', () => {
+      clearInterval(searchPbjsInterval);
+      clearInterval(searchGoogleTagInterval);
+    });
+  }
 }
