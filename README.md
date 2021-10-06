@@ -38,9 +38,9 @@ Also, make sure that you can see the icon of the extension on the top bar of you
 Then:
 1. Go to one of the webpages in our [list of compatible webpages](#list-of-compatible-webpages)
 2. Wait for the page and its ads to finish loading
-3. If the extension icon shows a green exclamation mark, click on it
-4. My Worth shows a red banner next to the ads that it detected and show the prices that were paid for them
-5. If you see new ads appear on the page, click on the extension icon again to see their information
+3. My Worth shows:
+   1. a red banner next to the ads that it detected and show the prices that were paid for them
+   2. the number of detected ads on the icon of the extension
 
 ## Understanding the banners
 My Worth shows a red banner next to the ads that it detected, showing the cost of the ad in CPM (cost per mille, e.g. the price paid for a thousand impressions).
