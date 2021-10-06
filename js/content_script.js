@@ -50,7 +50,6 @@ browser.runtime.onMessage.addListener((data) => {
  */
 function showMyWorth(adData) {
   let adDivs = findAdUnitDivs(adData);
-  console.debug(adDivs);
   // remove any previously added banners
   document.querySelectorAll(`.${bannerClass}`).forEach(banner => banner.remove());
   let numberOfAds = addAdBanners(adDivs, adData);
