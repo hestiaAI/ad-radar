@@ -93,7 +93,6 @@ function findAdUnitDivs(allBids, adUnitPathToId, adUnits) {
       if (nodes.length === 1) {
         return [[adUnitCode, nodes[0]]];
       }
-      console.debug(`${adUnitCode}: did not find div with this id`)
       // Then search for a node whose id matches exactly the googletag slot id
       if (adUnitCode in adUnitPathToId) {
         let divId = adUnitPathToId[adUnitCode];
@@ -101,9 +100,7 @@ function findAdUnitDivs(allBids, adUnitPathToId, adUnits) {
         if (nodes.length === 1) {
           return [[adUnitCode, nodes[0]]];
         }
-        console.debug(`${adUnitCode}: did not find div with id ${divId} (${nodes.length} cands)`)
       }
-      console.debug(`${adUnitCode}: failed`)
       return [];
     })
   );
