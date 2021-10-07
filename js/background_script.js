@@ -19,16 +19,16 @@ browser.browserAction.onClicked.addListener(tab => {
 });
 
 // Listen for messages coming from content_script.js (which sometimes relays messages from injected_script.js)
-browser.runtime.onMessage.addListener((data, sender) => {
-  if (data?.app === extensionName && data?.destination === 'background') {
-    if (data.type === 'result') {
+browser.runtime.onMessage.addListener((message, sender) => {
+  if (message?.app === extensionName && message?.destination === 'background') {
+    if (message.type === 'result') {
       browser.browserAction.setTitle({
         tabId: sender.tab.id,
-        title: `Analysed ${data.numberOfAds} ads on this page`
+        title: `Analysed ${message.numberOfAds} ads on this page`
       });
       browser.browserAction.setBadgeText({
         tabId: sender.tab.id,
-        text: data.numberOfAds.toString()
+        text: message.numberOfAds.toString()
       });
     }
   }

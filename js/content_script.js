@@ -18,40 +18,40 @@ let adUnitPathToId = {};
 let adUnits = new Set();
 
 // Catches messages coming from the injected script
-window.addEventListener('message', (message) => {
-  let data = message.data;
-  if (data?.app !== extensionName) return;
-  if (data.destination === 'content') {
-    if (data.content === 'bid') {
-      if (data.bid.adUnitCode in allBids) allBids[data.bid.adUnitCode].push(data.bid);
-      else allBids[data.bid.adUnitCode] = [data.bid];
-      if (data.type === 'winningBid') {
-        winningBids[data.bid.adUnitCode] = data.bid;
+window.addEventListener('message', (event) => {
+  let message = event.data;
+  if (message?.app !== extensionName) return;
+  if (message.destination === 'content') {
+    if (message.content === 'bid') {
+      if (message.bid.adUnitCode in allBids) allBids[message.bid.adUnitCode].push(message.bid);
+      else allBids[message.bid.adUnitCode] = [message.bid];
+      if (message.bid.won) {
+        winningBids[message.bid.adUnitCode] = message.bid;
       }
     }
-    else if (data.content === 'adUnits') {
-      adUnits = new Set(data.adUnits);
+    else if (message.content === 'adUnits') {
+      adUnits = new Set(message.adUnits);
     }
-    else if (data.content === 'slot') {
-      adUnitPathToId[data.slot.adUnitPath] = data.slot.id;
+    else if (message.content === 'slot') {
+      adUnitPathToId[message.slot.adUnitPath] = message.slot.id;
     }
     showMyWorth();
   }
   // relays messages from the main execution environment to the background script
-  else if (data.destination === 'background') {
-    browser.runtime.sendMessage(message.data);
+  else if (message.destination === 'background') {
+    browser.runtime.sendMessage(message);
   }
 });
 
 // Catches messages coming from the background script
-browser.runtime.onMessage.addListener((data) => {
-  if (data?.app === extensionName) {
+browser.runtime.onMessage.addListener((message) => {
+  if (message?.app === extensionName) {
     // Relays messages from the background execution environment to the injected script
-    if (data.destination === 'injected') {
-      window.postMessage(data, '*');
+    if (message.destination === 'injected') {
+      window.postMessage(message, '*');
     }
-    else if (data.destination === 'content') {
-      if (data.type === 'request') {
+    else if (message.destination === 'content') {
+      if (message.type === 'request') {
         showMyWorth();
       }
     }
