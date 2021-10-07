@@ -34,7 +34,7 @@ browser.runtime.onMessage.addListener((data, sender) => {
   }
 });
 
-// Listen to tab change events (tab started loading or finished loading)
+// Listen to tab change events (ex: tab started loading)
 browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
   // Restore the icon to the default values
   if (changeInfo.status === 'loading') {
