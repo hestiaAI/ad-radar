@@ -19,11 +19,11 @@ function injected() {
     sendMyWorthMessage({
       destination: 'content',
       content: 'adUnits',
-      adUnits: pbjs.adUnits.map(ad => ad.code)
+      adUnits: window.pbjs.adUnits.map(ad => ad.code)
     });
   }
 
-  function sendBidInfo(bid, won) {
+  function sendPbjsBid(bid, won) {
     sendMyWorthMessage({
       destination: 'content',
       content: 'bid',
@@ -32,18 +32,31 @@ function injected() {
         bidder: bid.bidder,
         cpm: bid.cpm,
         currency: bid.currency,
+        lib: 'pbjs',
+        time: new Date().getTime(),
         won: won,
       }
     });
   }
 
-  function sendSlotInfo(slot) {
+  function sendGoogletagSlotInfo(slot) {
     sendMyWorthMessage({
       destination: 'content',
       content: 'slot',
       slot: {
         id: slot.getSlotElementId(),
-        adUnitPath: slot.getAdUnitPath()
+        unitCode: slot.getAdUnitPath()
+      }
+    });
+  }
+
+  function sendApstagSlotInfo(bid) {
+    sendMyWorthMessage({
+      destination: 'content',
+      content: 'slot',
+      slot: {
+        id: bid.slotID,
+        unitCode: bid.targeting.amznbid
       }
     });
   }
@@ -71,37 +84,43 @@ function injected() {
   }
 
   /**
-   * Listen to the given library's hooks and events in order to retrieve ad information
+   * Listen to the given library's hooks and events in order to retrieve ad information.
    * @param libName the name of the library we are instrumenting
    */
   function instrumentLibrary(libName) {
     if (libName === 'pbjs') {
-      pbjs.onEvent('addAdUnit', () => sendAdUnits());
-      pbjs.onEvent('bidResponse', (bid) => sendBidInfo(bid, false));
-      pbjs.onEvent('bidWon', (bid) => sendBidInfo(bid, true));
-      pbjs.onEvent('adUnitAdded', (adUnit) => console.debug(adUnit));
+      window.pbjs.onEvent('addAdUnit', () => sendAdUnits());
+      window.pbjs.onEvent('bidResponse', (bid) => sendPbjsBid(bid, false));
+      window.pbjs.onEvent('bidWon', (bid) => sendPbjsBid(bid, true));
+      window.pbjs.onEvent('adUnitAdded', (adUnit) => console.debug(adUnit));
     }
     else if (libName === 'googletag') {
-      googletag.pubads().addEventListener('slotRenderEnded', (event) => sendSlotInfo(event.slot));
-      //TODO
+      window.googletag.pubads().addEventListener('slotResponseReceived', (event) => sendGoogletagSlotInfo(event.slot));
+      window.googletag.pubads().addEventListener('slotRenderEnded', (event) => sendGoogletagSlotInfo(event.slot));
     }
     else if (libName === 'apstag') {
       let original_fetchBids = apstag.fetchBids;
-      apstag.fetchBids = function(cfg, callback) {
-        //TODO
-        return original_fetchBids(cfg, callback);
+      window.apstag.fetchBids = function(cfg, callback) {
+        let new_callback = (bids, info) => {
+          console.debug('[My Worth] apstag received bids');
+          console.debug(bids);
+          console.debug(info);
+          bids.forEach(bid => sendApstagSlotInfo(bid));
+          return callback(bids, info);
+        }
+        return original_fetchBids(cfg, new_callback);
       }
       let original_renderImp = apstag.renderImp;
-      apstag.renderImp = function() {
-        //TODO
-        return original_renderImp();
+      window.apstag.renderImp = function(doc, adUnitCode) {
+        // sendWinningApstagBidCode(adUnitCode);
+        return original_renderImp(doc, adUnitCode);
       }
     }
   }
 
   /**
    * Creates an interval to search for a library in the current window, and then instrument it if found.
-   * @param lib the library to search for and to instrument if found
+   * @param {object} lib the library to search for and to instrument if found
    * @returns {number} the number of the created interval
    */
   function createSearchAndInstrumentInterval(lib) {

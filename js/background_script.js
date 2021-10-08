@@ -1,10 +1,3 @@
-let extensionName = 'MyWorth';
-
-// Makes the extension compatible with Chrome
-if (typeof browser === 'undefined') {
-  var browser = chrome;
-}
-
 browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
@@ -44,7 +37,22 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
     });
     browser.browserAction.setBadgeText({
       tabId: tabId,
-      text: '?'
+      text: ''
+    });
+  }
+  // If the page has finished loading and no ad was detected, inform it
+  if (changeInfo.status === 'complete') {
+    browser.browserAction.getBadgeText({tabId: tabId}, text => {
+      if (text === '') {
+        browser.browserAction.setBadgeText({
+          tabId: tabId,
+          text: '0'
+        });
+        browser.browserAction.setTitle({
+          tabId: tabId,
+          title: 'No ads detected'
+        });
+      }
     });
   }
 });
