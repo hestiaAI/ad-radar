@@ -14,23 +14,20 @@ window.addEventListener('message', (event) => {
   if (message?.app !== extensionName) return;
   if (message.destination === 'content') {
     let actionFor = {
-      bid: () => unit2bids.add(message.bid.adUnitCode, message.bid),
-      adUnits: () => message.adUnits.forEach(code => unit2bids.add(code, {adUnitCode: code})),
+      bid: () => unit2bids.add(message.bid.unitCode, message.bid),
       slot: () => {
-        let div = document.getElementById(message.slot.id);
-        if (div) {
+        if (message.slot.id && document.getElementById(message.slot.id) !== null) {
+          id2units.add(message.slot.id, message.slot.id);
           id2units.add(message.slot.id, message.slot.unitCode);
         }
-        else {
-          let nodes = document.querySelectorAll(`[id*='${message.slot.unitCode}']`);
-          if (nodes.length === 1) {
-            id2units.add(nodes[0].id, message.slot.unitCode);
-          }
+        let candidates = document.querySelectorAll(`[id*='${message.slot.unitCode}']`);
+        if (candidates.length === 1) {
+          id2units.add(candidates[0].id, message.slot.unitCode);
         }
       }
     };
-    actionFor[message.content]();
 
+    actionFor[message.content]();
     showMyWorth();
   }
 });
@@ -60,10 +57,8 @@ function showMyWorth() {
     let adDiv = adIframe?.parentNode;
     if (!adDiv) return;
 
-    let allBids = [...id2units.get(id)].flatMap(adUnitCode => [...unit2bids.get(adUnitCode)].filter(bid => bid.cpm));
+    let allBids = [...id2units.get(id)].flatMap(unitCode => [...unit2bids.get(unitCode)].filter(bid => bid.cpm));
     let winningBids = allBids.filter(bid => bid.won);
-
-    console.debug(`[My Worth] all bids for slot with id ${id}`);
 
     // We choose the text to show based on the information we have available
     let bannerText = '';
@@ -79,7 +74,7 @@ function showMyWorth() {
         allBids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
       bannerText = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
     }
-    else bannerText = 'No information';
+    else bannerText = 'No information found for this ad';
 
     // We insert the red banner and its text inside the div containing the iframe ad
     let iframeWidth = adIframe.style.width ? adIframe.style.width : `${adIframe.width}px`;

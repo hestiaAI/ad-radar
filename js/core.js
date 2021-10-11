@@ -7,7 +7,7 @@ if (typeof browser === 'undefined') {
 }
 /**
  * A pseudo-class similar to Map but where values are Sets and getting a non-existing key returns an empty set.
- * @returns {Map<any, any>}
+ * @returns {Map<any, Set<any>>}
  * @constructor
  */
 class MapWithSetValues {
@@ -25,6 +25,15 @@ class MapWithSetValues {
   }
   keys() {
     return [...this.map.keys()];
+  }
+  entries() {
+    return [...this.map.entries()];
+  }
+  values() {
+    return [...this.map.values()];
+  }
+  valuesUnion() {
+    return this.values().reduce((first, second) => new Set([...first, ...second]), new Set());
   }
 }
 

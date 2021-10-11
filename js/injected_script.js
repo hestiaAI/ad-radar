@@ -10,54 +10,72 @@ function injected() {
   function sendMyWorthMessage(message) {
     if (message?.destination && message?.content) {
       message['app'] = extensionName;
+      message['time'] = new Date().getTime();
       window.postMessage(message, '*');
     }
     else throw `Malformed My Worth message`;
   }
 
-  function sendAdUnits() {
+  function sendBid(bid) {
     sendMyWorthMessage({
       destination: 'content',
-      content: 'adUnits',
-      adUnits: window.pbjs.adUnits.map(ad => ad.code)
+      content: 'bid',
+      bid: bid
     });
   }
 
   function sendPbjsBid(bid, won) {
+    sendBid({
+      unitCode: bid.adUnitCode,
+      bidder: bid.bidder,
+      cpm: bid.cpm,
+      currency: bid.currency,
+      lib: 'pbjs',
+      won: won,
+    })
+  }
+
+  function sendApstagWinningBid(bid) {
+    sendBid({
+      unitCode: bid.adUnitCode,
+      //bidder: bid.bidder,
+      //cpm: bid.cpm,
+      //currency: bid.currency,
+      lib: 'apstag',
+      won: true,
+    });
+  }
+
+  function sendSlotInfo(slot) {
     sendMyWorthMessage({
       destination: 'content',
-      content: 'bid',
-      bid: {
-        adUnitCode: bid.adUnitCode,
-        bidder: bid.bidder,
-        cpm: bid.cpm,
-        currency: bid.currency,
-        lib: 'pbjs',
-        time: new Date().getTime(),
-        won: won,
-      }
+      content: 'slot',
+      slot: slot
+    });
+  }
+
+  function sendPbjsSlotInfo(slot) {
+    sendSlotInfo({
+      unitCode: slot.adUnitCode,
+      //size: slot.labelAny[0] ?? '?x?',
+      lib: 'pbjs'
     });
   }
 
   function sendGoogletagSlotInfo(slot) {
-    sendMyWorthMessage({
-      destination: 'content',
-      content: 'slot',
-      slot: {
-        id: slot.getSlotElementId(),
-        unitCode: slot.getAdUnitPath()
-      }
+    sendSlotInfo({
+      id: slot.getSlotElementId(),
+      unitCode: slot.getAdUnitPath(),
+      lib: 'googletag'
     });
   }
 
   function sendApstagSlotInfo(bid) {
-    sendMyWorthMessage({
-      destination: 'content',
-      content: 'slot',
-      slot: {
-        id: bid.slotID,
-        unitCode: bid.targeting.amznbid
-      }
+    sendSlotInfo({
+      id: bid.slotID,
+      unitCode: bid.amznbid ?? bid.targeting.amznbid,
+      //size: bid.size ?? bid.amznsz ?? bid.targeting.amznsz ?? '?x?',
+      lib: 'apstag'
     });
   }
 
@@ -89,38 +107,43 @@ function injected() {
    */
   function instrumentLibrary(libName) {
     if (libName === 'pbjs') {
-      window.pbjs.onEvent('addAdUnit', () => sendAdUnits());
+      window.pbjs.adUnits.forEach(unit => sendPbjsSlotInfo(unit));
       window.pbjs.onEvent('bidResponse', (bid) => sendPbjsBid(bid, false));
       window.pbjs.onEvent('bidWon', (bid) => sendPbjsBid(bid, true));
-      window.pbjs.onEvent('adUnitAdded', (adUnit) => console.debug(adUnit));
+      window.pbjs.onEvent('addAdUnits', () => window.pbjs.adUnits.forEach(unit => sendPbjsSlotInfo(unit)));
+      window.pbjs.onEvent('adRenderSucceeded', (obj) => {
+        console.debug(obj);
+      });
+      window.pbjs.onEvent('adRenderFailed', (obj) => {
+        console.debug(obj);
+      });
     }
     else if (libName === 'googletag') {
       window.googletag.pubads().addEventListener('slotResponseReceived', (event) => sendGoogletagSlotInfo(event.slot));
       window.googletag.pubads().addEventListener('slotRenderEnded', (event) => sendGoogletagSlotInfo(event.slot));
     }
     else if (libName === 'apstag') {
-      let original_fetchBids = apstag.fetchBids;
+      let original_fetchBids = window.apstag.fetchBids;
       window.apstag.fetchBids = function(cfg, callback) {
         let new_callback = (bids, info) => {
-          console.debug('[My Worth] apstag received bids');
-          console.debug(bids);
-          console.debug(info);
           bids.forEach(bid => sendApstagSlotInfo(bid));
           return callback(bids, info);
         }
         return original_fetchBids(cfg, new_callback);
       }
-      let original_renderImp = apstag.renderImp;
-      window.apstag.renderImp = function(doc, adUnitCode) {
-        // sendWinningApstagBidCode(adUnitCode);
-        return original_renderImp(doc, adUnitCode);
+      let original_renderImp = window.apstag.renderImp;
+      window.apstag.renderImp = function() {
+        if (arguments[2]) {
+          sendApstagWinningBid(arguments[2]);
+        }
+        return original_renderImp(arguments);
       }
     }
   }
 
   /**
    * Creates an interval to search for a library in the current window, and then instrument it if found.
-   * @param {object} lib the library to search for and to instrument if found
+   * @param {string} lib the name of the library to search for and to instrument if found
    * @returns {number} the number of the created interval
    */
   function createSearchAndInstrumentInterval(lib) {
