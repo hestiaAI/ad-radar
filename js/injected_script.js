@@ -10,7 +10,7 @@ function injected() {
   function sendMyWorthMessage(message) {
     if (message?.destination && message?.content) {
       message['app'] = extensionName;
-      message['time'] = new Date().getTime();
+      message[message.content].time = new Date().getTime();
       window.postMessage(message, '*');
     }
     else throw `Malformed My Worth message`;
@@ -20,29 +20,48 @@ function injected() {
     sendMyWorthMessage({
       destination: 'content',
       content: 'bid',
-      bid: bid
+      bid: {...bid, outdated: false}
     });
   }
 
   function sendPbjsBid(bid, won) {
+    console.debug(`[My Worth] pbjs ${won ? 'winning' : 'losing'} bid`);
+    console.debug(bid);
     sendBid({
       unitCode: bid.adUnitCode,
       bidder: bid.bidder,
       cpm: bid.cpm,
       currency: bid.currency,
-      lib: 'pbjs',
       won: won,
+      lib: 'pbjs',
     })
   }
 
-  function sendApstagWinningBid(bid) {
+  function sendGoogletagWinningBid(slot) {
+    console.debug('[My Worth] googletag winning bid');
+    console.debug(slot);
+    let bid = slot.getTargetingMap();
+    console.debug(bid);
     sendBid({
-      unitCode: bid.adUnitCode,
-      //bidder: bid.bidder,
-      //cpm: bid.cpm,
-      //currency: bid.currency,
-      lib: 'apstag',
+      unitCode: slot.getAdUnitPath(),
+      bidder: bid.hb_bidder[0],
+      cpm: parseFloat(bid.hb_pb[0]),
+      currency: 'USD', // TODO find if actual currency can be different
       won: true,
+      lib: 'googletag'
+    });
+  }
+
+  function sendApstagWinningBid(bid) {
+    console.debug('[My Worth] apstag winning bid');
+    console.debug(bid);
+    sendBid({
+      unitCode: bid.kvMap.amznp[0],
+      bidder: bid.kvMap.hb_bidder[0],
+      cpm: parseFloat(bid.kvMap.hb_pb[0]),
+      currency: 'USD', // TODO find if actual currency can be different
+      won: true,
+      lib: 'apstag',
     });
   }
 
@@ -55,25 +74,32 @@ function injected() {
   }
 
   function sendPbjsSlotInfo(slot) {
+    console.debug('[My Worth] pbjs slot info');
+    console.debug(slot);
     sendSlotInfo({
+      id: slot.adUnitCode,
       unitCode: slot.adUnitCode,
-      //size: slot.labelAny[0] ?? '?x?',
       lib: 'pbjs'
     });
   }
 
   function sendGoogletagSlotInfo(slot) {
+    console.debug('[My Worth] googletag slot info');
+    console.debug(slot);
+    console.debug(slot.getTargetingMap());
     sendSlotInfo({
       id: slot.getSlotElementId(),
-      unitCode: slot.getAdUnitPath(),
+      unitCode: slot.getSlotId().getId(),
       lib: 'googletag'
     });
   }
 
   function sendApstagSlotInfo(bid) {
+    console.debug('[My Worth] apstag slot info');
+    console.debug(bid);
     sendSlotInfo({
       id: bid.slotID,
-      unitCode: bid.amznbid ?? bid.targeting.amznbid,
+      unitCode: bid.amznp ?? bid.targeting.amznp,
       //size: bid.size ?? bid.amznsz ?? bid.targeting.amznsz ?? '?x?',
       lib: 'apstag'
     });
@@ -111,16 +137,19 @@ function injected() {
       window.pbjs.onEvent('bidResponse', (bid) => sendPbjsBid(bid, false));
       window.pbjs.onEvent('bidWon', (bid) => sendPbjsBid(bid, true));
       window.pbjs.onEvent('addAdUnits', () => window.pbjs.adUnits.forEach(unit => sendPbjsSlotInfo(unit)));
-      window.pbjs.onEvent('adRenderSucceeded', (obj) => {
-        console.debug(obj);
-      });
-      window.pbjs.onEvent('adRenderFailed', (obj) => {
-        console.debug(obj);
-      });
+
     }
     else if (libName === 'googletag') {
-      window.googletag.pubads().addEventListener('slotResponseReceived', (event) => sendGoogletagSlotInfo(event.slot));
-      window.googletag.pubads().addEventListener('slotRenderEnded', (event) => sendGoogletagSlotInfo(event.slot));
+      window.googletag.pubads().addEventListener('slotResponseReceived', (event) => {
+        console.debug('[My Worth] googletag slotResponseReceived');
+        sendGoogletagSlotInfo(event.slot);
+      });
+      window.googletag.pubads().addEventListener('slotOnload', (event) => {
+        console.debug('[My Worth] googletag slotOnload');
+        console.debug(event);
+        sendGoogletagSlotInfo(event.slot);
+        sendGoogletagWinningBid(event.slot);
+      });
     }
     else if (libName === 'apstag') {
       let original_fetchBids = window.apstag.fetchBids;
@@ -136,7 +165,7 @@ function injected() {
         if (arguments[2]) {
           sendApstagWinningBid(arguments[2]);
         }
-        return original_renderImp(arguments);
+        return original_renderImp(...arguments);
       }
     }
   }
@@ -147,7 +176,7 @@ function injected() {
    * @returns {number} the number of the created interval
    */
   function createSearchAndInstrumentInterval(lib) {
-    let intervalTimeout = 1;
+    let intervalTimeout = 5;
     let interval = setInterval(() => {
       try {
         window[lib] = findLibraryObject(lib);
@@ -159,6 +188,17 @@ function injected() {
     return interval;
   }
 
+  /**
+   * This function sets a timeout to stop searching for libraries after {delay} milliseconds.
+   */
+  function stopSearchingLibrariesSoon() {
+    let delay = 2000;
+    setTimeout(() => {
+      searchIntervals.forEach(interval => clearInterval(interval));
+      console.debug('[My Worth] stopped searching for libraries !');
+    }, delay);
+  }
+
 
   // Start searching for the libraries that we rely on
   let librariesOfInterest = ['pbjs', 'googletag', 'apstag'];
@@ -168,15 +208,9 @@ function injected() {
   // If some of the needed libraries are not yet available once the page finished loading,
   // then we have no hope of finding them so we stop looking.
   if (document.readyState === 'complete') {
-    setTimeout(() => {
-      searchIntervals.forEach(interval => clearInterval(interval));
-      console.debug('[My Worth] stopped searching for libraries !');
-    }, 2);
+    stopSearchingLibrariesSoon();
   }
   else {
-    window.addEventListener('load', () => {
-      searchIntervals.forEach(interval => clearInterval(interval));
-      console.debug('[My Worth] stopped searching for libraries !');
-    });
+    window.addEventListener('load', stopSearchingLibrariesSoon);
   }
 }

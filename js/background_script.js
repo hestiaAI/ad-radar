@@ -2,6 +2,15 @@ browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
 
+function setProperties(properties) {
+  if (properties.title) {
+    browser.browserAction.setTitle({tabId: properties.tabId, title: properties.title});
+  }
+  if (properties.text) {
+    browser.browserAction.setBadgeText({tabId: properties.tabId, text: properties.text});
+  }
+}
+
 // Listen for browser action clicks and sends a message requesting ad data
 browser.browserAction.onClicked.addListener(tab => {
   browser.tabs.sendMessage(tab.id, {
@@ -15,12 +24,9 @@ browser.browserAction.onClicked.addListener(tab => {
 browser.runtime.onMessage.addListener((message, sender) => {
   if (message?.app === extensionName && message?.destination === 'background') {
     if (message.type === 'result') {
-      browser.browserAction.setTitle({
+      setProperties({
         tabId: sender.tab.id,
-        title: `Analysed ${message.numberOfAds} ads on this page`
-      });
-      browser.browserAction.setBadgeText({
-        tabId: sender.tab.id,
+        title: `Analysed ${message.numberOfAds} ads on this page`,
         text: message.numberOfAds.toString()
       });
     }
@@ -31,12 +37,9 @@ browser.runtime.onMessage.addListener((message, sender) => {
 browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
   // Restore the icon to the default values
   if (changeInfo.status === 'loading') {
-    browser.browserAction.setTitle({
+    setProperties({
       tabId: tabId,
-      title: 'Waiting for the webpage to load'
-    });
-    browser.browserAction.setBadgeText({
-      tabId: tabId,
+      title: 'Waiting for the webpage to load',
       text: ''
     });
   }
@@ -44,12 +47,9 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
   if (changeInfo.status === 'complete') {
     browser.browserAction.getBadgeText({tabId: tabId}, text => {
       if (text === '') {
-        browser.browserAction.setBadgeText({
+        setProperties({
           tabId: tabId,
-          text: '0'
-        });
-        browser.browserAction.setTitle({
-          tabId: tabId,
+          text: '0',
           title: 'No ads detected'
         });
       }

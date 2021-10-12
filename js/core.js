@@ -1,14 +1,17 @@
 let extensionName = 'MyWorth';
 let bannerClass = 'my-worth-ad-information';
 
+let TIME_TO_OUTDATE_BID_MS = 2000;
+
 // Makes the extension compatible with Chrome
 if (typeof browser === 'undefined') {
   var browser = chrome;
 }
+
 /**
- * A pseudo-class similar to Map but where values are Sets and getting a non-existing key returns an empty set.
+ * A pseudo-class similar to Map but where values are sets and getting a non-existing key returns an empty set.
  * @returns {Map<any, Set<any>>}
- * @constructor
+ * @constructor creates an empty map
  */
 class MapWithSetValues {
   constructor() {
@@ -20,22 +23,37 @@ class MapWithSetValues {
   add(key, value) {
     this.map.set(key, this.get(key).add(value));
   }
-  size() {
-    return this.map.size;
+  entries() {
+    return [...this.map.entries()];
   }
-  keys() {
-    return [...this.map.keys()];
+}
+
+/**
+ * A pseudo-class similar to Map but where values are arrays and getting a non-existing key returns an empty array.
+ * @returns {Map<any, Array<any>>}
+ * @constructor creates an empty map
+ */
+class MapWithArrayValues {
+  constructor() {
+    this.map = new Map();
+  }
+  get(key) {
+    return this.map.has(key) ? this.map.get(key) : [];
+  }
+  add(key, value) {
+    this.map.set(key, this.get(key).concat([value]));
+  }
+  set(key, values) {
+    this.map.set(key, values);
+  }
+  mapValues(key, func) {
+    this.set(key, this.get(key).map(func));
   }
   entries() {
     return [...this.map.entries()];
   }
-  values() {
-    return [...this.map.values()];
-  }
-  valuesUnion() {
-    return this.values().reduce((first, second) => new Set([...first, ...second]), new Set());
-  }
 }
+
 
 function bannerHTML(bannerText, iframeWidth) {
   return `
