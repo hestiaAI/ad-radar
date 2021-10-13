@@ -1,159 +1,121 @@
-let extensionName = 'MyWorth';
-let bannerClass = 'my-worth-ad-information';
-
-// Makes the extension compatible with Chrome
-if (typeof browser === 'undefined') {
-  var browser = chrome;
-}
-
 // Injects the function 'injected' from the injected_script.js into the environment of the main page
 let script = document.createElement('script');
 script.appendChild(document.createTextNode('(' + injected + ')();'));
 (document.body || document.head || document.documentElement).appendChild(script);
 
-// We stock the information retrieved from the injected script here
-let allBids = {};
-let winningBids = {};
-let adUnitPathToId = {};
-let adUnits = new Set();
-
-// Catches messages coming from the injected script
-window.addEventListener('message', (message) => {
-  let data = message.data;
-  if (data?.app !== extensionName) return;
-  if (data.destination === 'content') {
-    if (data.content === 'bid') {
-      if (data.bid.adUnitCode in allBids) allBids[data.bid.adUnitCode].push(data.bid);
-      else allBids[data.bid.adUnitCode] = [data.bid];
-      if (data.type === 'winningBid') {
-        winningBids[data.bid.adUnitCode] = data.bid;
-      }
-    }
-    else if (data.content === 'adUnits') {
-      adUnits = new Set(data.adUnits);
-    }
-    else if (data.content === 'slot') {
-      adUnitPathToId[data.slot.adUnitPath] = data.slot.id;
-    }
-    showMyWorth();
-  }
-  // relays messages from the main execution environment to the background script
-  else if (data.destination === 'background') {
-    browser.runtime.sendMessage(message.data);
-  }
-});
-
-// Catches messages coming from the background script
-browser.runtime.onMessage.addListener((data) => {
-  if (data?.app === extensionName) {
-    // Relays messages from the background execution environment to the injected script
-    if (data.destination === 'injected') {
-      window.postMessage(data, '*');
-    }
-    else if (data.destination === 'content') {
-      if (data.type === 'request') {
-        showMyWorth();
-      }
-    }
-  }
-});
-
+/**
+ * Given a string that potentially matches the id of some div, searches inside the div for an iframe with an ad inside,
+ * and returns the id of the div parent to this iframe.
+ * @param {string} id the id of some div
+ * @returns {string} the id of the parent of the iframe inside the id parameter
+ */
+function findIframeParentIdInDiv(id) {
+  return document.getElementById(id)?.querySelector('iframe')?.parentNode?.id;
+}
 
 /**
- * The main function of the extension.
- * From the found pbjs / googletag data, finds the DOM elements that contain the ads,
- * and add banners that show information about the ads' prices.
+ * Tries to find the ad iframe inside the given div, and if found, add slot information to id2units and show worth.
+ * @param {string} id the id of the div where we want to look for an ad iframe
+ * @param {object} slot the object with slot information
+ * @returns {boolean} whether the iframe was found in the div or not
  */
-function showMyWorth() {
-  let adDivs = findAdUnitDivs(allBids, adUnitPathToId, adUnits);
-  // remove any previously added banners
-  document.querySelectorAll(`.${bannerClass}`).forEach(banner => banner.remove());
-  let numberOfAds = addAdBanners(adDivs, allBids, winningBids, adUnitPathToId, adUnits);
+function findIframeInDivAndShowMyWorth(id, slot) {
+  let adId = findIframeParentIdInDiv(id);
+  if (adId) {
+    id2units.add(adId, slot.unitCode);
+    id2units.add(adId, slot.id);
+    id2units.add(adId, adId);
+    showMyWorth(adId);
+    return true;
+  }
+  return false;
+}
 
+/**
+ * Modifies the DOM by adding a red banner above the ad inside the div with this id,
+ * indicating the price paid for an ad, or a lower bound estimate.
+ * Then, sends the number of ads banners that were injected into the page to the background script.
+ * @param {string} id the identifier of the div to show information for
+ */
+function showMyWorth(id) {
+  let units = id2units.get(id);
+
+  let adDiv = document.getElementById(id);
+  let adIframe = adDiv.querySelector('iframe');
+  if (adIframe === null) return;
+
+  // Remove previously added banners
+  adDiv.querySelectorAll(`.${bannerClass}`).forEach(banner => banner.remove());
+
+  // Retrieve all bids associated to units for this div id
+  let allBids = [...units].flatMap(unitCode => unit2bids.get(unitCode).filter(bid => bid.cpm && !bid.outdated));
+  let winningBids = allBids.filter(bid => bid.won);
+
+  // We choose the text to show based on the information we have available
+  let bannerText = '';
+  if (winningBids.length > 0) {
+    // Sort bids from most recent to least recent
+    winningBids.sort((a, b) => b.time - a.time);
+    bannerText = winningBidText(winningBids[0]);
+  }
+  else if (allBids.length > 0) {
+    let numberOfCurrencies = allBids.reduce((set, bid) => set.add(bid.currency), new Set()).size;
+    let bidToShow = (numberOfCurrencies > 1) ?
+      allBids[0] : // show first bid for this ad if the currencies are not comparable
+      allBids.reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
+    bannerText = nonWinningBidText(bidToShow);
+  }
+  else bannerText = TEXT_NO_INFORMATION;
+
+  // We insert the red banner and its text inside the div containing the iframe ad
+  let iframeWidth = adIframe.style.width ? adIframe.style.width : `${adIframe.width}px`;
+  adDiv.insertAdjacentHTML('afterbegin', bannerHTML(bannerText, iframeWidth));
+  Object.assign(adDiv.style, {'height': 'auto'});
+
+  // Inform the extension of the number of detected ads
   browser.runtime.sendMessage({
     app: extensionName,
     destination: 'background',
     type: 'result',
-    numberOfAds: numberOfAds
+    numberOfAds: document.querySelectorAll(`.${bannerClass}`).length
   });
 }
 
-/**
- * Returns an object with the DOM elements associated to the ad units found in the data.
- * Note that this function does not always find the dom element corresponding to a particular ad unit code.
- * @return {object} a mapping from adUnitCode to DOM element
- */
-function findAdUnitDivs(allBids, adUnitPathToId, adUnits) {
-  // Combine codes from getBidResponses() and adUnits (either can be empty)
-  let adUnitCodes = [...new Set([...adUnits, ...Object.keys(allBids)])];
-  return Object.fromEntries(
-    adUnitCodes.flatMap(adUnitCode => {
-      // First search for a node whose id contains the ad unit code
-      let nodes = document.querySelectorAll(`[id*='${adUnitCode}']`);
-      if (nodes.length === 1) {
-        return [[adUnitCode, nodes[0]]];
-      }
-      // Then search for a node whose id matches exactly the googletag slot id
-      if (adUnitCode in adUnitPathToId) {
-        let divId = adUnitPathToId[adUnitCode];
-        nodes = document.querySelectorAll(`[id='${divId}']`);
-        if (nodes.length === 1) {
-          return [[adUnitCode, nodes[0]]];
+// We store the information retrieved from the injected script here
+let id2units = new MapWithSetValues();
+let unit2bids = new MapWithArrayValues();
+
+// Catches messages coming from the injected script
+window.addEventListener('message', (event) => {
+  let message = event.data;
+  if (message?.app !== extensionName) return;
+  if (message.destination === 'content') {
+    let actionFor = {
+      bid: () => {
+        // Outdates old bids from previous auctions for the same slot (as in wired.com)
+        unit2bids.mapValues(message.bid.unitCode,
+          bid => message.bid.time - bid.time > TIME_TO_OUTDATE_BID_MS ? {...bid, outdated: true} : bid
+        );
+        unit2bids.add(message.bid.unitCode, message.bid);
+        id2units.keys().forEach(id => showMyWorth(id));
+      },
+      slot: () => {
+        if (!findIframeInDivAndShowMyWorth(message.slot.id, message.slot)) {
+          let candidates = document.querySelectorAll(`[id*='${message.slot.unitCode}']`);
+          if (candidates?.length === 1) {
+            findIframeInDivAndShowMyWorth(candidates[0].id, message.slot);
+          }
         }
       }
-      return [];
-    })
-  );
-}
+    };
+    actionFor[message.content]();
+  }
+});
 
+// Catches messages coming from the background script
+browser.runtime.onMessage.addListener((message) => {
+  if (message?.app === extensionName && message.destination === 'content' && message.type === 'request') {
+    id2units.keys().forEach(id => showMyWorth(id));
+  }
+});
 
-/**
- * Modifies the DOM by adding a red banner above ads, indicating the price paid for an ad, or a lower bound estimate.
- * @return {number} number of ads banners that were injected into the page
- */
-function addAdBanners(adDivs, allBids, winningBids, adUnitPathToId, adUnits) {
-  let numberOfAds = 0;
-  Object.keys(adDivs).forEach((adUnitCode, i) => {
-    // We look for the div immediately parent to the ad iframe
-    let adIframe = adDivs[adUnitCode]?.querySelector('iframe');
-    let adDiv = adIframe?.parentNode;
-    if (!adDiv) return;
-
-    // We choose the text to show based on the information we have available
-    let bannerText = '';
-    if (adUnitCode in winningBids) {
-      let winningBid = winningBids[adUnitCode];
-      bannerText = `CPM of ${(winningBid.cpm).toFixed(4)} ${winningBid.currency} paid via ${winningBid.bidder}`;
-    }
-    else if (adUnitCode in allBids) {
-      let bidToShow = (numberOfCurrencies(allBids[adUnitCode]) > 1) ?
-        allBids[adUnitCode][0] : // show first bid for this ad if the currencies are not comparable
-        allBids[adUnitCode].reduce((prev, curr) => (prev.cpm > curr.cpm) ? prev : curr); // show the ad with the highest bid (albeit not winner)
-      bannerText = `CPM of at least ${(bidToShow.cpm).toFixed(4)} ${bidToShow.currency}`;
-    }
-    else bannerText = 'No information';
-
-    // We insert the red banner and its text inside the div containing the iframe ad
-    let iframeWidth = adIframe.style.width ? adIframe.style.width : `${adIframe.width}px`;
-    adDiv.insertAdjacentHTML('afterbegin', `
-    <div class='${bannerClass}' style='all: unset; display: table; text-align: center; margin: 0 auto; min-width: ${iframeWidth}'>
-      <p style='all: unset; background-color: red; color: black; display: inline-block; margin: auto; line-height: normal; font-size: medium; height: auto; width: 100%'>
-        ${bannerText}
-        <a href='https://github.com/hestiaAI/my-worth-extension/blob/main/README.md#understanding-the-banners'>[?]</a>
-      </p>
-    </div>
-    `);
-    Object.assign(adDiv.style, {'height': 'auto'});
-    numberOfAds++;
-  });
-  return numberOfAds;
-}
-
-/**
- * Counts the number of different currencies amongst the given array of bids.
- * @param  {[object]} bids - an array of bids (e.g. one entry of pbjs.getAllPrebidWinningBids())
- * @return {number} the number of distinct currencies
- */
-function numberOfCurrencies(bids) {
-  return bids.reduce((set, bid) => set.add(bid.currency), new Set()).size;
-}

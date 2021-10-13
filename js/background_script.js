@@ -1,13 +1,15 @@
-let extensionName = 'MyWorth';
-
-// Makes the extension compatible with Chrome
-if (typeof browser === 'undefined') {
-  var browser = chrome;
-}
-
 browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
+
+function setProperties(properties) {
+  if (properties.title) {
+    browser.browserAction.setTitle({tabId: properties.tabId, title: properties.title});
+  }
+  if (properties.text) {
+    browser.browserAction.setBadgeText({tabId: properties.tabId, text: properties.text});
+  }
+}
 
 // Listen for browser action clicks and sends a message requesting ad data
 browser.browserAction.onClicked.addListener(tab => {
@@ -19,16 +21,13 @@ browser.browserAction.onClicked.addListener(tab => {
 });
 
 // Listen for messages coming from content_script.js (which sometimes relays messages from injected_script.js)
-browser.runtime.onMessage.addListener((data, sender) => {
-  if (data?.app === extensionName && data?.destination === 'background') {
-    if (data.type === 'result') {
-      browser.browserAction.setTitle({
+browser.runtime.onMessage.addListener((message, sender) => {
+  if (message?.app === extensionName && message?.destination === 'background') {
+    if (message.type === 'result') {
+      setProperties({
         tabId: sender.tab.id,
-        title: `Analysed ${data.numberOfAds} ads on this page`
-      });
-      browser.browserAction.setBadgeText({
-        tabId: sender.tab.id,
-        text: data.numberOfAds.toString()
+        title: `Analysed ${message.numberOfAds} ads on this page`,
+        text: message.numberOfAds.toString()
       });
     }
   }
@@ -38,13 +37,22 @@ browser.runtime.onMessage.addListener((data, sender) => {
 browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
   // Restore the icon to the default values
   if (changeInfo.status === 'loading') {
-    browser.browserAction.setTitle({
+    setProperties({
       tabId: tabId,
-      title: 'Waiting for the webpage to load'
+      title: 'Waiting for the webpage to load',
+      text: ''
     });
-    browser.browserAction.setBadgeText({
-      tabId: tabId,
-      text: '?'
+  }
+  // If the page has finished loading and no ad was detected, inform it
+  if (changeInfo.status === 'complete') {
+    browser.browserAction.getBadgeText({tabId: tabId}, text => {
+      if (text === '') {
+        setProperties({
+          tabId: tabId,
+          text: '0',
+          title: 'No ads detected'
+        });
+      }
     });
   }
 });
