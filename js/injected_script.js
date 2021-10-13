@@ -46,8 +46,6 @@ function injected() {
    * @param {boolean} won extra information regarding whether the bid won or not
    */
   function sendPbjsBid(bid, won) {
-    console.debug(`[My Worth] pbjs ${won ? 'winning' : 'losing'} bid`);
-    console.debug(bid);
     sendBid({
       unitCode: bid.adUnitCode,
       bidder: bid.bidder,
@@ -63,10 +61,7 @@ function injected() {
    * @param {object} slot the 'slot' of a slotOnload event
    */
   function sendGoogletagWinningBid(slot) {
-    console.debug('[My Worth] googletag winning bid');
-    console.debug(slot);
     let bid = slot.getTargetingMap();
-    console.debug(bid);
     sendBid({
       unitCode: slot.getSlotId().getId(),
       bidder: bid.hb_bidder?.[0],
@@ -81,8 +76,6 @@ function injected() {
    * @param {object} bid the 3rd argument of apstag.renderImp
    */
   function sendApstagWinningBid(bid) {
-    console.debug('[My Worth] apstag winning bid');
-    console.debug(bid);
     sendBid({
       unitCode: bid.kvMap.amznp[0],
       bidder: bid.kvMap.hb_bidder[0],
@@ -90,6 +83,7 @@ function injected() {
       currency: 'USD', // TODO find if actual currency can be different
       won: true,
       lib: 'apstag',
+      extra: slot.kvMap
     });
   }
 
@@ -98,23 +92,24 @@ function injected() {
    * @param {object} slot one ad unit object or an actual pbjs bid
    */
   function sendPbjsSlotInfo(slot) {
-    console.debug('[My Worth] pbjs slot info');
-    console.debug(slot);
     sendSlotInfo({
-      id: slot.adUnitCode,
-      unitCode: slot.adUnitCode,
+      id: slot.code,
+      unitCode: slot.code,
       lib: 'pbjs'
     });
   }
 
   /**
    * A wrapper that takes a googletag slot object and sends the relevant fields to the content script.
+   * If all slot unitPaths are unique, they are used as unitCode, otherwise the slot id is used.
    * @param {object} slot the 'slot' of a slotResponseReceived or slotOnload event
    */
   function sendGoogletagSlotInfo(slot) {
+    let paths = window.googletag.pubads().getSlots().map(s => s.getAdUnitPath());
+    let nDistinctPaths = (new Set(paths)).size;
     sendSlotInfo({
       id: slot.getSlotElementId(),
-      unitCode: slot.getSlotId().getId(),
+      unitCode: paths.length === nDistinctPaths ? slot.getAdUnitPath() : slot.getSlotId().getId(),
       lib: 'googletag'
     });
   }
@@ -124,12 +119,11 @@ function injected() {
    * @param {object} slot the object given to the callback of apstag.fetchBids
    */
   function sendApstagSlotInfo(slot) {
-    console.debug('[My Worth] apstag slot info');
-    console.debug(slot);
     sendSlotInfo({
       id: slot.slotID,
       unitCode: slot.amznp ?? slot.targeting.amznp,
-      lib: 'apstag'
+      lib: 'apstag',
+      extra: slot.targeting
     });
   }
 
@@ -166,21 +160,14 @@ function injected() {
       window.pbjs.onEvent('bidResponse', (bid) => sendPbjsBid(bid, false));
       window.pbjs.onEvent('bidWon', (bid) => sendPbjsBid(bid, true));
       window.pbjs.onEvent('addAdUnits', () => window.pbjs.adUnits.forEach(unit => sendPbjsSlotInfo(unit)));
-
     }
     else if (libName === 'googletag') {
-      window.googletag.pubads().addEventListener('slotResponseReceived', (event) => {
-        console.debug('[My Worth] googletag slotResponseReceived');
-        sendGoogletagSlotInfo(event.slot);
-      });
+      window.googletag.pubads().addEventListener('slotResponseReceived', (event) => sendGoogletagSlotInfo(event.slot));
       window.googletag.pubads().addEventListener('slotOnload', (event) => {
-        console.debug('[My Worth] googletag slotOnload');
-        console.debug(event);
         sendGoogletagSlotInfo(event.slot);
         sendGoogletagWinningBid(event.slot);
       });
     }
-    /*
     else if (libName === 'apstag') {
       let original_fetchBids = window.apstag.fetchBids;
       window.apstag.fetchBids = function (cfg, callback) {
@@ -197,7 +184,7 @@ function injected() {
         }
         return original_renderImp(...arguments);
       }
-    }*/
+    }
   }
 
   /**

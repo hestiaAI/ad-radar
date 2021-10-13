@@ -51,7 +51,7 @@ There are 3 possibilities when My Worth detects an ad:
 3. My Worth observed prebids but the auction was won through another ad channel, so it retrieves the prebid with the highest cost. The banner shows `CPM of at least {price}`.
 
 ## List of compatible webpages
-Our browser extension is known to work on the following webpages:
+Our browser extension is likely to work on the following webpages:
 
 | country | webpage |
 |:-------:|---------|
@@ -59,11 +59,7 @@ Our browser extension is known to work on the following webpages:
 | U.S. | https://cnn.com |
 | U.S. | https://accuweather.com |
 | Switzerland | https://20min.ch |
-| Switzerland | https://blick.ch |
 | Switzerland | https://ricardo.ch |
-| Switzerland | https://tutti.ch |
-| Switzerland | https://autoscout24.ch |
-| Switzerland | https://bluewin.ch |
 | France | https://latribune.fr |
 | France | https://telestar.fr |
 | France | https://varmatin.com |

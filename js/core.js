@@ -1,64 +1,77 @@
-let extensionName = 'MyWorth';
-let bannerClass = 'my-worth-ad-information';
-
-let TIME_TO_OUTDATE_BID_MS = 2000;
-
 // Makes the extension compatible with Chrome
 if (typeof browser === 'undefined') {
   var browser = chrome;
 }
 
 /**
- * A pseudo-class similar to Map but where values are sets and getting a non-existing key returns an empty set.
- * @returns {Map<any, Set<any>>}
+ * A Map where values are collections and getting a non-existing key returns an empty collection.
+ * @returns {Map<any, Iterable<any>>}
  * @constructor creates an empty map
  */
-class MapWithSetValues {
+class MapWithCollectionValues {
   constructor() {
     this.map = new Map();
   }
-
+  emptyElement() {
+    throw new Error('emptyElement not implemented');
+  }
+  addOperation(collection, element) {
+    throw new Error('addOperation not implemented');
+  }
   get(key) {
-    return this.map.has(key) ? this.map.get(key) : new Set();
+    return this.map.has(key) ? this.map.get(key) : this.emptyElement();
   }
-
   add(key, value) {
-    this.map.set(key, this.get(key).add(value));
+    this.map.set(key, this.addOperation(this.get(key), value));
   }
-
+  set(key, values) {
+    this.map.set(key, values);
+  }
   entries() {
     return [...this.map.entries()];
+  }
+  keys () {
+    return [...this.map.keys()];
+  }
+  values() {
+    return [...this.map.values()];
+  }
+  mapValues(key, func) {
+    this.set(key, this.get(key).map(func));
   }
 }
 
 /**
- * A pseudo-class similar to Map but where values are arrays and getting a non-existing key returns an empty array.
+ * A Map where values are sets and getting a non-existing key returns an empty set.
+ * @returns {Map<any, Set<any>>}
+ * @constructor creates an empty map
+ */
+class MapWithSetValues extends MapWithCollectionValues {
+  constructor() {
+    super();
+  }
+  emptyElement() {
+    return new Set();
+  }
+  addOperation(set, element) {
+    return set.add(element);
+  }
+}
+
+/**
+ * A Map where values are arrays and getting a non-existing key returns an empty array.
  * @returns {Map<any, Array<any>>}
  * @constructor creates an empty map
  */
-class MapWithArrayValues {
+class MapWithArrayValues extends MapWithCollectionValues {
   constructor() {
-    this.map = new Map();
+    super();
   }
-
-  get(key) {
-    return this.map.has(key) ? this.map.get(key) : [];
+  emptyElement() {
+    return [];
   }
-
-  add(key, value) {
-    this.map.set(key, this.get(key).concat([value]));
-  }
-
-  set(key, values) {
-    this.map.set(key, values);
-  }
-
-  mapValues(key, func) {
-    this.set(key, this.get(key).map(func));
-  }
-
-  entries() {
-    return [...this.map.entries()];
+  addOperation(array, element) {
+    return array.concat([element]);
   }
 }
 
@@ -73,3 +86,12 @@ function bannerHTML(bannerText, iframeWidth) {
     </div>
     `;
 }
+
+
+let bannerClass = 'my-worth-ad-information';
+
+let winningBidText = (winner) => `CPM of ${(winner.cpm).toFixed(3)} ${winner.currency} paid via ${winner.bidder}`;
+let nonWinningBidText = (bid) => `CPM of at least ${(bid.cpm).toFixed(3)} ${bid.currency}`;
+let TEXT_NO_INFORMATION = 'No information found for this ad';let extensionName = 'MyWorth';
+
+let TIME_TO_OUTDATE_BID_MS = 2000;
