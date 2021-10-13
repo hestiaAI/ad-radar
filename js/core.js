@@ -17,12 +17,15 @@ class MapWithSetValues {
   constructor() {
     this.map = new Map();
   }
+
   get(key) {
     return this.map.has(key) ? this.map.get(key) : new Set();
   }
+
   add(key, value) {
     this.map.set(key, this.get(key).add(value));
   }
+
   entries() {
     return [...this.map.entries()];
   }
@@ -37,18 +40,23 @@ class MapWithArrayValues {
   constructor() {
     this.map = new Map();
   }
+
   get(key) {
     return this.map.has(key) ? this.map.get(key) : [];
   }
+
   add(key, value) {
     this.map.set(key, this.get(key).concat([value]));
   }
+
   set(key, values) {
     this.map.set(key, values);
   }
+
   mapValues(key, func) {
     this.set(key, this.get(key).map(func));
   }
+
   entries() {
     return [...this.map.entries()];
   }

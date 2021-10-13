@@ -16,6 +16,10 @@ function injected() {
     else throw `Malformed My Worth message`;
   }
 
+  /**
+   * A wrapper that sends a message with the content of the given bid.
+   * @param {object} bid the bid to send
+   */
   function sendBid(bid) {
     sendMyWorthMessage({
       destination: 'content',
@@ -24,6 +28,23 @@ function injected() {
     });
   }
 
+  /**
+   * A wrapper that sends a message with the content of the given slot.
+   * @param {object} slot the slot to send
+   */
+  function sendSlotInfo(slot) {
+    sendMyWorthMessage({
+      destination: 'content',
+      content: 'slot',
+      slot: slot
+    });
+  }
+
+  /**
+   * A wrapper that takes a pbjs bid object and sends the relevant fields to the content script.
+   * @param {object} bid the pbjs bid object
+   * @param {boolean} won extra information regarding whether the bid won or not
+   */
   function sendPbjsBid(bid, won) {
     console.debug(`[My Worth] pbjs ${won ? 'winning' : 'losing'} bid`);
     console.debug(bid);
@@ -37,21 +58,28 @@ function injected() {
     })
   }
 
+  /**
+   * A wrapper that takes a winning googletag slot/bid object and sends the relevant fields to the content script.
+   * @param {object} slot the 'slot' of a slotOnload event
+   */
   function sendGoogletagWinningBid(slot) {
     console.debug('[My Worth] googletag winning bid');
     console.debug(slot);
     let bid = slot.getTargetingMap();
     console.debug(bid);
     sendBid({
-      unitCode: slot.getAdUnitPath(),
-      bidder: bid.hb_bidder[0],
-      cpm: parseFloat(bid.hb_pb[0]),
+      unitCode: slot.getSlotId().getId(),
+      bidder: bid.hb_bidder?.[0],
+      cpm: parseFloat(bid.hb_pb?.[0]),
       currency: 'USD', // TODO find if actual currency can be different
       won: true,
       lib: 'googletag'
     });
   }
-
+  /**
+   * A wrapper that takes a winning apstag bid object and sends the relevant fields to the content script.
+   * @param {object} bid the 3rd argument of apstag.renderImp
+   */
   function sendApstagWinningBid(bid) {
     console.debug('[My Worth] apstag winning bid');
     console.debug(bid);
@@ -65,14 +93,10 @@ function injected() {
     });
   }
 
-  function sendSlotInfo(slot) {
-    sendMyWorthMessage({
-      destination: 'content',
-      content: 'slot',
-      slot: slot
-    });
-  }
-
+  /**
+   * A wrapper that takes a pbjs slot object and sends the relevant fields to the content script.
+   * @param {object} slot one ad unit object or an actual pbjs bid
+   */
   function sendPbjsSlotInfo(slot) {
     console.debug('[My Worth] pbjs slot info');
     console.debug(slot);
@@ -83,10 +107,11 @@ function injected() {
     });
   }
 
+  /**
+   * A wrapper that takes a googletag slot object and sends the relevant fields to the content script.
+   * @param {object} slot the 'slot' of a slotResponseReceived or slotOnload event
+   */
   function sendGoogletagSlotInfo(slot) {
-    console.debug('[My Worth] googletag slot info');
-    console.debug(slot);
-    console.debug(slot.getTargetingMap());
     sendSlotInfo({
       id: slot.getSlotElementId(),
       unitCode: slot.getSlotId().getId(),
@@ -94,23 +119,27 @@ function injected() {
     });
   }
 
-  function sendApstagSlotInfo(bid) {
+  /**
+   * A wrapper that takes an apstag slot object and sends the relevant fields to the content script.
+   * @param {object} slot the object given to the callback of apstag.fetchBids
+   */
+  function sendApstagSlotInfo(slot) {
     console.debug('[My Worth] apstag slot info');
-    console.debug(bid);
+    console.debug(slot);
     sendSlotInfo({
-      id: bid.slotID,
-      unitCode: bid.amznp ?? bid.targeting.amznp,
-      //size: bid.size ?? bid.amznsz ?? bid.targeting.amznsz ?? '?x?',
+      id: slot.slotID,
+      unitCode: slot.amznp ?? slot.targeting.amznp,
       lib: 'apstag'
     });
   }
 
   // For each library, specify a condition function that should be verified when applied to its object
   let conditionsToVerify = {
-    'pbjs': obj => obj.adUnits && obj.getBidResponses && obj.getAllWinningBids,
-    'googletag': obj => obj.pubads?.()?.getSlots(),
+    'pbjs': obj => obj.getBidResponses && obj.getAllWinningBids,
+    'googletag': obj => obj.pubads?.()?.getSlots,
     'apstag': obj => obj._getSlotIdToNameMapping
   };
+
   /**
    * Searches the current window for a variable whose name contains some string and that verifies some conditions.
    * @param {string} libName the name of the object we are looking for
@@ -129,7 +158,7 @@ function injected() {
 
   /**
    * Listen to the given library's hooks and events in order to retrieve ad information.
-   * @param libName the name of the library we are instrumenting
+   * @param {string} libName the name of the library we are instrumenting
    */
   function instrumentLibrary(libName) {
     if (libName === 'pbjs') {
@@ -151,9 +180,10 @@ function injected() {
         sendGoogletagWinningBid(event.slot);
       });
     }
+    /*
     else if (libName === 'apstag') {
       let original_fetchBids = window.apstag.fetchBids;
-      window.apstag.fetchBids = function(cfg, callback) {
+      window.apstag.fetchBids = function (cfg, callback) {
         let new_callback = (bids, info) => {
           bids.forEach(bid => sendApstagSlotInfo(bid));
           return callback(bids, info);
@@ -161,13 +191,13 @@ function injected() {
         return original_fetchBids(cfg, new_callback);
       }
       let original_renderImp = window.apstag.renderImp;
-      window.apstag.renderImp = function() {
+      window.apstag.renderImp = function () {
         if (arguments[2]) {
           sendApstagWinningBid(arguments[2]);
         }
         return original_renderImp(...arguments);
       }
-    }
+    }*/
   }
 
   /**

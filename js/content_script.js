@@ -15,16 +15,13 @@ window.addEventListener('message', (event) => {
   if (message.destination === 'content') {
     let actionFor = {
       bid: () => {
-        console.debug('[My Worth] received bid');
-        console.debug(message.bid);
+        // Outdates old bids from previous auctions for the same slot (as in wired.com)
         unit2bids.mapValues(message.bid.unitCode,
-            bid => message.bid.time - bid.time > TIME_TO_OUTDATE_BID_MS ? {...bid, outdated: true} : bid
+          bid => message.bid.time - bid.time > TIME_TO_OUTDATE_BID_MS ? {...bid, outdated: true} : bid
         );
         unit2bids.add(message.bid.unitCode, message.bid);
       },
       slot: () => {
-        console.debug('[My Worth] received slot');
-        console.debug(message.slot);
         if (message.slot.id && document.getElementById(message.slot.id) !== null) {
           id2units.add(message.slot.id, message.slot.id);
           id2units.add(message.slot.id, message.slot.unitCode);
@@ -65,8 +62,10 @@ function showMyWorth() {
     let adIframe = document.getElementById(id).querySelector('iframe');
     let adDiv = adIframe?.parentNode;
     if (!adDiv) return;
-    if (adDiv.querySelectorAll(`[class=${bannerClass}]`).length > 0) return; // ensures one banner per ad div
+    // Ensures only one banner per ad div
+    if (adDiv.querySelectorAll(`[class=${bannerClass}]`).length > 0) return;
 
+    // Retrieve all bids associated to units for this div id
     let allBids = [...units].flatMap(unitCode => unit2bids.get(unitCode).filter(bid => bid.cpm && !bid.outdated));
     let winningBids = allBids.filter(bid => bid.won);
 
