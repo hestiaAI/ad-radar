@@ -9,8 +9,10 @@ function injected() {
    */
   function sendMyWorthMessage(message) {
     if (message?.destination && message?.content) {
+      const { hostname } = new URL(window.location.href);
       message['app'] = extensionName;
       message[message.content].time = new Date().getTime();
+      message[message.content].hostname = hostname;
       window.postMessage(message, '*');
     }
     else throw `Malformed My Worth message`;

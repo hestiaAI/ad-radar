@@ -2,6 +2,8 @@ browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
 
+browserStorage.local.set({bids: []})
+
 function setProperties(properties) {
   if (properties.title) {
     browser.browserAction.setTitle({tabId: properties.tabId, title: properties.title});
@@ -11,24 +13,24 @@ function setProperties(properties) {
   }
 }
 
-// Listen for browser action clicks and sends a message requesting ad data
 browser.browserAction.onClicked.addListener(tab => {
-  browser.tabs.sendMessage(tab.id, {
-    app: extensionName,
-    destination: 'content',
-    type: 'request'
+  browser.tabs.create({
+    url: 'main.html'
   });
 });
 
 // Listen for messages coming from content_script.js (which sometimes relays messages from injected_script.js)
 browser.runtime.onMessage.addListener((message, sender) => {
   if (message?.app === extensionName && message?.destination === 'background') {
-    if (message.type === 'result') {
+    if (message.content === 'numberOfAds') {
       setProperties({
         tabId: sender.tab.id,
         title: `Analysed ${message.numberOfAds} ads on this page`,
         text: message.numberOfAds.toString()
       });
+    }
+    else if (message.content === 'bid') {
+      browser.storage.local.get('bids', bids => browser.storage.local.set('bids', bids.concat([message.bid])));
     }
   }
 });
