@@ -2,7 +2,7 @@ browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
 
-browserStorage.local.set({bids: []})
+browser.storage.local.set({'bids': []});
 
 function setProperties(properties) {
   if (properties.title) {
@@ -30,7 +30,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
       });
     }
     else if (message.content === 'bid') {
-      browser.storage.local.get('bids', bids => browser.storage.local.set('bids', bids.concat([message.bid])));
+      browser.storage.local.get('bids', (data) => browser.storage.local.set({bids: data.bids.concat([message.bid])}));
     }
   }
 });

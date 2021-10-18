@@ -51,7 +51,7 @@ function showHistory(rawData) {
     .attr("fill", "#69b3a2");
 }
 
-browser.storage.local.get(data => showHistory(data['bids']));
+browser.storage.local.get('bids', (data) => showHistory(data.bids));
 browser.storage.onChanged.addListener((_, areaName) => {
-  if (areaName === 'local') browser.storage.local.get(data => showHistory(data['bids']));
+  if (areaName === 'local') browser.storage.local.get('bids', (data) => showHistory(data.bids));
 })
