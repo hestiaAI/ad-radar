@@ -2,7 +2,7 @@ browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
 
-browser.storage.local.set({'bids': []});
+browser.storage.local.get('bids', data => data.bids ? {} : browser.storage.local.set({'bids': []}));
 
 function setProperties(properties) {
   if (properties.title) {

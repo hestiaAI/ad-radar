@@ -41,7 +41,7 @@ function showMyWorth(id) {
   let units = id2units.get(id);
 
   let adDiv = document.getElementById(id);
-  let adIframe = adDiv.querySelector('iframe');
+  let adIframe = adDiv?.querySelector('iframe');
   if (adIframe === null) return;
 
   // Remove previously added banners

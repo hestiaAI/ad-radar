@@ -4,6 +4,14 @@ let width = 460 - margin.left - margin.right;
 let height = 400 - margin.top - margin.bottom;
 
 function showHistory(rawData) {
+  let div = d3.select("#viz-container")
+  div.selectChildren().remove();
+
+  if (rawData.length === 0) {
+    let p = div.append('p');
+    p.text("No information to display. Navigate the web with the My Worth extension and you will see your ad history here.");
+    return;
+  }
 
   let data = Object.entries(_.groupBy(rawData, 'hostname')).map(([hostname, v]) => ({
     hostname,
@@ -13,9 +21,6 @@ function showHistory(rawData) {
   let margin = {top: 30, right: 30, bottom: 70, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
-
-  let div = d3.select("#viz-container")
-  div.selectAll('svg').remove();
 
   let svg = div
     .append('svg')
