@@ -2,7 +2,10 @@ browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
 
-browser.storage.local.get('ads', data => data.ads ? {} : browser.storage.local.set({'ads': []}));
+// When extension is initialized, initiate empty array of ads but don't reset the data
+browser.storage.local.get('ads', data => {
+  if (!data.ads) initData();
+});
 
 function setProperties(properties) {
   if (properties.title) {

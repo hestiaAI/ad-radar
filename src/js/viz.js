@@ -1,13 +1,13 @@
 // set the dimensions and margins of the graph
 let margin = {top: 30, right: 30, bottom: 70, left: 60};
-let width = 460 - margin.left - margin.right;
-let height = 400 - margin.top - margin.bottom;
+let width = 0.8 * window.innerWidth - margin.left - margin.right;
+let height = 0.8 * window.innerHeight - margin.bottom;
 
 function showHistory(rawAds) {
   let div = d3.select('#viz-container')
   div.selectChildren().remove();
 
-  if (rawAds.length === 0) {
+  if (rawAds?.length === 0) {
     let p = div.append('p');
     p.text('No information to display. Navigate the web with the My Worth extension and you will see your ad history here.');
     return;
@@ -45,9 +45,9 @@ function showHistory(rawAds) {
     .domain([0, d3.max(data, o => o.revenue)])
     .range([height, 0]);
   svg.append('g')
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y).ticks(10, '.3f'));
   svg.append('text')
-    .attr('transform', `translate(${-3 / 4 * margin.left}, ${height / 2})rotate(-90)`)
+    .attr('transform', `translate(${-4 / 5 * margin.left}, ${height / 2})rotate(-90)`)
     .style('text-anchor', 'middle')
     .text('Cumulated revenue (USD)')
 
@@ -61,7 +61,9 @@ function showHistory(rawAds) {
     .attr('fill', '#69b3a2');
 }
 
-browser.storage.local.get('ads', data => showHistory(data.ads));
-browser.storage.onChanged.addListener((_, areaName) => {
+function handleStoreChange(_, areaName) {
   if (areaName === 'local') browser.storage.local.get('ads', data => showHistory(data.ads));
-})
+}
+browser.storage.local.get('ads', data => showHistory(data.ads));
+browser.storage.onChanged.addListener(handleStoreChange);
+window.addEventListener('unload', () => browser.storage.onChanged.removeListener(handleStoreChange))

@@ -55,9 +55,10 @@ Our browser extension is likely to work on the following webpages:
 
 | country | webpage |
 |:-------:|---------|
-| U.S. | https://espn.com |
-| U.S. | https://cnn.com |
-| U.S. | https://accuweather.com |
+| International | https://espn.com |
+| International | https://cnn.com |
+| International | https://accuweather.com |
+| International | https://theguardian.com |
 | Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
 | France | https://latribune.fr |
