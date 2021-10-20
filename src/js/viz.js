@@ -3,17 +3,17 @@ let margin = {top: 30, right: 30, bottom: 70, left: 60};
 let width = 460 - margin.left - margin.right;
 let height = 400 - margin.top - margin.bottom;
 
-function showHistory(rawData) {
+function showHistory(rawAds) {
   let div = d3.select("#viz-container")
   div.selectChildren().remove();
 
-  if (rawData.length === 0) {
+  if (rawAds.length === 0) {
     let p = div.append('p');
     p.text("No information to display. Navigate the web with the My Worth extension and you will see your ad history here.");
     return;
   }
 
-  let data = Object.entries(_.groupBy(rawData, 'hostname')).map(([hostname, v]) => ({
+  let data = Object.entries(_.groupBy(rawAds, 'hostname')).map(([hostname, v]) => ({
     hostname,
     revenue: d3.sum(v.map(b => b.cpm)) / 1000
   }));
@@ -56,7 +56,7 @@ function showHistory(rawData) {
     .attr("fill", "#69b3a2");
 }
 
-browser.storage.local.get('bids', (data) => showHistory(data.bids));
+browser.storage.local.get('ads', data => showHistory(data.ads));
 browser.storage.onChanged.addListener((_, areaName) => {
-  if (areaName === 'local') browser.storage.local.get('bids', (data) => showHistory(data.bids));
+  if (areaName === 'local') browser.storage.local.get('ads', data => showHistory(data.ads));
 })

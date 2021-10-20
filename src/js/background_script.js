@@ -2,7 +2,7 @@ browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
 
-browser.storage.local.get('bids', data => data.bids ? {} : browser.storage.local.set({'bids': []}));
+browser.storage.local.get('ads', data => data.ads ? {} : browser.storage.local.set({'ads': []}));
 
 function setProperties(properties) {
   if (properties.title) {
@@ -12,12 +12,6 @@ function setProperties(properties) {
     browser.browserAction.setBadgeText({tabId: properties.tabId, text: properties.text});
   }
 }
-
-browser.browserAction.onClicked.addListener(tab => {
-  browser.tabs.create({
-    url: 'main.html'
-  });
-});
 
 // Listen for messages coming from content_script.js (which sometimes relays messages from injected_script.js)
 browser.runtime.onMessage.addListener((message, sender) => {
@@ -29,8 +23,8 @@ browser.runtime.onMessage.addListener((message, sender) => {
         text: message.numberOfAds.toString()
       });
     }
-    else if (message.content === 'bid') {
-      browser.storage.local.get('bids', (data) => browser.storage.local.set({bids: data.bids.concat([message.bid])}));
+    else if (message.content === 'ad') {
+      browser.storage.local.get('ads', data => browser.storage.local.set({ads: data.ads.concat([message.ad])}));
     }
   }
 });

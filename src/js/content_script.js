@@ -100,7 +100,7 @@ window.addEventListener('message', (event) => {
         id2units.keys().forEach(id => showMyWorth(id));
 
         if (message.bid.won) {
-          browser.runtime.sendMessage({...message, destination: 'background'});
+          browser.runtime.sendMessage({...message, destination: 'background', content: 'ad', ad: message.bid});
         }
       },
       slot: () => {
