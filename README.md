@@ -22,12 +22,12 @@ To do this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/my
 
 The next steps depend on your web browser:
 ### Mozilla Firefox
-Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `My Worth/manifest.json`.
+Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `My Worth/src/manifest.json`.
 Note that My Worth will be uninstalled whenever you close the browser.
 ### Google Chrome
 Go to `Settings > Extensions`.
 Activate developer mode by clicking on `Developer mode`.
-Click on `Load unpacked` and select the `My Worth` folder.
+Click on `Load unpacked` and select the `My Worth/src` folder.
 
 To uninstall My Worth, on the installation screen, click `Remove` under `My Worth`.
 
