@@ -4,7 +4,7 @@
   "description": "An extension that shows you the price that advertisers are willing to pay for an ad on your browser.",
   "version": "0.0.6",
   "icons": {
-    "64": "icons/icon_color.png"
+    "128": "icons/icon_color.png"
   },
   "permissions": [
     "tabs",
@@ -31,7 +31,7 @@
   ],
   "browser_action": {
     "default_icon": {
-      "64": "icons/icon_color.png"
+      "128": "icons/icon_color.png"
     },
     "default_title": "",
     "default_popup": "popup/popup.html"

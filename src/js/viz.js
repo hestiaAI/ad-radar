@@ -45,11 +45,11 @@ function showHistory(rawAds) {
     .domain([0, d3.max(data, o => o.revenue)])
     .range([height, 0]);
   svg.append('g')
-    .call(d3.axisLeft(y).ticks(10, '.3f'));
+    .call(d3.axisLeft(y).ticks(5, '.3f'));
   svg.append('text')
     .attr('transform', `translate(${-4 / 5 * margin.left}, ${height / 2})rotate(-90)`)
     .style('text-anchor', 'middle')
-    .text('Cumulated revenue (USD)')
+    .text('Cumulative revenue (USD)')
 
   svg.selectAll('mybar')
     .data(data)
@@ -61,9 +61,9 @@ function showHistory(rawAds) {
     .attr('fill', '#69b3a2');
 }
 
-function handleStoreChange(_, areaName) {
+function handleStorageChange(_, areaName) {
   if (areaName === 'local') browser.storage.local.get('ads', data => showHistory(data.ads));
 }
 browser.storage.local.get('ads', data => showHistory(data.ads));
-browser.storage.onChanged.addListener(handleStoreChange);
-window.addEventListener('unload', () => browser.storage.onChanged.removeListener(handleStoreChange))
+browser.storage.onChanged.addListener(handleStorageChange);
+window.addEventListener('unload', () => browser.storage.onChanged.removeListener(handleStorageChange))
