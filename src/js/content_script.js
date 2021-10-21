@@ -41,7 +41,7 @@ function showMyWorth(id) {
   let units = id2units.get(id);
 
   let adDiv = document.getElementById(id);
-  let adIframe = adDiv.querySelector('iframe');
+  let adIframe = adDiv?.querySelector('iframe');
   if (adIframe === null) return;
 
   // Remove previously added banners
@@ -76,7 +76,7 @@ function showMyWorth(id) {
   browser.runtime.sendMessage({
     app: extensionName,
     destination: 'background',
-    type: 'result',
+    content: 'numberOfAds',
     numberOfAds: document.querySelectorAll(`.${bannerClass}`).length
   });
 }
@@ -98,6 +98,10 @@ window.addEventListener('message', (event) => {
         );
         unit2bids.add(message.bid.unitCode, message.bid);
         id2units.keys().forEach(id => showMyWorth(id));
+
+        if (message.bid.won) {
+          browser.runtime.sendMessage({...message, destination: 'background', content: 'ad', ad: message.bid});
+        }
       },
       slot: () => {
         if (!findIframeInDivAndShowMyWorth(message.slot.id, message.slot)) {

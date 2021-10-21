@@ -95,3 +95,8 @@ let nonWinningBidText = (bid) => `CPM of at least ${(bid.cpm).toFixed(3)} ${bid.
 let TEXT_NO_INFORMATION = 'No information found for this ad';let extensionName = 'MyWorth';
 
 let TIME_TO_OUTDATE_BID_MS = 2000;
+
+
+function initData() {
+  browser.storage.local.set({'ads': []})
+}

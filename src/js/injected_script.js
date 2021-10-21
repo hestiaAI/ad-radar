@@ -9,8 +9,10 @@ function injected() {
    */
   function sendMyWorthMessage(message) {
     if (message?.destination && message?.content) {
+      const { hostname } = new URL(window.location.href);
       message['app'] = extensionName;
-      message[message.content].time = new Date().getTime();
+      message[message.content].time = new Date().toISOString();
+      message[message.content].hostname = hostname;
       window.postMessage(message, '*');
     }
     else throw `Malformed My Worth message`;
@@ -21,11 +23,13 @@ function injected() {
    * @param {object} bid the bid to send
    */
   function sendBid(bid) {
-    sendMyWorthMessage({
-      destination: 'content',
-      content: 'bid',
-      bid: {...bid, outdated: false}
-    });
+    if (bid.cpm) {
+      sendMyWorthMessage({
+        destination: 'content',
+        content: 'bid',
+        bid: {...bid, outdated: false}
+      });
+    }
   }
 
   /**

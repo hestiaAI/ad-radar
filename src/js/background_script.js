@@ -2,6 +2,11 @@ browser.browserAction.setBadgeBackgroundColor({
   color: 'orange'
 });
 
+// When extension is initialized, initiate empty array of ads but don't reset the data
+browser.storage.local.get('ads', data => {
+  if (!data.ads) initData();
+});
+
 function setProperties(properties) {
   if (properties.title) {
     browser.browserAction.setTitle({tabId: properties.tabId, title: properties.title});
@@ -11,24 +16,18 @@ function setProperties(properties) {
   }
 }
 
-// Listen for browser action clicks and sends a message requesting ad data
-browser.browserAction.onClicked.addListener(tab => {
-  browser.tabs.sendMessage(tab.id, {
-    app: extensionName,
-    destination: 'content',
-    type: 'request'
-  });
-});
-
 // Listen for messages coming from content_script.js (which sometimes relays messages from injected_script.js)
 browser.runtime.onMessage.addListener((message, sender) => {
   if (message?.app === extensionName && message?.destination === 'background') {
-    if (message.type === 'result') {
+    if (message.content === 'numberOfAds') {
       setProperties({
         tabId: sender.tab.id,
         title: `Analysed ${message.numberOfAds} ads on this page`,
         text: message.numberOfAds.toString()
       });
+    }
+    else if (message.content === 'ad') {
+      browser.storage.local.get('ads', data => browser.storage.local.set({ads: data.ads.concat([message.ad])}));
     }
   }
 });
