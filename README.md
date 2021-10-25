@@ -76,9 +76,8 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.sudouest.fr  |
 | France | https://telestar.fr |
 | France | https://www.telerama.fr |
-| France | https://varmatin.com |
+| France | https://www.varmatin.com |
 | France | https://www.vosgesmatin.fr |
-| France | https://vosgesmatin.fr |
 | Belgium | https://standaard.be |
 | Belgium | https://levif.be |
 | Finland | https://aamuposti.fi |
