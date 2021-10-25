@@ -61,10 +61,23 @@ Our browser extension is likely to work on the following webpages:
 | International | https://theguardian.com |
 | Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
+| France | https://actu.fr |
+| France | https://www.capital.fr |
+| France | https://www.courrierinternational.com |
+| France | https://fr.euronews.com|
+| France | https://www.gala.fr |
+| France | https://www.hbrfrance.fr |
 | France | https://latribune.fr |
-| France | https://telestar.fr |
-| France | https://varmatin.com |
 | France | https://ledauphine.com |
+| France | https://www.lejdc.fr |
+| France | https://www.leprogres.fr |
+| France | https://www.lessorsavoyard.fr |
+| France | https://https://www.numerama.com |
+| France | https://www.sudouest.fr  |
+| France | https://telestar.fr |
+| France | https://www.telerama.fr |
+| France | https://varmatin.com |
+| France | https://www.vosgesmatin.fr |
 | France | https://vosgesmatin.fr |
 | Belgium | https://standaard.be |
 | Belgium | https://levif.be |
