@@ -62,17 +62,24 @@ Our browser extension is likely to work on the following webpages:
 | Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
 | France | https://actu.fr |
+| France | https://www.aufeminin.com |
 | France | https://www.capital.fr |
 | France | https://www.courrierinternational.com |
-| France | https://fr.euronews.com|
+| France | https://www.courrier-picard.fr |
+| France | https://fr.euronews.com |
+| France | https://www.futura-sciences.com |
 | France | https://www.gala.fr |
 | France | https://www.hbrfrance.fr |
 | France | https://latribune.fr |
+| France | https://www.lamontagne.fr |
 | France | https://ledauphine.com |
 | France | https://www.lejdc.fr |
 | France | https://www.leprogres.fr |
 | France | https://www.lessorsavoyard.fr |
-| France | https://https://www.numerama.com |
+| France | https://www.letelegramme.fr |
+| France | https://www.numerama.com |
+| France | https://www.psychologies.com |
+| France | https://www.republicain-lorrain.fr |
 | France | https://www.sudouest.fr  |
 | France | https://telestar.fr |
 | France | https://www.telerama.fr |
