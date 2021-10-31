@@ -61,7 +61,7 @@ Our browser extension is likely to work on the following webpages:
 | International | https://theguardian.com |
 | Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
-| France | https://actu.fr |
+| 🇫🇷 France | https://actu.fr |
 | France | https://www.aufeminin.com |
 | France | https://www.capital.fr |
 | France | https://www.courrierinternational.com |
@@ -87,7 +87,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.vosgesmatin.fr |
 | Belgium | https://standaard.be |
 | Belgium | https://levif.be |
-| Finland | https://aamuposti.fi |
+| 🇫🇮 Finland | https://aamuposti.fi |
 | Finland | https://kraatti.fi |
 | Finland | https://esaimaa.fi |
 | Finland | https://forssanlehti.fi |
