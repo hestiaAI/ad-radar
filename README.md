@@ -59,6 +59,7 @@ Our browser extension is likely to work on the following webpages:
 | International | https://cnn.com |
 | International | https://accuweather.com |
 | International | https://theguardian.com |
+| Canada | https://www.lapresse.ca |
 | Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
 | 🇫🇷 France | https://actu.fr |
