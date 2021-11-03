@@ -1,13 +1,13 @@
 function injected() {
-  let extensionName = 'MyWorth';
-  console.debug('[My Worth] script injected!');
+  let extensionName = 'Ad Radar';
+  console.debug(`[${extensionName}] script injected!`);
 
   /**
    * A wrapper for messages to be sent to content or background scripts.
    * @param {object} message the message to be sent when it is not malformed
    * @throws {string} when the message is malformed
    */
-  function sendMyWorthMessage(message) {
+  function sendMessage(message) {
     if (message?.destination && message?.content) {
       const { hostname } = new URL(window.location.href);
       message['app'] = extensionName;
@@ -15,7 +15,7 @@ function injected() {
       message[message.content].hostname = hostname;
       window.postMessage(message, '*');
     }
-    else throw `Malformed My Worth message`;
+    else throw `Malformed Ad Radar message`;
   }
 
   /**
@@ -24,7 +24,7 @@ function injected() {
    */
   function sendBid(bid) {
     if (bid.cpm) {
-      sendMyWorthMessage({
+      sendMessage({
         destination: 'content',
         content: 'bid',
         bid: {...bid, outdated: false}
@@ -37,7 +37,7 @@ function injected() {
    * @param {object} slot the slot to send
    */
   function sendSlotInfo(slot) {
-    sendMyWorthMessage({
+    sendMessage({
       destination: 'content',
       content: 'slot',
       slot: slot
@@ -201,7 +201,7 @@ function injected() {
     let interval = setInterval(() => {
       try {
         window[lib] = findLibraryObject(lib);
-        console.debug(`[My Worth] found ${lib}`)
+        console.debug(`[${extensionName}] found ${lib}`)
         clearInterval(interval);
         instrumentLibrary(lib);
       } catch (error) {}
@@ -216,7 +216,7 @@ function injected() {
     let delay = 2000;
     setTimeout(() => {
       searchIntervals.forEach(interval => clearInterval(interval));
-      console.debug('[My Worth] stopped searching for libraries !');
+      console.debug(`[${extensionName}] stopped searching for libraries !`);
     }, delay);
   }
 
@@ -224,7 +224,7 @@ function injected() {
   // Start searching for the libraries that we rely on
   let librariesOfInterest = ['pbjs', 'googletag', 'apstag'];
   let searchIntervals = librariesOfInterest.map(lib => createSearchAndInstrumentInterval(lib));
-  console.debug('[My Worth] started searching for libraries !');
+  console.debug(`[${extensionName}] started searching for libraries !`);
 
   // If some of the needed libraries are not yet available once the page finished loading,
   // then we have no hope of finding them so we stop looking.

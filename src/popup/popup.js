@@ -17,7 +17,7 @@ document.getElementById('popup-ad-history-button').addEventListener('click', () 
 document.getElementById('popup-download-data-button').addEventListener('click', () => {
   browser.storage.local.get(data => {
     const fileToSave = new Blob([JSON.stringify(data, undefined, 2)], {type: 'application/json'});
-    saveAs(fileToSave, 'my-worth-data.json');
+    saveAs(fileToSave, 'ad-radar-data.json');
   });
 });
 
