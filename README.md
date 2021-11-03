@@ -105,6 +105,13 @@ Our browser extension is likely to work on the following webpages:
 | Finland | https://uusisuomi.fi |
 | Finland | https://uusimaa.fi |
 
+Conspiracy websites  (from https://archive.is/vvpf9 )
+| Languages | webpage |
+|:-------:|---------|
+| French| | https://wikistrike |
+
+
+
 
 ## License
 Ad Radar is under the GNU Affero General Public License.
