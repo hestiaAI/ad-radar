@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "MyWorth",
-  "description": "An extension that shows you the price that advertisers are willing to pay for an ad on your browser.",
-  "version": "0.0.6",
+  "name": "Ad Radar",
+  "description": "An extension that shows you information about the ads you see online.",
+  "version": "0.0.7",
   "icons": {
     "128": "icons/icon_color.png"
   },

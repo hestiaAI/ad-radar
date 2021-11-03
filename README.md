@@ -1,10 +1,10 @@
-# My Worth - Browser extension
+# Ad Radar
 
 ## About
-My Worth is a browser extension that allows you to better understand how advertisers target you and how much they are willing to pay for you to see their ad.
+Ad Radar is a browser extension that allows you to better understand how advertisers target you and how much they are willing to pay for you to see their ad.
 
-## How does My Worth work?
-My Worth relies on an Ad Tech technology known as *Header Bidding*, or *Pre-Bidding*.
+## How does Ad Radar work?
+Ad Radar relies on an Ad Tech technology known as *Header Bidding*, or *Pre-Bidding*.
 
 Usually, when you go to a webpage that displays ads, the ads that are shown to you are determined almost instantaneously through a real time auction, and **your personal data is used by the advertisers** to determine how much they are willing to pay for a particular ad impression.
 This is often called [Real-Time Bidding](https://en.wikipedia.org/wiki/Real-time_bidding).
@@ -12,43 +12,43 @@ Most of the time, this auction for your attention takes place outside the browse
 The only thing that the browser sees are the ads that won the auction, and we can't really know how much a particular ad impression cost.
 
 With *Header Bidding*, an auction for the different ad spaces of the webpage also takes place in real time, but all the bids coming from the advertisers are gathered in the browser.
-In this case, My Worth can observe the (pre)bids that were received for each ad space, and display the value of these bids.
+In this case, Ad Radar can observe the (pre)bids that were received for each ad space, and display the value of these bids.
 
-My Worth checks if the visited webpage uses an open-source library called *Prebid.js* (often imported as `pbjs`) that implements Header Bidding, and thus only works on webpages that do.
+Ad Radar checks if the visited webpage uses an open-source library called *Prebid.js* (often imported as `pbjs`) that implements Header Bidding, and thus only works on webpages that do.
 
 ## Installation
-Download the files of this repository into a folder called `My Worth`.
-To do this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/my-worth-extension/archive/refs/heads/main.zip) and then unzip the file on your computer.
+Download the files of this repository into a folder called `Ad Radar`.
+To do this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/ad-radar/archive/refs/heads/main.zip) and then unzip the file on your computer.
 
 The next steps depend on your web browser:
 ### Mozilla Firefox
-Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `My Worth/src/manifest.json`.
-Note that My Worth will be uninstalled whenever you close the browser.
+Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `Ad Radar/src/manifest.json`.
+Note that Ad Radar will be uninstalled whenever you close the browser.
 ### Google Chrome
 Go to `Settings > Extensions`.
 Activate developer mode by clicking on `Developer mode`.
-Click on `Load unpacked` and select the `My Worth/src` folder.
+Click on `Load unpacked` and select the `Ad Radar/src` folder.
 
-To uninstall My Worth, on the installation screen, click `Remove` under `My Worth`.
+To uninstall Ad Radar, on the installation screen, click `Remove` under `Ad Radar`.
 
 
-## How to use My Worth
+## How to use Ad Radar
 First, if you have an ad blocker, consider deactivating it temporarily.
 Also, make sure that you can see the icon of the extension on the top bar of your browser (on Chrome, you have to pin the icon).
 Then:
 1. Go to one of the webpages in our [list of compatible webpages](#list-of-compatible-webpages)
 2. Wait for the page and its ads to finish loading
-3. My Worth shows:
+3. Ad Radar shows:
    1. a red banner next to the ads that it detected and show the prices that were paid for them
    2. the number of detected ads on the icon of the extension
 
 ## Understanding the banners
-My Worth shows a red banner next to the ads that it detected, showing the cost of the ad in CPM (cost per mille, e.g. the price paid for a thousand impressions).
+Ad Radar shows a red banner next to the ads that it detected, showing the cost of the ad in CPM (cost per mille, e.g. the price paid for a thousand impressions).
 
-There are 3 possibilities when My Worth detects an ad:
-1. My Worth couldn't find any information about the ad cost. The banner shows `No information found for this ad`.
-2. My Worth observed the prebid that won the auction for this ad space and knows exactly how much was paid, and through which advertiser network. The banner shows `CPM of {price} paid via {network}`.
-3. My Worth observed prebids but the auction was won through another ad channel, so it retrieves the prebid with the highest cost. The banner shows `CPM of at least {price}`.
+There are 3 possibilities when Ad Radar detects an ad:
+1. Ad Radar couldn't find any information about the ad cost. The banner shows `No information found for this ad`.
+2. Ad Radar observed the prebid that won the auction for this ad space and knows exactly how much was paid, and through which advertiser network. The banner shows `CPM of {price} paid via {network}`.
+3. Ad Radar observed prebids but the auction was won through another ad channel, so it retrieves the prebid with the highest cost. The banner shows `CPM of at least {price}`.
 
 ## List of compatible webpages
 Our browser extension is likely to work on the following webpages:
@@ -87,7 +87,9 @@ Our browser extension is likely to work on the following webpages:
 
 
 ## License
-My Worth is under the GNU Affero General Public License.
+Ad Radar is under the GNU Affero General Public License.
 
 ## Partners
-My Worth was built under the banner of [_The Eyeballs_](https://eyeballs.hestialabs.org/en/), a project that is part of the [HestiaLabs](https://www.hestialabs.org) project. We can anticipate multiple opportunities for further collaboration with groups of people who want to use technology to better understand the ways attention is monetized online. Please email [eyeballs@hestialabs.org](mailto:eyeballs@hestialabs.org).
+Ad Radar was built under the banner of [_The Eyeballs_](https://eyeballs.hestialabs.org), a project that is part of the [HestiaLabs](https://www.hestialabs.org) project.
+We can anticipate multiple opportunities for further collaboration with groups of people who want to use technology to better understand the ways attention is monetized online.
+Please email [eyeballs@hestialabs.org](mailto:eyeballs@hestialabs.org).

@@ -9,7 +9,7 @@ function showHistory(rawAds) {
 
   if (rawAds?.length === 0) {
     let p = div.append('p');
-    p.text('No information to display. Navigate the web with the My Worth extension and you will see your ad history here.');
+    p.text('No information to display. Navigate the web with the Ad Radar extension and you will see your ad history here.');
     return;
   }
 

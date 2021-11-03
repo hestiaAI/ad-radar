@@ -1,3 +1,4 @@
+let extensionName = 'Ad Radar';
 // Makes the extension compatible with Chrome
 if (typeof browser === 'undefined') {
   var browser = chrome;
@@ -81,18 +82,18 @@ function bannerHTML(bannerText, iframeWidth) {
     <div class='${bannerClass}' style='all: unset; display: table; text-align: center; margin: 0 auto; min-width: ${iframeWidth}'>
       <p style='all: unset; background-color: red; color: black; display: inline-block; margin: auto; line-height: normal; font-size: medium; height: auto; width: 100%'>
         ${bannerText}
-        <a href='https://github.com/hestiaAI/my-worth-extension/blob/main/README.md#understanding-the-banners'>[?]</a>
+        <a href='https://github.com/hestiaAI/ad-radar/blob/main/README.md#understanding-the-banners'>[?]</a>
       </p>
     </div>
     `;
 }
 
 
-let bannerClass = 'my-worth-ad-information';
+let bannerClass = 'hestia-ad-radar-information';
 
 let winningBidText = (winner) => `CPM of ${(winner.cpm).toFixed(3)} ${winner.currency} paid via ${winner.bidder}`;
 let nonWinningBidText = (bid) => `CPM of at least ${(bid.cpm).toFixed(3)} ${bid.currency}`;
-let TEXT_NO_INFORMATION = 'No information found for this ad';let extensionName = 'MyWorth';
+let TEXT_NO_INFORMATION = 'No information found for this ad';
 
 let TIME_TO_OUTDATE_BID_MS = 2000;
 

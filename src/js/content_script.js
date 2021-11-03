@@ -14,18 +14,18 @@ function findIframeParentIdInDiv(id) {
 }
 
 /**
- * Tries to find the ad iframe inside the given div, and if found, add slot information to id2units and show worth.
+ * Tries to find the ad iframe inside the given div, and if found, add slot information to id2units and show banner.
  * @param {string} id the id of the div where we want to look for an ad iframe
  * @param {object} slot the object with slot information
  * @returns {boolean} whether the iframe was found in the div or not
  */
-function findIframeInDivAndShowMyWorth(id, slot) {
+function findIframeInDivAndShowBanner(id, slot) {
   let adId = findIframeParentIdInDiv(id);
   if (adId) {
     id2units.add(adId, slot.unitCode);
     id2units.add(adId, slot.id);
     id2units.add(adId, adId);
-    showMyWorth(adId);
+    showBanner(adId);
     return true;
   }
   return false;
@@ -37,7 +37,7 @@ function findIframeInDivAndShowMyWorth(id, slot) {
  * Then, sends the number of ads banners that were injected into the page to the background script.
  * @param {string} id the identifier of the div to show information for
  */
-function showMyWorth(id) {
+function showBanner(id) {
   let units = id2units.get(id);
 
   let adDiv = document.getElementById(id);
@@ -97,17 +97,17 @@ window.addEventListener('message', (event) => {
           bid => message.bid.time - bid.time > TIME_TO_OUTDATE_BID_MS ? {...bid, outdated: true} : bid
         );
         unit2bids.add(message.bid.unitCode, message.bid);
-        id2units.keys().forEach(id => showMyWorth(id));
+        id2units.keys().forEach(id => showBanner(id));
 
         if (message.bid.won) {
           browser.runtime.sendMessage({...message, destination: 'background', content: 'ad', ad: message.bid});
         }
       },
       slot: () => {
-        if (!findIframeInDivAndShowMyWorth(message.slot.id, message.slot)) {
+        if (!findIframeInDivAndShowBanner(message.slot.id, message.slot)) {
           let candidates = document.querySelectorAll(`[id*='${message.slot.unitCode}']`);
           if (candidates?.length === 1) {
-            findIframeInDivAndShowMyWorth(candidates[0].id, message.slot);
+            findIframeInDivAndShowBanner(candidates[0].id, message.slot);
           }
         }
       }
@@ -119,7 +119,7 @@ window.addEventListener('message', (event) => {
 // Catches messages coming from the background script
 browser.runtime.onMessage.addListener((message) => {
   if (message?.app === extensionName && message.destination === 'content' && message.type === 'request') {
-    id2units.keys().forEach(id => showMyWorth(id));
+    id2units.keys().forEach(id => showBanner(id));
   }
 });
 
