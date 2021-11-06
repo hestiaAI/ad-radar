@@ -55,10 +55,11 @@ Our browser extension is likely to work on the following webpages:
 
 | country | webpage |
 |:-------:|---------|
-| International | https://espn.com |
+| 🌐 International | https://espn.com |
 | International | https://cnn.com |
 | International | https://accuweather.com |
 | International | https://theguardian.com |
+| ------- | ----------------------  |
 | 🇧🇪 Belgium | https://standaard.be |
 | Belgium | https://levif.be |
 | ------- | ----------------------  |
