@@ -59,9 +59,11 @@ Our browser extension is likely to work on the following webpages:
 | International | https://cnn.com |
 | International | https://accuweather.com |
 | International | https://theguardian.com |
-| Canada | https://www.lapresse.ca |
-| Switzerland | https://20min.ch |
-| Switzerland | https://ricardo.ch |
+| 🇧🇪 Belgium | https://standaard.be |
+| Belgium | https://levif.be |
+| ------- | ----------------------  |
+| 🇨🇦 Canada | https://www.lapresse.ca |
+| ------- | ----------------------  |
 | 🇫🇷 France | https://actu.fr |
 | France | https://www.aufeminin.com |
 | France | https://www.capital.fr |
@@ -71,6 +73,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.futura-sciences.com |
 | France | https://www.gala.fr |
 | France | https://www.hbrfrance.fr |
+| France | https://www.iphon.fr |
 | France | https://latribune.fr |
 | France | https://www.lamontagne.fr |
 | France | https://ledauphine.com |
@@ -86,8 +89,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.telerama.fr |
 | France | https://www.varmatin.com |
 | France | https://www.vosgesmatin.fr |
-| Belgium | https://standaard.be |
-| Belgium | https://levif.be |
+| ------- | ----------------------  |
 | 🇫🇮 Finland | https://aamuposti.fi |
 | Finland | https://kraatti.fi |
 | Finland | https://esaimaa.fi |
@@ -104,6 +106,19 @@ Our browser extension is likely to work on the following webpages:
 | Finland | https://is.fi |
 | Finland | https://uusisuomi.fi |
 | Finland | https://uusimaa.fi |
+| ------- | ----------------------  |
+| 🇪🇸 Spain | https://www.abc.es  |
+| Spain | https://as.com |
+| Spain | https://cadenaser.com |
+| Spain | https://www.eldiario.es  |
+| Spain | https://www.elmundo.es  |
+| Spain | https://elpais.com |
+| Spain | https://www.lavanguardia.com   |
+| Spain | https://www.marca.com |
+| ------- | ----------------------  |
+|  🇨🇭Switzerland | https://20min.ch |
+| Switzerland | https://ricardo.ch |
+
 
 Conspiracy websites  (from https://archive.is/vvpf9 )
 | Languages | webpage |
