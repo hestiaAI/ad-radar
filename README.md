@@ -60,8 +60,15 @@ Our browser extension is likely to work on the following webpages:
 | International | https://accuweather.com |
 | International | https://theguardian.com |
 | ------- | ----------------------  |
-| 🇧🇪 Belgium | https://standaard.be |
-| Belgium | https://levif.be |
+| 🇧🇪 Belgium | https://www.gva.be |
+| Belgium |https://www.hbvl.be |
+| Belgium |https://fr.metrotime.be |
+| Belgium |https://nl.metrotime.be |
+| Belgium |https://levif.be |
+| Belgium | https://lanouvellegazette.sudinfo.be |
+| Belgium | https://lameuse.sudinfo.be |
+| Belgium | https://www.nieuwsblad.be |
+| Belgium | https://standaard.be |
 | ------- | ----------------------  |
 | 🇨🇦 Canada | https://www.lapresse.ca |
 | ------- | ----------------------  |
@@ -74,7 +81,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.futura-sciences.com |
 | France | https://www.gala.fr |
 | France | https://www.hbrfrance.fr |
-| France | https://www.iphon.fr |
+| France | https://www.iphon.fr | 
 | France | https://latribune.fr |
 | France | https://www.lamontagne.fr |
 | France | https://ledauphine.com |
