@@ -64,9 +64,10 @@ Our browser extension is likely to work on the following webpages:
 | Belgium |https://www.hbvl.be |
 | Belgium |https://fr.metrotime.be |
 | Belgium |https://nl.metrotime.be |
-| Belgium |https://levif.be |
+| Belgium |https://lacapitale.sudinfo.be |
 | Belgium | https://lanouvellegazette.sudinfo.be |
 | Belgium | https://lameuse.sudinfo.be |
+| Belgium |https://levif.be |
 | Belgium | https://www.nieuwsblad.be |
 | Belgium | https://standaard.be |
 | ------- | ----------------------  |
@@ -115,6 +116,8 @@ Our browser extension is likely to work on the following webpages:
 | Finland | https://uusisuomi.fi |
 | Finland | https://uusimaa.fi |
 | ------- | ----------------------  |
+| Monaco  | https://www.monacomatin.mc |
+| ------- | ----------------------  |
 | 🇪🇸 Spain | https://www.abc.es  |
 | Spain | https://as.com |
 | Spain | https://cadenaser.com |
@@ -124,7 +127,7 @@ Our browser extension is likely to work on the following webpages:
 | Spain | https://www.lavanguardia.com   |
 | Spain | https://www.marca.com |
 | ------- | ----------------------  |
-|  🇨🇭Switzerland | https://20min.ch |
+| 🇨🇭Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
 
 
