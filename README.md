@@ -116,6 +116,26 @@ Our browser extension is likely to work on the following webpages:
 | Finland | https://uusisuomi.fi |
 | Finland | https://uusimaa.fi |
 | ------- | ----------------------  |
+| 🇩🇪 Germany |  https://www.abendblatt.de |
+| Germany | https://www.bildderfrau.de/ |
+| Germany | https://www.express.de |
+| Germany | https://fnp.de |
+| Germany | https://ga.de |
+| Germany | https://www.hna.de |
+| Germany | https://www.mz.de |
+| Germany | https://www.nordbayern.de |
+| Germany | https://rp-online.de|
+| Germany | https://www.schwarzwaelder-bote.de |
+| Germany | https://www.stuttgarter-zeitung.de |
+| Germany | https://www.swp.de |
+| Germany | https://www.tz.de |
+| Germany | https://www.wa.de |
+| Germany | https://www.weser-kurier.de|
+| Germany | https://www.westfalen-blatt.de |
+| Germany | https://www.wn.de |
+| Germany | https://www.wp.de |
+| Germany | https://www.zeit.de |
+| ------- | ----------------------  |
 | Monaco  | https://www.monacomatin.mc |
 | ------- | ----------------------  |
 | 🇪🇸 Spain | https://www.abc.es  |
