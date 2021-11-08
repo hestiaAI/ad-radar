@@ -116,8 +116,10 @@ Our browser extension is likely to work on the following webpages:
 | Finland | https://uusisuomi.fi |
 | Finland | https://uusimaa.fi |
 | ------- | ----------------------  |
-| 🇩🇪 Germany |  https://www.abendblatt.de |
-| Germany | https://www.bildderfrau.de/ |
+| 🇩🇪 Germany |  https://www.auto-motor-und-sport.de |
+| Germany | https://www.bildderfrau.de |
+| Germany | https://www.abendblatt.de |
+| Germany | https://www.bunte.de |
 | Germany | https://www.express.de |
 | Germany | https://fnp.de |
 | Germany | https://ga.de |
@@ -128,6 +130,9 @@ Our browser extension is likely to work on the following webpages:
 | Germany | https://www.schwarzwaelder-bote.de |
 | Germany | https://www.stuttgarter-zeitung.de |
 | Germany | https://www.swp.de |
+| Germany | https://www.tv14.de |
+| Germany | https://www.tvdigital.de |
+| Germany | https://www.tvdirekt.de |
 | Germany | https://www.tz.de |
 | Germany | https://www.wa.de |
 | Germany | https://www.weser-kurier.de|
