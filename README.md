@@ -162,6 +162,9 @@ Conspiracy websites  (from https://archive.is/vvpf9 )
 | 🇫🇷 France | https://wikistrike.com |
 | 🇺🇸 USA |  https://bongino.com/ |
 
+satirical websites
+https://www.legorafi.fr
+
 
 
 ## License
