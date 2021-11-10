@@ -158,12 +158,18 @@ Our browser extension is likely to work on the following webpages:
 
 Conspiracy websites  (from https://archive.is/vvpf9 )
 | Languages | webpage |
-|:-------:|---------|
+| ----------|---------|
 | 🇫🇷 France | https://wikistrike.com |
 | 🇺🇸 USA |  https://bongino.com/ |
 
 satirical websites
-https://www.legorafi.fr
+| Languages | webpage |
+|-------|-----------------------|
+| FR    |https://www.legorafi.fr|
+
+
+
+
 
 
 
