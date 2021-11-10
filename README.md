@@ -159,8 +159,8 @@ Our browser extension is likely to work on the following webpages:
 Conspiracy websites  (from https://archive.is/vvpf9 )
 | Languages | webpage |
 |:-------:|---------|
-| French | https://wikistrike.com |
-
+| 🇫🇷 France | https://wikistrike.com |
+| 🇺🇸 USA |  https://bongino.com/ |
 
 
 
