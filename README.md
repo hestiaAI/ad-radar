@@ -90,9 +90,11 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.leprogres.fr |
 | France | https://www.lessorsavoyard.fr |
 | France | https://www.letelegramme.fr |
+| France | https://www.linguee.fr |
 | France | https://www.numerama.com |
 | France | https://www.psychologies.com |
 | France | https://www.republicain-lorrain.fr |
+| France | http://www.slate.fr |
 | France | https://www.sudouest.fr  |
 | France | https://telestar.fr |
 | France | https://www.telerama.fr |
