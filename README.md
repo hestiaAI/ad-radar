@@ -148,14 +148,18 @@ Our browser extension is likely to work on the following webpages:
 | ------- | ----------------------  |
 | Monaco  | https://www.monacomatin.mc |
 | ------- | ----------------------  |
-| 🇪🇸 Spain | https://www.abc.es  |
+| 🇪🇸 Spain |https://www.20minutos.es |
+| Spain | https://www.abc.es  |
 | Spain | https://as.com |
 | Spain | https://cadenaser.com |
 | Spain | https://www.eldiario.es  |
 | Spain | https://www.elmundo.es  |
 | Spain | https://elpais.com |
-| Spain | https://www.lavanguardia.com   |
+| Spain | https://www.larazon.es |
+| Spain | https://www.lavanguardia.com |
 | Spain | https://www.marca.com |
+| Spain | https://www.niusdiario.es |
+| Spain | https://www.superdeporte.es |
 | ------- | ----------------------  |
 | 🇨🇭Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
