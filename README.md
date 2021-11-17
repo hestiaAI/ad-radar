@@ -92,6 +92,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.letelegramme.fr |
 | France | https://www.linguee.fr |
 | France | https://www.lyonmag.com |
+| France | https://maligue2.fr |
 | France | https://www.midilibre.fr |
 | France | https://www.numerama.com |
 | France | https://www.psychologies.com |
