@@ -91,6 +91,8 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.lessorsavoyard.fr |
 | France | https://www.letelegramme.fr |
 | France | https://www.linguee.fr |
+| France | https://www.lyonmag.com |
+| France | https://www.midilibre.fr |
 | France | https://www.numerama.com |
 | France | https://www.psychologies.com |
 | France | https://www.republicain-lorrain.fr |
