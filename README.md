@@ -55,12 +55,16 @@ Our browser extension is likely to work on the following webpages:
 
 | country | webpage |
 |:-------:|---------|
-| 🌐 International | https://espn.com |
+| 🌐 International | https://accuweather.com |
 | International | https://cnn.com |
-| International | https://accuweather.com |
+| International | https://context.reverso.net |
+| International | https://espn.com |
+| International | https://www.linguee.com |
+| International | https://www.researchgate.net |
 | International | https://theguardian.com |
 | ------- | ----------------------  |
-| 🇧🇪 Belgium | https://www.gva.be |
+| 🇧🇪 Belgium | https://www.dhnet.be |
+| Belgium |https://www.gva.be |
 | Belgium |https://www.hbvl.be |
 | Belgium |https://fr.metrotime.be |
 | Belgium |https://nl.metrotime.be |
@@ -74,6 +78,7 @@ Our browser extension is likely to work on the following webpages:
 | 🇨🇦 Canada | https://www.lapresse.ca |
 | ------- | ----------------------  |
 | 🇫🇷 France | https://actu.fr |
+| France | https://www.allocine.fr | 
 | France | https://www.aufeminin.com |
 | France | https://www.capital.fr |
 | France | https://www.courrierinternational.com |
@@ -83,6 +88,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.gala.fr |
 | France | https://www.hbrfrance.fr |
 | France | https://www.iphon.fr | 
+| France | https://www.jeuxvideo.com |  
 | France | https://latribune.fr |
 | France | https://www.lamontagne.fr |
 | France | https://ledauphine.com |
@@ -95,17 +101,23 @@ Our browser extension is likely to work on the following webpages:
 | France | https://maligue2.fr |
 | France | https://www.midilibre.fr |
 | France | https://www.numerama.com |
+| France | https://www.orange.fr | 
+| France | https://www.pcastuces.com/| 
 | France | https://www.psychologies.com |
+| France | https://www.programme-tv.net| 
 | France | https://www.republicain-lorrain.fr |
 | France | http://www.slate.fr |
 | France | https://www.sudouest.fr  |
 | France | https://telestar.fr |
 | France | https://www.telerama.fr |
+| France | https://www.timeout.fr | 
+| France | https://www.tripadvisor.fr |
 | France | https://www.varmatin.com |
+| France | https://www.vinted.fr | 
 | France | https://www.vosgesmatin.fr |
 | ------- | ----------------------  |
 | 🇫🇮 Finland | https://aamuposti.fi |
-| Finland | https://kraatti.fi |
+| Finland | https://www.deitti.net |
 | Finland | https://esaimaa.fi |
 | Finland | https://forssanlehti.fi |
 | Finland | https://hs.fi |
@@ -113,6 +125,7 @@ Our browser extension is likely to work on the following webpages:
 | Finland | https://iltalehti.fi |
 | Finland | https://ita-savo.fi |
 | Finland | https://kouvolansanomat.fi |
+| Finland | https://kraatti.fi |
 | Finland | https://loviisansanomat.fi |
 | Finland | https://lansi-savo.fi |
 | Finland | https://maaseuduntulevaisuus.fi |
