@@ -123,14 +123,17 @@ Our browser extension is likely to work on the following webpages:
 | Finland | https://hs.fi |
 | Finland | https://hameensanomat.fi |
 | Finland | https://iltalehti.fi |
+| Finland | https://www.inferno.fi |
 | Finland | https://ita-savo.fi |
+| Finland | https://is.fi |
 | Finland | https://kouvolansanomat.fi |
 | Finland | https://kraatti.fi |
 | Finland | https://loviisansanomat.fi |
 | Finland | https://lansi-savo.fi |
 | Finland | https://maaseuduntulevaisuus.fi |
 | Finland | https://savonsanomat.fi |
-| Finland | https://is.fi |
+| Finland | https://www.sijoitustieto.fi |
+| Finland | https://www.suomi24.fi |
 | Finland | https://uusisuomi.fi |
 | Finland | https://uusimaa.fi |
 | ------- | ----------------------  |
@@ -141,9 +144,11 @@ Our browser extension is likely to work on the following webpages:
 | Germany | https://www.express.de |
 | Germany | https://fnp.de |
 | Germany | https://ga.de |
+| Germany | https://www.heise.de |
 | Germany | https://www.hna.de |
 | Germany | https://www.mz.de |
 | Germany | https://www.nordbayern.de |
+| Germany | https://www.onmeda.de |
 | Germany | https://rp-online.de|
 | Germany | https://www.schwarzwaelder-bote.de |
 | Germany | https://www.stuttgarter-zeitung.de |
