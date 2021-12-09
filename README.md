@@ -59,10 +59,11 @@ Our browser extension is likely to work on the following webpages:
 | International | https://cnn.com |
 | International | https://context.reverso.net |
 | International | https://espn.com |
+| International | https://futurism.com |
 | International | https://www.linguee.com |
 | International | https://www.researchgate.net |
 | International | https://theguardian.com |
-| International | https://futurism.com |
+
 | ------- | ----------------------  |
 | 🇧🇪 Belgium | https://www.dhnet.be |
 | Belgium |https://www.gva.be |
@@ -96,6 +97,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://ledauphine.com |
 | France | https://www.lejdc.fr |
 | France | https://www.leprogres.fr |
+| France | https://www.lesnumeriques.com |
 | France | https://www.lessorsavoyard.fr |
 | France | https://www.letelegramme.fr |
 | France | https://www.linguee.fr |
@@ -171,8 +173,23 @@ Our browser extension is likely to work on the following webpages:
 | 🇪🇸 Spain |https://www.20minutos.es |
 | Spain | https://www.abc.es  |
 | Spain | https://as.com |
+| Spain | https://www.atlantico.net |
 | Spain | https://cadenaser.com |
+| Spain | https://www.canarias7.es |
+| Spain | https://www.deia.eus |
+| Spain | http://www.diarioya.es |
+| Spain | https://www.diariodealmeria.es |
+| Spain | https://www.diariodeibiza.es |
+| Spain | https://www.diariodecadiz.es |
+| Spain | https://www.diariodesevilla.es
 | Spain | https://www.eldiario.es  |
+| Spain | https://www.elcorreo.com |
+| Spain | https://www.eldia.es |
+| Spain | https://www.elidealgallego.com |
+| Spain | https://www.elnortedecastilla.es |
+| Spain | https://www.elperiodicodearagon.com |
+| Spain | https://www.elperiodicomediterraneo.com|
+| Spain | https://www.europasur.es |
 | Spain | https://www.elmundo.es  |
 | Spain | https://elpais.com |
 | Spain | https://www.larazon.es |
@@ -180,6 +197,16 @@ Our browser extension is likely to work on the following webpages:
 | Spain | https://www.marca.com |
 | Spain | https://www.niusdiario.es |
 | Spain | https://www.superdeporte.es |
+| Spain | https://www.farodevigo.es |
+| Spain | https://www.granadahoy.com |
+| Spain | https://www.laopiniondemurcia.es|
+| Spain | https://www.lasprovincias.es|
+| Spain | https://www.lne.es |
+| Spain | https://www.mundodeportivo.com |
+| Spain | https://www.segre.com |
+| Spain | https://www.sport.es|
+| Spain | https://www.ultimahora.es|
+
 | ------- | ----------------------  |
 | 🇨🇭Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
