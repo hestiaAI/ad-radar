@@ -206,7 +206,6 @@ Our browser extension is likely to work on the following webpages:
 | Spain | https://www.segre.com |
 | Spain | https://www.sport.es|
 | Spain | https://www.ultimahora.es|
-
 | ------- | ----------------------  |
 | 🇨🇭Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
