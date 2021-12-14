@@ -79,6 +79,7 @@ Our browser extension is likely to work on the following webpages:
 | 🇨🇦 Canada | https://www.lapresse.ca |
 | ------- | ----------------------  |
 | 🇫🇷 France | https://www.20minutes.fr |
+| France |  https://lemonde.fr | 
 | France |  https://actu.fr | 
 | France | https://www.allocine.fr | 
 | France | https://www.aufeminin.com |
