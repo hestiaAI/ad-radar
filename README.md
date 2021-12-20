@@ -63,6 +63,7 @@ Our browser extension is likely to work on the following webpages:
 | International | https://www.linguee.com |
 | International | https://www.researchgate.net |
 | International | https://theguardian.com |
+| International | https://vice.com |
 | ------- | ----------------------  |
 | 🇧🇪 Belgium | https://www.dhnet.be |
 | Belgium |https://www.gva.be |
