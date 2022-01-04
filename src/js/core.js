@@ -1,4 +1,4 @@
-let extensionName = 'Ad Radar';
+const extensionName = 'Ad Radar';
 // Makes the extension compatible with Chrome
 if (typeof browser === 'undefined') {
   var browser = chrome;
@@ -89,15 +89,15 @@ function bannerHTML(bannerText, iframeWidth) {
 }
 
 
-let bannerClass = 'hestia-ad-radar-information';
+const bannerClass = 'hestia-ad-radar-information';
 
-let winningBidText = (winner) => `CPM of ${(winner.cpm).toFixed(3)} ${winner.currency} paid via ${winner.bidder}`;
-let nonWinningBidText = (bid) => `CPM of at least ${(bid.cpm).toFixed(3)} ${bid.currency}`;
-let TEXT_NO_INFORMATION = 'No information found for this ad';
+const winningBidText = (winner) => `CPM of ${(winner.cpm).toFixed(3)} ${winner.currency} paid via ${winner.bidder}`;
+const nonWinningBidText = (bid) => `CPM of at least ${(bid.cpm).toFixed(3)} ${bid.currency}`;
+const TEXT_NO_INFORMATION = 'No information found for this ad';
 
-let TIME_TO_OUTDATE_BID_MS = 2000;
+const TIME_TO_OUTDATE_BID_MS = 2000;
 
 
-function initData() {
-  browser.storage.local.set({'ads': []})
+async function initData() {
+  return await browser.storage.local.set({'ads': []})
 }
