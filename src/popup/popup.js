@@ -21,6 +21,8 @@ document.getElementById('popup-download-data-button').addEventListener('click', 
   });
 });
 
-document.getElementById('popup-clear-data-button').addEventListener('click', () => {
-  browser.storage.local.clear(initData);
+document.getElementById('popup-clear-data-button').addEventListener('click', async () => {
+  await browser.storage.local.clear();
+  await initData();
+  window.alert(('Your data has been cleared'));
 });
