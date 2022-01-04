@@ -1,6 +1,35 @@
 function injected() {
-  let extensionName = 'Ad Radar';
-  console.debug(`[${extensionName}] script injected!`);
+  const extensionName = 'Ad Radar';
+  console.info(`[${extensionName}] script injected!`);
+
+  /**
+   * Extracts information from an object, and executes getter functions that don't expect arguments.
+   * @param val the object to extract information from
+   * @param maxDepth the maximum depth that we will go to in order to extract information
+   * @returns {Object} a copy of the given object, but serializable
+   */
+  function getAllFields(val, maxDepth=7) {
+    function recurse(val, depth, key='') {
+      if (depth >= maxDepth || val === null) {
+        return JSON.parse(JSON.stringify(val))
+      } else if (typeof val === 'function') {
+        const obj = { code: val.toString() }
+        if (val.length === 0 && key.startsWith('get')) {
+          try {
+            obj.result = recurse(val(), depth + 1)
+          } catch (error) {}
+        }
+        return obj
+      } else if (Array.isArray(val)) {
+        return val.map(e => recurse(e, depth + 1))
+      } else if (typeof val === 'object') {
+        return Object.fromEntries(Object.entries(val).map(([k, v]) => [k, recurse(v, depth + 1, k)]))
+      } else {
+        return val
+      }
+    }
+    return recurse(val, 0, '')
+  }
 
   /**
    * A wrapper for messages to be sent to content or background scripts.
@@ -22,12 +51,18 @@ function injected() {
    * A wrapper that sends a message with the content of the given bid.
    * @param {object} bid the bid to send
    */
-  function sendBid(bid) {
-    if (bid.cpm) {
+  function sendBid({ extracted, original }) {
+    if (extracted.cpm) {
       sendMessage({
         destination: 'content',
         content: 'bid',
-        bid: {...bid, outdated: false}
+        bid: {
+          extracted: {
+            ...extracted,
+            outdated: false
+          },
+          original
+        }
       });
     }
   }
@@ -51,12 +86,15 @@ function injected() {
    */
   function sendPbjsBid(bid, won) {
     sendBid({
-      unitCode: bid.adUnitCode,
-      bidder: bid.bidder,
-      cpm: bid.cpm,
-      currency: bid.currency,
-      won: won,
-      lib: 'pbjs',
+      extracted: {
+        unitCode: bid.adUnitCode,
+        bidder: bid.bidder,
+        cpm: bid.cpm,
+        currency: bid.currency,
+        won: won,
+        lib: 'pbjs',
+      },
+      original: getAllFields(bid)
     })
   }
 
@@ -65,14 +103,17 @@ function injected() {
    * @param {object} slot the 'slot' of a slotOnload event
    */
   function sendGoogletagWinningBid(slot) {
-    let bid = slot.getTargetingMap();
+    const bid = slot.getTargetingMap();
     sendBid({
-      unitCode: slot.getSlotId().getId(),
-      bidder: bid.hb_bidder?.[0],
-      cpm: parseFloat(bid.hb_pb?.[0]),
-      currency: 'USD', // TODO find if actual currency can be different
-      won: true,
-      lib: 'googletag'
+      extracted: {
+        unitCode: slot.getSlotId().getId(),
+        bidder: bid.hb_bidder?.[0],
+        cpm: parseFloat(bid.hb_pb?.[0]),
+        currency: 'USD', // TODO find if actual currency can be different
+        won: true,
+        lib: 'googletag',
+      },
+      original: getAllFields(slot)
     });
   }
   /**
@@ -81,13 +122,15 @@ function injected() {
    */
   function sendApstagWinningBid(bid) {
     sendBid({
-      unitCode: bid.kvMap.amznp[0],
-      bidder: bid.kvMap.hb_bidder[0],
-      cpm: parseFloat(bid.kvMap.hb_pb[0]),
-      currency: 'USD', // TODO find if actual currency can be different
-      won: true,
-      lib: 'apstag',
-      extra: slot.kvMap
+      extracted: {
+        unitCode: bid.kvMap.amznp[0],
+        bidder: bid.kvMap.hb_bidder[0],
+        cpm: parseFloat(bid.kvMap.hb_pb[0]),
+        currency: 'USD', // TODO find if actual currency can be different
+        won: true,
+        lib: 'apstag',
+      },
+      original: getAllFields(bid)
     });
   }
 
@@ -109,8 +152,8 @@ function injected() {
    * @param {object} slot the 'slot' of a slotResponseReceived or slotOnload event
    */
   function sendGoogletagSlotInfo(slot) {
-    let paths = window.googletag.pubads().getSlots().map(s => s.getAdUnitPath());
-    let nDistinctPaths = (new Set(paths)).size;
+    const paths = window.googletag.pubads().getSlots().map(s => s.getAdUnitPath());
+    const nDistinctPaths = (new Set(paths)).size;
     sendSlotInfo({
       id: slot.getSlotElementId(),
       unitCode: paths.length === nDistinctPaths ? slot.getAdUnitPath() : slot.getSlotId().getId(),
@@ -132,7 +175,7 @@ function injected() {
   }
 
   // For each library, specify a condition function that should be verified when applied to its object
-  let conditionsToVerify = {
+  const conditionsToVerify = {
     'pbjs': obj => obj.getBidResponses && obj.getAllWinningBids,
     'googletag': obj => obj.pubads?.()?.getSlots,
     'apstag': obj => obj._getSlotIdToNameMapping
@@ -146,9 +189,9 @@ function injected() {
    */
   function findLibraryObject(libName) {
     // Regex matching a string containing the name of the library (or variations)
-    let re = new RegExp(`[\s\S]*${libName}[\s\S]*`);
+    const re = new RegExp(`[\s\S]*${libName}[\s\S]*`);
     // Get all variable names in window, and keep those matching regex and verifying the properties function
-    let candidates = Object.keys(window).filter(varName => re.test(varName) && conditionsToVerify[libName](window[varName]));
+    const candidates = Object.keys(window).filter(varName => re.test(varName) && conditionsToVerify[libName](window[varName]));
     // Return a variable when at least one candidate is found, otherwise throw an error
     if (candidates.length > 0) return window[candidates[0]];
     else throw `${libName} not found`;
@@ -173,15 +216,15 @@ function injected() {
       });
     }
     else if (libName === 'apstag') {
-      let original_fetchBids = window.apstag.fetchBids;
+      const original_fetchBids = window.apstag.fetchBids;
       window.apstag.fetchBids = function (cfg, callback) {
-        let new_callback = (bids, info) => {
+        const new_callback = (bids, info) => {
           bids.forEach(bid => sendApstagSlotInfo(bid));
           return callback(bids, info);
         }
         return original_fetchBids(cfg, new_callback);
       }
-      let original_renderImp = window.apstag.renderImp;
+      const original_renderImp = window.apstag.renderImp;
       window.apstag.renderImp = function () {
         if (arguments[2]) {
           sendApstagWinningBid(arguments[2]);
@@ -197,11 +240,11 @@ function injected() {
    * @returns {number} the number of the created interval
    */
   function createSearchAndInstrumentInterval(lib) {
-    let intervalTimeout = 5;
-    let interval = setInterval(() => {
+    const intervalTimeout = 2;
+    const interval = setInterval(() => {
       try {
         window[lib] = findLibraryObject(lib);
-        console.debug(`[${extensionName}] found ${lib}`)
+        console.info(`[${extensionName}] found ${lib}`)
         clearInterval(interval);
         instrumentLibrary(lib);
       } catch (error) {}
@@ -213,18 +256,18 @@ function injected() {
    * This function sets a timeout to stop searching for libraries after {delay} milliseconds.
    */
   function stopSearchingLibrariesSoon() {
-    let delay = 2000;
+    const delay = 2000;
     setTimeout(() => {
       searchIntervals.forEach(interval => clearInterval(interval));
-      console.debug(`[${extensionName}] stopped searching for libraries !`);
+      console.info(`[${extensionName}] stopped searching for libraries !`);
     }, delay);
   }
 
 
   // Start searching for the libraries that we rely on
-  let librariesOfInterest = ['pbjs', 'googletag', 'apstag'];
-  let searchIntervals = librariesOfInterest.map(lib => createSearchAndInstrumentInterval(lib));
-  console.debug(`[${extensionName}] started searching for libraries !`);
+  const librariesOfInterest = ['pbjs', 'googletag', 'apstag'];
+  const searchIntervals = librariesOfInterest.map(lib => createSearchAndInstrumentInterval(lib));
+  console.info(`[${extensionName}] started searching for libraries !`);
 
   // If some of the needed libraries are not yet available once the page finished loading,
   // then we have no hope of finding them so we stop looking.
