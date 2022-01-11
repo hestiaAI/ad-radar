@@ -59,30 +59,35 @@ Our browser extension is likely to work on the following webpages:
 | International | https://cnn.com |
 | International | https://context.reverso.net |
 | International | https://espn.com |
+| International | https://www.eurogamer.net |
 | International | https://futurism.com |
+| International | https://www.gamespot.com |
 | International | https://www.linguee.com |
 | International | https://www.researchgate.net |
+| International | https://www.reverso.net |
 | International | https://theguardian.com |
 | International | https://vice.com |
 | ------- | ----------------------  |
 | 🇧🇪 Belgium | https://www.dhnet.be |
-| Belgium |https://www.gva.be |
-| Belgium |https://www.hbvl.be |
-| Belgium |https://fr.metrotime.be |
-| Belgium |https://nl.metrotime.be |
-| Belgium |https://lacapitale.sudinfo.be |
+| Belgium | https://www.gva.be |
+| Belgium | https://www.hbvl.be |
+| Belgium | https://fr.metrotime.be |
+| Belgium | https://nl.metrotime.be |
+| Belgium | https://lacapitale.sudinfo.be |
 | Belgium | https://lanouvellegazette.sudinfo.be |
 | Belgium | https://lameuse.sudinfo.be |
-| Belgium |https://levif.be |
+| Belgium | https://laprovince.sudinfo.be |
+| Belgium | https://levif.be |
 | Belgium | https://www.nieuwsblad.be |
+| Belgium | https://nordeclair.sudinfo.be |
 | Belgium | https://standaard.be |
 | ------- | ----------------------  |
 | 🇨🇦 Canada | https://www.lapresse.ca |
 | ------- | ----------------------  |
 | 🇫🇷 France | https://www.20minutes.fr |
 | France | https://www.750g.com |
-| France |  https://lemonde.fr | 
-| France |  https://actu.fr | 
+| France | https://lemonde.fr | 
+| France | https://actu.fr | 
 | France | https://www.allocine.fr | 
 | France | https://www.aufeminin.com |
 | France | https://www.capital.fr |
@@ -109,8 +114,9 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.numerama.com |
 | France | https://www.orange.fr | 
 | France | https://www.pcastuces.com/| 
-| France | https://www.psychologies.com |
 | France | https://www.programme-tv.net| 
+| France | https://www.psychologies.com |
+| France | https://www.purepeople.com | 
 | France | https://www.republicain-lorrain.fr |
 | France | http://www.slate.fr |
 | France | https://www.sudouest.fr  |
@@ -190,7 +196,7 @@ Our browser extension is likely to work on the following webpages:
 | Spain | https://www.elidealgallego.com |
 | Spain | https://www.elnortedecastilla.es |
 | Spain | https://www.elperiodicodearagon.com |
-| Spain | https://www.elperiodicomediterraneo.com|
+| Spain | https://www.elperiodicomediterraneo.com |
 | Spain | https://www.europasur.es |
 | Spain | https://www.elmundo.es  |
 | Spain | https://elpais.com |
@@ -201,7 +207,7 @@ Our browser extension is likely to work on the following webpages:
 | Spain | https://www.superdeporte.es |
 | Spain | https://www.farodevigo.es |
 | Spain | https://www.granadahoy.com |
-| Spain | https://www.laopiniondemurcia.es|
+| Spain | https://www.laopiniondemurcia.es |
 | Spain | https://www.lasprovincias.es|
 | Spain | https://www.lne.es |
 | Spain | https://www.mundodeportivo.com |
