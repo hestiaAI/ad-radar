@@ -63,6 +63,7 @@ Our browser extension is likely to work on the following webpages:
 | International | https://futurism.com |
 | International | https://www.gamespot.com |
 | International | https://www.linguee.com |
+| International | https://www.metacritic.com |
 | International | https://www.researchgate.net |
 | International | https://www.reverso.net |
 | International | https://theguardian.com |
@@ -88,6 +89,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.750g.com |
 | France | https://lemonde.fr | 
 | France | https://actu.fr | 
+| France | https://www.actuabd.com |
 | France | https://www.allocine.fr | 
 | France | https://www.aufeminin.com |
 | France | https://www.capital.fr |
@@ -96,6 +98,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://fr.euronews.com |
 | France | https://www.futura-sciences.com |
 | France | https://www.gala.fr |
+| France | https://www.gamekult.com |
 | France | https://www.hbrfrance.fr |
 | France | https://www.iphon.fr | 
 | France | https://www.jeuxvideo.com |  
