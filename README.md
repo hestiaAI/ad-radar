@@ -17,14 +17,24 @@ In this case, Ad Radar can observe the (pre)bids that were received for each ad 
 Ad Radar checks if the visited webpage uses an open-source library called *Prebid.js* (often imported as `pbjs`) that implements Header Bidding, and thus only works on webpages that do.
 
 ## Installation
+
+There are two ways to install Ad Radar on your browser:
+### a) Through the extension stores
+#### Mozilla Firefox
+https://addons.mozilla.org/en-US/firefox/addon/ad-radar/
+
+#### Google Chrome
+https://chrome.google.com/webstore/detail/ad-radar/glckjmlmkoofofclahanidfhaoihodjc
+
+### b) Manually
 Download the files of this repository into a folder called `Ad Radar`.
 To do this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/ad-radar/archive/refs/heads/main.zip) and then unzip the file on your computer.
 
 The next steps depend on your web browser:
-### Mozilla Firefox
+#### Mozilla Firefox
 Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `Ad Radar/src/manifest.json`.
 Note that Ad Radar will be uninstalled whenever you close the browser.
-### Google Chrome
+#### Google Chrome
 Go to `Settings > Extensions`.
 Activate developer mode by clicking on `Developer mode`.
 Click on `Load unpacked` and select the `Ad Radar/src` folder.
