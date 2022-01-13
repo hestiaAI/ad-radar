@@ -17,14 +17,24 @@ In this case, Ad Radar can observe the (pre)bids that were received for each ad 
 Ad Radar checks if the visited webpage uses an open-source library called *Prebid.js* (often imported as `pbjs`) that implements Header Bidding, and thus only works on webpages that do.
 
 ## Installation
+
+There are two ways to install Ad Radar on your browser:
+### a) Through the extension stores
+#### Mozilla Firefox
+https://addons.mozilla.org/en-US/firefox/addon/ad-radar/
+
+#### Google Chrome
+https://chrome.google.com/webstore/detail/ad-radar/glckjmlmkoofofclahanidfhaoihodjc
+
+### b) Manually
 Download the files of this repository into a folder called `Ad Radar`.
 To do this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/ad-radar/archive/refs/heads/main.zip) and then unzip the file on your computer.
 
 The next steps depend on your web browser:
-### Mozilla Firefox
+#### Mozilla Firefox
 Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `Ad Radar/src/manifest.json`.
 Note that Ad Radar will be uninstalled whenever you close the browser.
-### Google Chrome
+#### Google Chrome
 Go to `Settings > Extensions`.
 Activate developer mode by clicking on `Developer mode`.
 Click on `Load unpacked` and select the `Ad Radar/src` folder.
@@ -59,30 +69,37 @@ Our browser extension is likely to work on the following webpages:
 | International | https://cnn.com |
 | International | https://context.reverso.net |
 | International | https://espn.com |
+| International | https://www.eurogamer.net |
 | International | https://futurism.com |
+| International | https://www.gamespot.com |
 | International | https://www.linguee.com |
+| International | https://www.metacritic.com |
 | International | https://www.researchgate.net |
+| International | https://www.reverso.net |
 | International | https://theguardian.com |
 | International | https://vice.com |
 | ------- | ----------------------  |
 | 🇧🇪 Belgium | https://www.dhnet.be |
-| Belgium |https://www.gva.be |
-| Belgium |https://www.hbvl.be |
-| Belgium |https://fr.metrotime.be |
-| Belgium |https://nl.metrotime.be |
-| Belgium |https://lacapitale.sudinfo.be |
+| Belgium | https://www.gva.be |
+| Belgium | https://www.hbvl.be |
+| Belgium | https://fr.metrotime.be |
+| Belgium | https://nl.metrotime.be |
+| Belgium | https://lacapitale.sudinfo.be |
 | Belgium | https://lanouvellegazette.sudinfo.be |
 | Belgium | https://lameuse.sudinfo.be |
-| Belgium |https://levif.be |
+| Belgium | https://laprovince.sudinfo.be |
+| Belgium | https://levif.be |
 | Belgium | https://www.nieuwsblad.be |
+| Belgium | https://nordeclair.sudinfo.be |
 | Belgium | https://standaard.be |
 | ------- | ----------------------  |
 | 🇨🇦 Canada | https://www.lapresse.ca |
 | ------- | ----------------------  |
 | 🇫🇷 France | https://www.20minutes.fr |
 | France | https://www.750g.com |
-| France |  https://lemonde.fr | 
-| France |  https://actu.fr | 
+| France | https://lemonde.fr | 
+| France | https://actu.fr | 
+| France | https://www.actuabd.com |
 | France | https://www.allocine.fr | 
 | France | https://www.aufeminin.com |
 | France | https://www.capital.fr |
@@ -91,6 +108,7 @@ Our browser extension is likely to work on the following webpages:
 | France | https://fr.euronews.com |
 | France | https://www.futura-sciences.com |
 | France | https://www.gala.fr |
+| France | https://www.gamekult.com |
 | France | https://www.hbrfrance.fr |
 | France | https://www.iphon.fr | 
 | France | https://www.jeuxvideo.com |  
@@ -109,8 +127,9 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.numerama.com |
 | France | https://www.orange.fr | 
 | France | https://www.pcastuces.com/| 
-| France | https://www.psychologies.com |
 | France | https://www.programme-tv.net| 
+| France | https://www.psychologies.com |
+| France | https://www.purepeople.com | 
 | France | https://www.republicain-lorrain.fr |
 | France | http://www.slate.fr |
 | France | https://www.sudouest.fr  |
@@ -190,7 +209,7 @@ Our browser extension is likely to work on the following webpages:
 | Spain | https://www.elidealgallego.com |
 | Spain | https://www.elnortedecastilla.es |
 | Spain | https://www.elperiodicodearagon.com |
-| Spain | https://www.elperiodicomediterraneo.com|
+| Spain | https://www.elperiodicomediterraneo.com |
 | Spain | https://www.europasur.es |
 | Spain | https://www.elmundo.es  |
 | Spain | https://elpais.com |
@@ -201,7 +220,7 @@ Our browser extension is likely to work on the following webpages:
 | Spain | https://www.superdeporte.es |
 | Spain | https://www.farodevigo.es |
 | Spain | https://www.granadahoy.com |
-| Spain | https://www.laopiniondemurcia.es|
+| Spain | https://www.laopiniondemurcia.es |
 | Spain | https://www.lasprovincias.es|
 | Spain | https://www.lne.es |
 | Spain | https://www.mundodeportivo.com |
