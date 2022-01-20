@@ -102,9 +102,11 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.actuabd.com |
 | France | https://www.allocine.fr | 
 | France | https://www.aufeminin.com |
+| France | https://www.bienpublic.com |
 | France | https://www.capital.fr |
 | France | https://www.courrierinternational.com |
 | France | https://www.courrier-picard.fr |
+| France | https://www.dna.fr  |
 | France | https://fr.euronews.com |
 | France | https://www.futura-sciences.com |
 | France | https://www.gala.fr |
@@ -112,16 +114,21 @@ Our browser extension is likely to work on the following webpages:
 | France | https://www.hbrfrance.fr |
 | France | https://www.iphon.fr | 
 | France | https://www.jeuxvideo.com |  
+| France | https://www.lalsace.fr |
+| France | https://www.ladepeche.fr|
+| France | https://www.lamontagne.fr 
 | France | https://latribune.fr |
-| France | https://www.lamontagne.fr |
+| France | https://www.lavoixdunord.fr |
 | France | https://ledauphine.com |
 | France | https://www.lejdc.fr |
+| France | https://www.lejsl.com |
 | France | https://www.leprogres.fr |
 | France | https://www.lesnumeriques.com |
 | France | https://www.lessorsavoyard.fr |
 | France | https://www.letelegramme.fr |
 | France | https://www.linguee.fr |
 | France | https://www.lyonmag.com |
+| France | https://www.lyonne.fr |
 | France | https://maligue2.fr |
 | France | https://www.midilibre.fr |
 | France | https://www.numerama.com |
