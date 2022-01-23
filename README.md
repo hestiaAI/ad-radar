@@ -66,6 +66,7 @@ Our browser extension is likely to work on the following webpages:
 | country | webpage |
 |:-------:|---------|
 | 🌐 International | https://accuweather.com |
+| International | https://www.businessinsider.com |
 | International | https://cnn.com |
 | International | https://context.reverso.net |
 | International | https://espn.com |
@@ -91,6 +92,7 @@ Our browser extension is likely to work on the following webpages:
 | Belgium | https://levif.be |
 | Belgium | https://www.nieuwsblad.be |
 | Belgium | https://nordeclair.sudinfo.be |
+| Belgium | https://plusmagazine.knack.be |
 | Belgium | https://standaard.be |
 | ------- | ----------------------  |
 | 🇨🇦 Canada | https://www.lapresse.ca |
@@ -238,14 +240,18 @@ Our browser extension is likely to work on the following webpages:
 | 🇨🇭Switzerland | https://20min.ch |
 | Switzerland | https://ricardo.ch |
 
-
+| ------- | ----------------------  |
 Conspiracy websites  (from https://archive.is/vvpf9 )
 | Languages | webpage |
 | ----------|---------|
 | 🇫🇷 France | https://wikistrike.com |
 | 🇺🇸 USA |  https://bongino.com/ |
+| ------- | ----------------------  |
+Political blog
+|UK Right-wing | Guido Rawkes https://order-order.com |
 
-satirical websites
+
+Satirical websites
 | Languages | webpage |
 |-------|-----------------------|
 | FR    |https://www.legorafi.fr|
