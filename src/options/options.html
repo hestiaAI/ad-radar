@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ad Radar Options</title>
+  <script src="/lib/lodash-4.17.15.js"></script>
+  <script src="/js/core.js"></script>
+  <script src="/options/options.js"></script>
+  <style>
+    .error {
+      color: #c12020;
+      font-weight: bold;
+    }
+    .success {
+      color: #069129;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <label for="accessors">Accessors:</label>
+  <div>
+    <textarea id="accessors" name="accessors" rows="30" cols="50"></textarea>
+  </div>
+  <div id="accessors-error" class="error"></div>
+  <div id="save-success" class="success" style="display: none">Saved settings successfully!</div>
+  <button id="save">Save settings</button>
+</body>
+</html>
