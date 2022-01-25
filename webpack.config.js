@@ -166,6 +166,13 @@ module.exports = {
       hash: true,
       filename: 'options.html',
     }),
+    new HtmlWebpackPlugin({
+      template: path.join(viewsPath, 'visualization.html'),
+      inject: 'body',
+      chunks: ['visualization'],
+      hash: true,
+      filename: 'visualization.html',
+    }),
     // write css file(s) to build folder
     new MiniCssExtractPlugin({filename: 'css/[name].css'}),
     // copy static assets

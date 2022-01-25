@@ -8,3 +8,8 @@ export function initAds(): void {
 export function initAccessors(): void {
   browser.storage.local.set(initialAccessors);
 }
+
+export function initData(): void {
+  initAds();
+  initAccessors();
+}

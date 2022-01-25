@@ -1,3 +1,4 @@
+import Ajv, {ErrorObject} from 'ajv';
 import {LIBRARIES_OF_INTEREST, REQUIRED_FIELDS} from './index';
 
 export const accessorsJsonSchema = JSON.stringify({
@@ -152,3 +153,11 @@ export const initialAccessors = {
     },
   },
 };
+
+export function validateAccessors(
+  data: unknown
+): ErrorObject[] | null | undefined {
+  const ajv = new Ajv();
+  ajv.validate(accessorsJsonSchema, data);
+  return ajv.errors;
+}
