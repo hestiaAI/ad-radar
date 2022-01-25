@@ -32,7 +32,9 @@ const unit2bids = new MapWithArrayValues<string, Bid>();
  * @returns {string} the id of the parent of the iframe inside the id parameter
  */
 function findIframeParentIdInDiv(id: string): string {
-  return document.getElementById(id)?.querySelector('iframe')?.parentNode?.id;
+  const parent = document.getElementById(id)?.querySelector('iframe')
+    ?.parentNode as HTMLElement;
+  return parent?.id;
 }
 
 /**

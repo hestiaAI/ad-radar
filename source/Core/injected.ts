@@ -1,9 +1,17 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+import {Bid, JsObject, JsValue} from './types';
+
+interface WindowWithLibraries extends Window {
+  pbjs: JsObject;
+  googletag: JsObject;
+  apstag: JsObject;
+}
+
+declare let window: WindowWithLibraries;
+
 export function injected(EXTENSION_NAME: string): void {
   console.info(`[${EXTENSION_NAME}] script injected!`);
-
-  interface LooseObject {
-    [key: string]: LooseObject | Array<LooseObject> | unknown;
-  }
 
   /**
    * Extracts information from an object, and executes getter functions that don't expect arguments.
@@ -11,30 +19,31 @@ export function injected(EXTENSION_NAME: string): void {
    * @param maxDepth the maximum depth that we will go to in order to extract information
    * @returns {Object} a copy of the given object, but serializable
    */
-  function getAllFields(object: unknown, maxDepth = 7): unknown {
-    function recurse(val: unknown, depth: number, key = ''): unknown {
+  function getAllFields(object: JsValue, maxDepth = 7): JsValue {
+    function recurse(val: JsValue, depth: number, key = ''): JsValue {
       if (depth >= maxDepth || val === null) {
         return JSON.parse(JSON.stringify(val));
       }
       if (typeof val === 'function') {
-        const code: string = val.toString();
-        let result: unknown;
-        let error: string;
+        const result: {code: string; result?: JsValue; error?: string} = {
+          code: val.toString(),
+        };
         if (val.length === 0 && key.startsWith('get')) {
           try {
-            result = recurse(val(), depth + 1);
-          } catch (_error) {
-            error = _error.message;
+            const f = val as () => JsValue;
+            result.result = recurse(f(), depth + 1);
+          } catch (error) {
+            result.error = error.message;
           }
         }
-        return {code, result, error};
+        return result;
       }
       if (Array.isArray(val)) {
         return val.map((e) => recurse(e, depth + 1));
       }
       if (typeof val === 'object') {
         return Object.fromEntries(
-          Object.entries(val).map(([k, v]) => [k, recurse(v, depth + 1, k)]),
+          Object.entries(val).map(([k, v]) => [k, recurse(v, depth + 1, k)])
         );
       }
       return {};
@@ -48,12 +57,17 @@ export function injected(EXTENSION_NAME: string): void {
    * @param {object} message the message to be sent when it is not malformed
    * @throws {string} when the message is malformed
    */
-  function sendMessage(message: LooseObject): void {
+  function sendMessage(message: {
+    app?: string;
+    content: JsObject;
+    destination: string;
+    type: string;
+  }): void {
     if (message?.destination && message?.content) {
       const {hostname} = new URL(window.location.href);
       message.app = EXTENSION_NAME;
-      message[message.content].time = new Date().toISOString();
-      message[message.content].hostname = hostname;
+      message.content.time = new Date().toISOString();
+      message.content.hostname = hostname;
       window.postMessage(message, '*');
     } else {
       throw new Error(`[${EXTENSION_NAME}] Malformed message`);
@@ -64,12 +78,12 @@ export function injected(EXTENSION_NAME: string): void {
    * A wrapper that sends a message with the content of the given bid.
    * @param {object} bid the bid to send
    */
-  function sendBid(bid: LooseObject): void {
+  function sendBid(bid: {original: JsObject; extracted: Bid}): void {
     if (bid.extracted.cpm) {
       sendMessage({
         destination: 'content',
-        content: 'bid',
-        bid: {
+        type: 'bid',
+        content: {
           extracted: {
             ...bid.extracted,
             outdated: false,
@@ -84,11 +98,11 @@ export function injected(EXTENSION_NAME: string): void {
    * A wrapper that sends a message with the content of the given slot.
    * @param {object} slot the slot to send
    */
-  function sendSlotInfo(slot: LooseObject): void {
+  function sendSlotInfo(slot: JsObject): void {
     sendMessage({
       destination: 'content',
-      content: 'slot',
-      slot,
+      type: 'slot',
+      content: slot,
     });
   }
 
@@ -97,13 +111,13 @@ export function injected(EXTENSION_NAME: string): void {
    * @param {object} bid the pbjs bid object
    * @param {boolean} won extra information regarding whether the bid won or not
    */
-  function sendPbjsBid(bid: LooseObject, won: boolean): void {
+  function sendPbjsBid(bid: JsObject, won: boolean): void {
     sendBid({
       extracted: {
-        unitCode: bid.adUnitCode,
         bidder: bid.bidder,
         cpm: bid.cpm,
         currency: bid.currency,
+        unitCode: bid.adUnitCode,
         won,
         lib: 'pbjs',
       },
@@ -115,7 +129,7 @@ export function injected(EXTENSION_NAME: string): void {
    * A wrapper that takes a winning googletag slot/bid object and sends the relevant fields to the content script.
    * @param {object} slot the 'slot' of a slotOnload event
    */
-  function sendGoogletagWinningBid(slot: LooseObject): void {
+  function sendGoogletagWinningBid(slot: JsObject): void {
     const bid = slot.getTargetingMap();
     sendBid({
       extracted: {
@@ -134,7 +148,7 @@ export function injected(EXTENSION_NAME: string): void {
    * A wrapper that takes a winning apstag bid object and sends the relevant fields to the content script.
    * @param {object} bid the 3rd argument of apstag.renderImp
    */
-  function sendApstagWinningBid(bid: LooseObject): void {
+  function sendApstagWinningBid(bid: JsObject): void {
     sendBid({
       extracted: {
         unitCode: bid.kvMap.amznp[0],
@@ -152,7 +166,7 @@ export function injected(EXTENSION_NAME: string): void {
    * A wrapper that takes a pbjs slot object and sends the relevant fields to the content script.
    * @param {object} slot one ad unit object or an actual pbjs bid
    */
-  function sendPbjsSlotInfo(slot: LooseObject): void {
+  function sendPbjsSlotInfo(slot: JsObject): void {
     sendSlotInfo({
       id: slot.code,
       unitCode: slot.code,
@@ -165,7 +179,7 @@ export function injected(EXTENSION_NAME: string): void {
    * If all slot unitPaths are unique, they are used as unitCode, otherwise the slot id is used.
    * @param {object} slot the 'slot' of a slotResponseReceived or slotOnload event
    */
-  function sendGoogletagSlotInfo(slot: LooseObject): void {
+  function sendGoogletagSlotInfo(slot: JsObject): void {
     const paths = window.googletag
       .pubads()
       .getSlots()
@@ -185,7 +199,7 @@ export function injected(EXTENSION_NAME: string): void {
    * A wrapper that takes an apstag slot object and sends the relevant fields to the content script.
    * @param {object} slot the object given to the callback of apstag.fetchBids
    */
-  function sendApstagSlotInfo(slot): void {
+  function sendApstagSlotInfo(slot: JsObject): void {
     sendSlotInfo({
       id: slot.slotID,
       unitCode: slot.amznp ?? slot.targeting.amznp,
@@ -196,70 +210,73 @@ export function injected(EXTENSION_NAME: string): void {
 
   // For each library, specify a condition function that should be verified when applied to its object
   const conditionsToVerify = {
-    pbjs: (obj: any) => obj.getBidResponses && obj.getAllWinningBids,
-    googletag: (obj: any) => obj.pubads?.()?.getSlots,
-    apstag: (obj: any) => obj._getSlotIdToNameMapping,
+    pbjs: (obj: JsObject): boolean =>
+      !!obj.getBidResponses && !!obj.getAllWinningBids,
+    googletag: (obj: JsObject): boolean => !!obj.pubads?.()?.getSlots,
+    apstag: (obj: JsObject): boolean => !!obj._getSlotIdToNameMapping,
   };
 
   /**
    * Searches the current window for a variable whose name contains some string and that verifies some conditions.
-   * @param {string} libName the name of the object we are looking for
+   * @param {string} lib the name of the object we are looking for
    * @returns {object} the object when it is found
    * @throws {string} when the object is not found
    */
-  function findLibraryObject(libName: string) {
+  function findLibraryObject(lib: string): JsValue {
     // Regex matching a string containing the name of the library (or variations)
-    const re = new RegExp(`[\s\S]*${libName}[\s\S]*`);
+    const re = new RegExp(`[\\S]*${lib}[\\S]*`);
     // Get all variable names in window, and keep those matching regex and verifying the properties function
     const candidates: string[] = Object.keys(window).filter(
       (varName: string) =>
-        re.test(varName) && conditionsToVerify[libName](window[varName]),
+        re.test(varName) && conditionsToVerify[lib](window[varName])
     );
     // Return a variable when at least one candidate is found, otherwise throw an error
-    if (candidates.length > 0) {
-      return window[candidates[0]];
-    } else {
-      throw `${libName} not found`;
+    const [name] = candidates;
+    if (name) {
+      return window[name] as JsObject;
     }
+    throw new Error(`${lib} not found`);
   }
 
   /**
    * Listen to the given library's hooks and events in order to retrieve ad information.
-   * @param {string} libName the name of the library we are instrumenting
+   * @param {string} lib the name of the library we are instrumenting
    */
-  function instrumentLibrary(libName) {
-    if (libName === 'pbjs') {
-      window.pbjs.adUnits.forEach((unit) => sendPbjsSlotInfo(unit));
-      window.pbjs.onEvent('bidResponse', (bid) => sendPbjsBid(bid, false));
-      window.pbjs.onEvent('bidWon', (bid) => sendPbjsBid(bid, true));
-      window.pbjs.onEvent('addAdUnits', () =>
-        window.pbjs.adUnits.forEach((unit) => sendPbjsSlotInfo(unit)),
+  function instrumentLibrary(lib: string): void {
+    if (lib === 'pbjs') {
+      window.pbjs.adUnits?.forEach((unit: JsObject) => sendPbjsSlotInfo(unit));
+      window.pbjs.onEvent('bidResponse', (bid: JsObject) =>
+        sendPbjsBid(bid, false)
       );
-    } else if (libName === 'googletag') {
+      window.pbjs.onEvent('bidWon', (bid: JsObject) => sendPbjsBid(bid, true));
+      window.pbjs.onEvent('addAdUnits', () =>
+        window.pbjs.adUnits.forEach((unit: JsObject) => sendPbjsSlotInfo(unit))
+      );
+    } else if (lib === 'googletag') {
       window.googletag
         .pubads()
         .addEventListener('slotResponseReceived', (event) =>
-          sendGoogletagSlotInfo(event.slot),
+          sendGoogletagSlotInfo(event.slot)
         );
       window.googletag.pubads().addEventListener('slotOnload', (event) => {
         sendGoogletagSlotInfo(event.slot);
         sendGoogletagWinningBid(event.slot);
       });
-    } else if (libName === 'apstag') {
-      const original_fetchBids = window.apstag.fetchBids;
-      window.apstag.fetchBids = function(cfg, callback) {
-        const new_callback = (bids, info) => {
+    } else if (lib === 'apstag') {
+      const originalFetchBids = window.apstag.fetchBids;
+      window.apstag.fetchBids = (cfg, callback): unknown => {
+        const newCallback = (bids, info): unknown => {
           bids.forEach((bid) => sendApstagSlotInfo(bid));
           return callback(bids, info);
         };
-        return original_fetchBids(cfg, new_callback);
+        return originalFetchBids(cfg, newCallback);
       };
-      const original_renderImp = window.apstag.renderImp;
-      window.apstag.renderImp = function() {
-        if (arguments[2]) {
-          sendApstagWinningBid(arguments[2]);
+      const originalRenderImp = window.apstag.renderImp;
+      window.apstag.renderImp = (...args: JsObject[]): unknown => {
+        if (args[2]) {
+          sendApstagWinningBid(args[2]);
         }
-        return original_renderImp(...arguments);
+        return originalRenderImp(...args);
       };
     }
   }
@@ -269,7 +286,7 @@ export function injected(EXTENSION_NAME: string): void {
    * @param {string} lib the name of the library to search for and to instrument if found
    * @returns {number} the number of the created interval
    */
-  function createSearchAndInstrumentInterval(lib: string) {
+  function createSearchAndInstrumentInterval(lib: string): NodeJS.Timeout {
     const intervalTimeout = 2;
     const interval = setInterval(() => {
       try {
@@ -277,16 +294,24 @@ export function injected(EXTENSION_NAME: string): void {
         console.info(`[${EXTENSION_NAME}] found ${lib}`);
         clearInterval(interval);
         instrumentLibrary(lib);
-      } catch (error) {
+        // eslint-disable-next-line no-empty
+      } finally {
       }
     }, intervalTimeout);
     return interval;
   }
 
+  // Start searching for the libraries that we rely on
+  const librariesOfInterest = ['pbjs', 'googletag', 'apstag'];
+  const searchIntervals = librariesOfInterest.map((lib) =>
+    createSearchAndInstrumentInterval(lib)
+  );
+  console.info(`[${EXTENSION_NAME}] started searching for libraries !`);
+
   /**
    * This function sets a timeout to stop searching for libraries after {delay} milliseconds.
    */
-  function stopSearchingLibrariesSoon() {
+  function stopSearchingLibrariesSoon(): void {
     const delay = 2000;
     setTimeout(() => {
       searchIntervals.forEach((interval) => clearInterval(interval));
@@ -294,15 +319,8 @@ export function injected(EXTENSION_NAME: string): void {
     }, delay);
   }
 
-  // Start searching for the libraries that we rely on
-  const librariesOfInterest = ['pbjs', 'googletag', 'apstag'];
-  const searchIntervals = librariesOfInterest.map((lib) =>
-    createSearchAndInstrumentInterval(lib),
-  );
-  console.info(`[${EXTENSION_NAME}] started searching for libraries !`);
-
-  // If some of the needed libraries are not yet available once the page finished loading,
-  // then we have no hope of finding them so we stop looking.
+  // If some needed libraries are not yet available once the page finished loading,
+  // then we have no hope of finding them, so we stop looking.
   if (document.readyState === 'complete') {
     stopSearchingLibrariesSoon();
   } else {

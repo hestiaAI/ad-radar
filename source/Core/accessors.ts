@@ -1,6 +1,6 @@
 import {LIBRARIES_OF_INTEREST, REQUIRED_FIELDS} from './index';
 
-export const accessorsSchema = JSON.stringify({
+export const accessorsJsonSchema = JSON.stringify({
   $schema: 'http://json-schema.org/draft-04/schema#',
   id: 'accessors',
   type: 'object',

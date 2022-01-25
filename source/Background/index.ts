@@ -27,7 +27,7 @@ browser.runtime.onInstalled.addListener(() => {
     color: 'orange',
   });
 
-  browser.storage.local.get((store: {ads: unknown, accessors: unknown}) => {
+  browser.storage.local.get().then((store) => {
     // Initiate empty array of ads but don't reset the data if it already exists
     if (!store.ads) {
       initAds();
@@ -46,34 +46,36 @@ browser.runtime.onMessage.addListener((message, sender) => {
   ) {
     if (message.content === 'numberOfAds') {
       setProperties({
-        tabId: sender.tab.id,
+        tabId: sender.tab?.id ?? 0,
         title: `Analysed ${message.numberOfAds} ads on this page`,
         text: message.numberOfAds.toString(),
       });
     } else if (message.content === 'ad') {
-      browser.storage.local.get('ads', (data) =>
-        browser.storage.local.set({ads: data.ads.concat([message.ad])}),
-      );
+      browser.storage.local
+        .get('ads')
+        .then((data) =>
+          browser.storage.local.set({ads: data.ads.concat([message.ad])})
+        );
     }
   }
 });
 
 // Listen to tab change events (ex: tab started loading)
-browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
+browser.tabs.onUpdated.addListener((tabId: number, changeInfo) => {
   // Restore the icon to the default values
   if (changeInfo.status === 'loading') {
     setProperties({
-      tabId: tabId,
+      tabId,
       title: 'Waiting for the webpage to load',
       text: '',
     });
   }
   // If the page has finished loading and no ad was detected, inform it
   if (changeInfo.status === 'complete') {
-    browser.browserAction.getBadgeText({tabId}, (text: string) => {
+    browser.browserAction.getBadgeText({tabId}).then((text: string) => {
       if (text === '') {
         setProperties({
-          tabId: tabId,
+          tabId,
           text: '0',
           title: 'No ads detected',
         });

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {browser, Tabs} from 'webextension-polyfill-ts';
 
-import './styles.scss';
-
 function openWebPage(url: string): Promise<Tabs.Tab> {
   return browser.tabs.create({url});
 }
