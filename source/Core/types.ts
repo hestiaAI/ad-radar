@@ -10,33 +10,14 @@ export type Bid = {
 };
 
 // Accessor types
-type Constant = {
-  constant: unknown;
+export type Accessor = {
   then?: Accessor;
+  constant?: JsValue;
+  getAttribute?: string;
+  tryGetAttribute?: string;
+  callMethod?: string;
+  applyFunction?: string;
 };
-type GetAttribute = {
-  getAttribute: string;
-  then?: Accessor;
-};
-type TryGetAttribute = {
-  tryGetAttribute: string;
-  then?: Accessor;
-};
-type CallMethod = {
-  callMethod: string;
-  then?: Accessor;
-};
-type ApplyFunction = {
-  applyFunction: string;
-  then?: Accessor;
-};
-
-export type Accessor =
-  | Constant
-  | GetAttribute
-  | TryGetAttribute
-  | CallMethod
-  | ApplyFunction;
 
 export type Accessors = {
   accessors: {
@@ -51,6 +32,7 @@ export type Store = {
   accessors: Accessors;
 };
 
+// Helper types
 export type JsPrimitive =
   | string
   | number
@@ -62,12 +44,6 @@ export type JsPrimitive =
   | ((arg: JsValue) => void)
   // eslint-disable-next-line @typescript-eslint/ban-types
   | Function;
-export type JsValue = JsPrimitive | JsObject | JsArray;
 export type JsObject = {[member: string]: JsValue};
 export type JsArray = Array<JsValue>;
-
-export type PBJS = {
-  adUnits: JsObject[];
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  onEvent: (event: string, f: Function) => void;
-}
+export type JsValue = JsPrimitive | JsObject | JsArray;

@@ -16,7 +16,9 @@ import {
 
 // Injects the function 'injected' from the injected_script.js into the environment of the main page
 const script = document.createElement('script');
-script.appendChild(document.createTextNode(`(${injected})()`));
+script.appendChild(
+  document.createTextNode(`(${injected})()`)
+);
 (document.body || document.head || document.documentElement).appendChild(
   script
 );
@@ -123,7 +125,7 @@ function findIframeInDivAndShowBanner(
   return false;
 }
 
-// Catches messages coming from the injected script
+// Catch messages coming from the injected script
 window.addEventListener('message', (event) => {
   const message = event.data;
   if (message?.app !== EXTENSION_NAME) {
@@ -162,7 +164,7 @@ window.addEventListener('message', (event) => {
   }
 });
 
-// Catches messages coming from the background script
+// Catch messages coming from the background script
 browser.runtime.onMessage.addListener((message) => {
   if (
     message?.app === EXTENSION_NAME &&

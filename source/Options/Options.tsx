@@ -36,8 +36,11 @@ function validateAndSave(): void {
   }
 
   const schemaErrors = validateAccessors(accessors);
-  if (schemaErrors) {
-    showError('accessors-error', `Malformed accessors: ${schemaErrors[0]}`);
+  if (schemaErrors.length > 0) {
+    showError(
+      'accessors-error',
+      `Malformed accessors: ${schemaErrors.join('\r\n')}`
+    );
     return;
   }
 
@@ -50,10 +53,14 @@ const Options: React.FC = () => {
     <div>
       <label htmlFor="accessors">Accessors:</label>
       <div>
-        <textarea id="accessors" name="accessors" rows={30} cols={50} />
+        <textarea id="accessors" name="accessors" rows={50} cols={50} />
       </div>
-      <div id="accessors-error" className="error" style={{display: 'none'}} />
-      <div id="save-success" className="success">
+      <div
+        id="accessors-error"
+        className="error"
+        style={{whiteSpace: 'pre-line'}}
+      />
+      <div id="save-success" className="success" style={{display: 'none'}}>
         Saved settings successfully!
       </div>
       <button type="button" id="save" onClick={validateAndSave}>

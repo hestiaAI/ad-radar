@@ -50,10 +50,10 @@ const Popup: React.FC = () => {
         id="popup-download-data-button"
         onClick={downloadData}
       >
-        Download my ad data
+        Download my data
       </button>
       <button type="button" id="popup-clear-data-button" onClick={clearData}>
-        Clear my ad data
+        Clear my data
       </button>
 
       <p>
@@ -63,7 +63,7 @@ const Popup: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Hestia Labs
+          HestiaLabs
         </a>
       </p>
     </section>

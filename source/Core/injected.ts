@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import {Bid, JsObject, JsValue} from './types';
+import {accessorsEngine} from './accessors';
+import {EXTENSION_NAME} from './index';
 
 interface WindowWithLibraries extends Window {
   pbjs: JsObject;
@@ -10,7 +12,7 @@ interface WindowWithLibraries extends Window {
 
 declare let window: WindowWithLibraries;
 
-export function injected(EXTENSION_NAME: string): void {
+export function injected(): void {
   console.info(`[${EXTENSION_NAME}] script injected!`);
 
   /**
@@ -113,34 +115,19 @@ export function injected(EXTENSION_NAME: string): void {
    */
   function sendPbjsBid(bid: JsObject, won: boolean): void {
     sendBid({
-      extracted: {
-        bidder: bid.bidder,
-        cpm: bid.cpm,
-        currency: bid.currency,
-        unitCode: bid.adUnitCode,
-        won,
-        lib: 'pbjs',
-      },
+      extracted: accessorsEngine.access({won, ...bid}, accessors.pbjs),
       original: getAllFields(bid),
     });
   }
 
   /**
    * A wrapper that takes a winning googletag slot/bid object and sends the relevant fields to the content script.
-   * @param {object} slot the 'slot' of a slotOnload event
+   * @param {object} bid the 'slot' of a slotOnload event
    */
-  function sendGoogletagWinningBid(slot: JsObject): void {
-    const bid = slot.getTargetingMap();
+  function sendGoogletagWinningBid(bid: JsObject): void {
     sendBid({
-      extracted: {
-        unitCode: slot.getSlotId().getId(),
-        bidder: bid.hb_bidder?.[0],
-        cpm: parseFloat(bid.hb_pb?.[0]),
-        currency: 'USD', // TODO find if actual currency can be different
-        won: true,
-        lib: 'googletag',
-      },
-      original: getAllFields(slot),
+      extracted: accessorsEngine.access(bid, accessors.googletag),
+      original: getAllFields(bid),
     });
   }
 
@@ -150,14 +137,7 @@ export function injected(EXTENSION_NAME: string): void {
    */
   function sendApstagWinningBid(bid: JsObject): void {
     sendBid({
-      extracted: {
-        unitCode: bid.kvMap.amznp[0],
-        bidder: bid.kvMap.hb_bidder[0],
-        cpm: parseFloat(bid.kvMap.hb_pb[0]),
-        currency: 'USD', // TODO find if actual currency can be different
-        won: true,
-        lib: 'apstag',
-      },
+      extracted: accessorsEngine.access(bid, accessors.apstag),
       original: getAllFields(bid),
     });
   }

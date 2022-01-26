@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {browser, Storage} from 'webextension-polyfill-ts';
 import _ from 'lodash';
-import d3 from 'd3';
+import * as d3 from 'd3';
 import {Bid} from '../Core/types';
 
 // set the dimensions and margins of the graph

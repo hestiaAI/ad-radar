@@ -1,5 +1,4 @@
 @import "../styles/fonts";
-@import "../styles/reset";
 @import "../styles/variables";
 
 @import "~webext-base-css/webext-base.css";
@@ -10,13 +9,11 @@ body {
 }
 
 
-#options {
-  .error {
-    color: #c12020;
-    font-weight: bold;
-  }
-  .success {
-    color: #069129;
-    font-weight: bold;
-  }
+.error {
+  color: #c12020;
+  font-weight: bold;
+}
+.success {
+  color: #069129;
+  font-weight: bold;
 }

@@ -1,6 +1,7 @@
 import {Validator} from '@cfworker/json-schema';
 import {Schema} from '@cfworker/json-schema/src/types';
 import {LIBRARIES_OF_INTEREST, REQUIRED_FIELDS} from './index';
+import {Accessor, Accessors, JsObject, JsValue} from './types';
 
 export const accessorsJsonSchema: Schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
@@ -15,7 +16,10 @@ export const accessorsJsonSchema: Schema = {
       type: 'object',
       required: REQUIRED_FIELDS,
       properties: Object.fromEntries(
-        REQUIRED_FIELDS.map((field) => [field, {$ref: '#/$defs/accessor'}])
+        REQUIRED_FIELDS.map((field) => [
+          field,
+          {oneOf: [{$ref: '#/$defs/accessor'}, {type: 'null'}]},
+        ])
       ),
     },
     accessor: {
@@ -28,9 +32,7 @@ export const accessorsJsonSchema: Schema = {
         {required: ['applyFunction']},
       ],
       properties: {
-        constant: {
-          type: 'object',
-        },
+        constant: {}, // can be anything
         getAttribute: {
           type: 'string',
         },
@@ -53,7 +55,7 @@ export const accessorsJsonSchema: Schema = {
   },
 };
 
-export const initialAccessors = {
+export const initialAccessors: Accessors = {
   accessors: {
     pbjs: {
       unitCode: {
@@ -68,7 +70,9 @@ export const initialAccessors = {
       currency: {
         getAttribute: 'currency',
       },
-      won: null,
+      won: {
+        getAttribute: 'won',
+      },
     },
     googletag: {
       unitCode: {
@@ -82,7 +86,7 @@ export const initialAccessors = {
         then: {
           getAttribute: 'hb_bidder',
           then: {
-            tryGetAttribute: 0,
+            tryGetAttribute: '0',
           },
         },
       },
@@ -91,7 +95,7 @@ export const initialAccessors = {
         then: {
           getAttribute: 'hb_pb',
           then: {
-            tryGetAttribute: 0,
+            tryGetAttribute: '0',
             then: {
               applyFunction: 'parseFloat',
             },
@@ -113,7 +117,7 @@ export const initialAccessors = {
           then: {
             getAttribute: 'amznp',
             then: {
-              getAttribute: 0,
+              getAttribute: '0',
             },
           },
         },
@@ -125,7 +129,7 @@ export const initialAccessors = {
           then: {
             getAttribute: 'hb_bidder',
             then: {
-              getAttribute: 0,
+              getAttribute: '0',
             },
           },
         },
@@ -137,7 +141,7 @@ export const initialAccessors = {
           then: {
             getAttribute: 'hb_pb',
             then: {
-              getAttribute: 0,
+              getAttribute: '0',
               then: {
                 applyFunction: 'parseFloat',
               },
@@ -160,3 +164,61 @@ const validator = new Validator(accessorsJsonSchema);
 export function validateAccessors(data: unknown): string[] {
   return validator.validate(data).errors.map((output) => output.error);
 }
+
+const functions: {[key: string]: (val: JsValue) => JsValue} = {
+  // serves as an example
+  identity(value) {
+    return value;
+  },
+  parseFloat(value) {
+    return parseFloat(value as string);
+  },
+};
+
+function access(value: JsValue, accessor: Accessor): JsValue {
+  let result: JsValue;
+  const {
+    constant,
+    getAttribute,
+    tryGetAttribute,
+    callMethod,
+    applyFunction,
+    then,
+  } = accessor;
+
+  if (constant) {
+    result = constant;
+  } else if (getAttribute) {
+    result = (value as JsObject)[getAttribute];
+  } else if (tryGetAttribute) {
+    if (value) {
+      result = (value as JsObject)[tryGetAttribute];
+    } else {
+      result = null;
+    }
+  } else if (callMethod) {
+    result = ((value as JsObject)[callMethod] as () => JsValue)();
+  } else if (applyFunction) {
+    result = functions[applyFunction](value);
+  } else {
+    throw new Error(`Unknown accessor type.`);
+  }
+  if (then) {
+    result = access(result, then);
+  }
+  return result;
+}
+export function accessAll(
+  value: JsObject,
+  accessors: {[field: string]: Accessor}
+): JsValue {
+  return Object.fromEntries(
+    Object.entries(accessors).map(([k, v]) => [k, access(value, v)])
+  );
+}
+
+export const accessorEngine = {
+  accessAll,
+  access,
+  functions,
+};
