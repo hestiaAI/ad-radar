@@ -27,11 +27,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
+    "@cfworker/json-schema": "^1.12.1",
     "@types/d3": "^7.1.0",
     "@types/file-saver": "^2.0.5",
     "@types/lodash": "^4.14.178",
     "advanced-css-reset": "^1.2.2",
-    "ajv": "^8.9.0",
     "d3": "^7.3.0",
     "emoji-log": "^1.0.2",
     "file-saver": "^2.0.5",

@@ -3,6 +3,8 @@ import {browser} from 'webextension-polyfill-ts';
 import {saveAs} from 'file-saver';
 import {initData} from '../Core/storage';
 
+import './styles.scss';
+
 function goToHistory(): void {
   // Try to find a tab in this window already containing the history.html page, if found switch to it, if not create it
   browser.tabs

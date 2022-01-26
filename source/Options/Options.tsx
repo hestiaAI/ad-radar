@@ -3,12 +3,14 @@ import {browser} from 'webextension-polyfill-ts';
 import {JsObject} from '../Core/types';
 import {validateAccessors} from '../Core/accessors';
 
-// TODO
-//  document.addEventListener("DOMContentLoaded", () => {
-//    browser.storage.local.get(store => {
-//      document.getElementById("accessors").value = JSON.stringify(store.accessors, null, 2)
-//    })
-//  });
+import './styles.scss';
+
+document.addEventListener('DOMContentLoaded', () => {
+  browser.storage.local.get().then((store) => {
+    (document.getElementById('accessors') as HTMLTextAreaElement).value =
+      JSON.stringify(store.accessors, null, 2);
+  });
+});
 
 function showError(id: string, error: string): void {
   const element = document.getElementById(id);
@@ -35,10 +37,7 @@ function validateAndSave(): void {
 
   const schemaErrors = validateAccessors(accessors);
   if (schemaErrors) {
-    showError(
-      'accessors-error',
-      `Malformed accessors: ${schemaErrors[0].message}`
-    );
+    showError('accessors-error', `Malformed accessors: ${schemaErrors[0]}`);
     return;
   }
 
@@ -51,7 +50,7 @@ const Options: React.FC = () => {
     <div>
       <label htmlFor="accessors">Accessors:</label>
       <div>
-        <textarea id="accessors" name="accessors" rows={30} cols={50} value={browser.storage.local.get('accessors').then(JSON.stringify)}/>
+        <textarea id="accessors" name="accessors" rows={30} cols={50} />
       </div>
       <div id="accessors-error" className="error" style={{display: 'none'}} />
       <div id="save-success" className="success">

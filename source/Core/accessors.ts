@@ -1,9 +1,10 @@
-import Ajv, {ErrorObject} from 'ajv';
+import {Validator} from '@cfworker/json-schema';
+import {Schema} from '@cfworker/json-schema/src/types';
 import {LIBRARIES_OF_INTEREST, REQUIRED_FIELDS} from './index';
 
-export const accessorsJsonSchema = JSON.stringify({
+export const accessorsJsonSchema: Schema = {
   $schema: 'http://json-schema.org/draft-04/schema#',
-  id: 'accessors',
+  $id: 'accessors',
   type: 'object',
   required: LIBRARIES_OF_INTEREST,
   properties: Object.fromEntries(
@@ -14,7 +15,7 @@ export const accessorsJsonSchema = JSON.stringify({
       type: 'object',
       required: REQUIRED_FIELDS,
       properties: Object.fromEntries(
-        REQUIRED_FIELDS.map((field) => [field, {$ref: '#/defs/accessor'}])
+        REQUIRED_FIELDS.map((field) => [field, {$ref: '#/$defs/accessor'}])
       ),
     },
     accessor: {
@@ -50,7 +51,7 @@ export const accessorsJsonSchema = JSON.stringify({
       additionalProperties: false,
     },
   },
-});
+};
 
 export const initialAccessors = {
   accessors: {
@@ -154,10 +155,8 @@ export const initialAccessors = {
   },
 };
 
-export function validateAccessors(
-  data: unknown
-): ErrorObject[] | null | undefined {
-  const ajv = new Ajv();
-  ajv.validate(accessorsJsonSchema, data);
-  return ajv.errors;
+const validator = new Validator(accessorsJsonSchema);
+
+export function validateAccessors(data: unknown): string[] {
+  return validator.validate(data).errors.map((output) => output.error);
 }

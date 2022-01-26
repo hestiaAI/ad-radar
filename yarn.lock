@@ -999,6 +999,11 @@
     "@babel/helper-validator-identifier" "^7.14.0"
     "to-fast-properties" "^2.0.0"
 
+"@cfworker/json-schema@^1.12.1":
+  "integrity" "sha512-ZVhk1DKw19sBJgO7OHBsvNAzDfHMzpFI0DCkOLTZHb0dccmS+EM8rwwAYh5eaNmD5t8/nCbZ2ZeGzbDQdOzokQ=="
+  "resolved" "https://registry.npmjs.org/@cfworker/json-schema/-/json-schema-1.12.1.tgz"
+  "version" "1.12.1"
+
 "@discoveryjs/json-ext@^0.5.0":
   "integrity" "sha512-Fxt+AfXgjMoin2maPIYzFZnQjAXjAL0PHscM5pRTtatFqB+vZxAM9tLp2Optnuw3QOQC40jTNeGYFOMvyf7v9g=="
   "resolved" "https://registry.npmjs.org/@discoveryjs/json-ext/-/json-ext-0.5.3.tgz"
@@ -1819,7 +1824,7 @@
     "json-schema-traverse" "^0.4.1"
     "uri-js" "^4.2.2"
 
-"ajv@^8.0.1", "ajv@^8.9.0", "ajv@>=5.0.0":
+"ajv@^8.0.1", "ajv@>=5.0.0":
   "integrity" "sha512-qOKJyNj/h+OWx7s5DePL6Zu1KeM9jPZhwBqs+7DzP6bGOvqzVCSf0xueYmVuaC/oQ/VtS2zLMLHdQFbkka+XDQ=="
   "resolved" "https://registry.npmjs.org/ajv/-/ajv-8.9.0.tgz"
   "version" "8.9.0"
