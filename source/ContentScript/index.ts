@@ -1,6 +1,5 @@
 import {browser} from 'webextension-polyfill-ts';
 import {EXTENSION_NAME, TIME_TO_OUTDATE_BID_MS} from '../Core';
-import {injected} from '../Core/injected';
 import {
   MapWithArrayValues,
   MapWithSetValues,
@@ -16,12 +15,11 @@ import {
 
 // Injects the function 'injected' from the injected_script.js into the environment of the main page
 const script = document.createElement('script');
-script.appendChild(
-  document.createTextNode(`(${injected})()`)
-);
-(document.body || document.head || document.documentElement).appendChild(
-  script
-);
+script.src = browser.runtime.getURL('js/injected.bundle.js');
+script.onload = function onload(): void {
+  script.parentNode!.removeChild(script);
+};
+(document.head || document.documentElement).appendChild(script);
 
 // We store the information retrieved from the injected script here
 const id2units = new MapWithSetValues<string, string>();
@@ -99,7 +97,7 @@ function showBanner(id: string): void {
   browser.runtime.sendMessage({
     app: EXTENSION_NAME,
     destination: 'background',
-    content: 'numberOfAds',
+    type: 'numberOfAds',
     numberOfAds: document.querySelectorAll(`.${BANNER_CLASS}`).length,
   });
 }
@@ -132,8 +130,8 @@ window.addEventListener('message', (event) => {
     return;
   }
   if (message.destination === 'content') {
-    if (message.content === 'bid') {
-      const bidInfo = message.bid.extracted;
+    if (message.type === 'bid') {
+      const bidInfo = message.content.extracted;
       // Outdate old bids from previous auctions for the same slot (as in wired.com)
       unit2bids.mapValues(bidInfo.unitCode, (bid) =>
         bidInfo.time - bid.time > TIME_TO_OUTDATE_BID_MS
@@ -147,19 +145,30 @@ window.addEventListener('message', (event) => {
         browser.runtime.sendMessage({
           ...message,
           destination: 'background',
-          content: 'ad',
-          ad: message.bid,
+          type: 'ad',
+          ad: message.content,
         });
       }
-    } else if (message.content === 'slot') {
-      if (!findIframeInDivAndShowBanner(message.slot.id, message.slot)) {
+    } else if (message.type === 'slot') {
+      if (!findIframeInDivAndShowBanner(message.content.id, message.content)) {
         const candidates = document.querySelectorAll(
-          `[id*='${message.slot.unitCode}']`
+          `[id*='${message.content.unitCode}']`
         );
         if (candidates?.length === 1) {
-          findIframeInDivAndShowBanner(candidates[0].id, message.slot);
+          findIframeInDivAndShowBanner(candidates[0].id, message.content);
         }
       }
+    } else if (message.type === 'getAccessors') {
+      browser.storage.local.get('accessors').then((store) => {
+        window.postMessage(
+          {
+            app: EXTENSION_NAME,
+            destination: 'injected',
+            content: store.accessors,
+          },
+          '*'
+        );
+      });
     }
   }
 });

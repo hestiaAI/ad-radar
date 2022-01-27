@@ -2,14 +2,14 @@ import * as React from 'react';
 import {browser, Storage} from 'webextension-polyfill-ts';
 import _ from 'lodash';
 import * as d3 from 'd3';
-import {Bid} from '../Core/types';
+import {JsObject} from '../Core/types';
 
 // set the dimensions and margins of the graph
 const margin = {top: 30, right: 30, bottom: 70, left: 60};
 const width = 0.8 * window.innerWidth - margin.left - margin.right;
 const height = 0.8 * window.innerHeight - margin.bottom;
 
-function showHistory(rawAds: Bid[]): void {
+function showHistory(rawAds: JsObject[]): void {
   const div = d3.select('#viz-container');
   div.selectChildren().remove();
 
@@ -25,7 +25,7 @@ function showHistory(rawAds: Bid[]): void {
     _.groupBy(rawAds, 'hostname')
   ).map(([hostname, v]) => ({
     hostname,
-    revenue: d3.sum(v.map((b) => b.cpm)) / 1000,
+    revenue: d3.sum(v.map((b) => (b.extracted as {cpm: number}).cpm)) / 1000,
   }));
 
   const svg = div
@@ -80,11 +80,7 @@ function showHistory(rawAds: Bid[]): void {
 }
 
 function getDataAndCallViz(): void {
-  browser.storage.local
-    .get('ads')
-    .then((data) =>
-      showHistory(data.ads.map((ad: {[key: string]: unknown}) => ad.extracted))
-    );
+  browser.storage.local.get('ads').then((data) => showHistory(data.ads));
 }
 
 function handleStorageChange(
@@ -92,9 +88,7 @@ function handleStorageChange(
   areaName: string
 ): void {
   if (areaName === 'local') {
-    showHistory(
-      changes.ads.newValue.map((ad: {[key: string]: unknown}) => ad.extracted)
-    );
+    showHistory(changes.ads.newValue);
   }
 }
 

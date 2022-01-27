@@ -55,7 +55,7 @@ export const accessorsJsonSchema: Schema = {
   },
 };
 
-export const initialAccessors: Accessors = {
+export const initialAccessors: {accessors: Accessors} = {
   accessors: {
     pbjs: {
       unitCode: {
@@ -208,10 +208,11 @@ function access(value: JsValue, accessor: Accessor): JsValue {
   }
   return result;
 }
-export function accessAll(
+
+function accessAll(
   value: JsObject,
   accessors: {[field: string]: Accessor}
-): JsValue {
+): JsObject {
   return Object.fromEntries(
     Object.entries(accessors).map(([k, v]) => [k, access(value, v)])
   );
@@ -219,6 +220,5 @@ export function accessAll(
 
 export const accessorEngine = {
   accessAll,
-  access,
   functions,
 };

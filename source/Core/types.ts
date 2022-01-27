@@ -20,10 +20,8 @@ export type Accessor = {
 };
 
 export type Accessors = {
-  accessors: {
-    [key: string]: {
-      [key: string]: Accessor;
-    };
+  [key: string]: {
+    [key: string]: Accessor;
   };
 };
 

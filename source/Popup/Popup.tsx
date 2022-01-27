@@ -9,7 +9,7 @@ function goToHistory(): void {
   // Try to find a tab in this window already containing the history.html page, if found switch to it, if not create it
   browser.tabs
     .query({
-      url: browser.runtime.getURL('/history.html'),
+      url: browser.runtime.getURL('/visualization.html'),
       windowId: browser.windows.WINDOW_ID_CURRENT,
     })
     .then((tabs) => {

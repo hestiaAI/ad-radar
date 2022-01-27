@@ -61,5 +61,7 @@
     "js": [
       "js/contentScript.bundle.js"
     ]
-  }]
+  }],
+
+  "web_accessible_resources": ["js/injected.bundle.js"]
 }

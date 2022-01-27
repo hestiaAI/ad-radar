@@ -38,23 +38,23 @@ browser.runtime.onInstalled.addListener(() => {
   });
 });
 
-// Listen for messages coming from content_script.js (which sometimes relays messages from injected_script.js)
+// Listen for messages coming from ContentScript (which sometimes relays messages from Injected)
 browser.runtime.onMessage.addListener((message, sender) => {
   if (
     message?.app === EXTENSION_NAME &&
     message?.destination === 'background'
   ) {
-    if (message.content === 'numberOfAds') {
+    if (message.type === 'numberOfAds') {
       setProperties({
         tabId: sender.tab?.id ?? 0,
-        title: `Analysed ${message.numberOfAds} ads on this page`,
+        title: `Analysed ${message.content} ads on this page`,
         text: message.numberOfAds.toString(),
       });
-    } else if (message.content === 'ad') {
+    } else if (message.type === 'ad') {
       browser.storage.local
         .get('ads')
         .then((data) =>
-          browser.storage.local.set({ads: data.ads.concat([message.ad])})
+          browser.storage.local.set({ads: data.ads.concat([message.content])})
         );
     }
   }
