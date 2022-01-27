@@ -66,6 +66,7 @@ Our browser extension is likely to work on the following webpages:
 |     country      | webpage                                 |
 |:----------------:|-----------------------------------------|
 | 🌐 International | https://accuweather.com                 |
+|  International   | https://www.businessinsider.com         |
 |  International   | https://cnn.com                         |
 |  International   | https://context.reverso.net             |
 |  International   | https://espn.com                        |
@@ -91,6 +92,7 @@ Our browser extension is likely to work on the following webpages:
 |     Belgium      | https://levif.be                        |
 |     Belgium      | https://www.nieuwsblad.be               |
 |     Belgium      | https://nordeclair.sudinfo.be           |
+|     Belgium      | https://plusmagazine.knack.be           |
 |     Belgium      | https://standaard.be                    |
 |     -------      | ----------------------                  |
 |   🇨🇦 Canada    | https://www.lapresse.ca                 |
@@ -102,9 +104,11 @@ Our browser extension is likely to work on the following webpages:
 |      France      | https://www.actuabd.com                 |
 |      France      | https://www.allocine.fr                 | 
 |      France      | https://www.aufeminin.com               |
+|      France      | https://www.bienpublic.com              |
 |      France      | https://www.capital.fr                  |
 |      France      | https://www.courrierinternational.com   |
 |      France      | https://www.courrier-picard.fr          |
+|      France      | https://www.dna.fr                      |
 |      France      | https://fr.euronews.com                 |
 |      France      | https://www.futura-sciences.com         |
 |      France      | https://www.gala.fr                     |
@@ -112,16 +116,21 @@ Our browser extension is likely to work on the following webpages:
 |      France      | https://www.hbrfrance.fr                |
 |      France      | https://www.iphon.fr                    | 
 |      France      | https://www.jeuxvideo.com               |  
-|      France      | https://latribune.fr                    |
+|      France      | https://www.lalsace.fr                  |
+|      France      | https://www.ladepeche.fr                |
 |      France      | https://www.lamontagne.fr               |
+|      France      | https://latribune.fr                    |
+|      France      | https://www.lavoixdunord.fr             |
 |      France      | https://ledauphine.com                  |
 |      France      | https://www.lejdc.fr                    |
+|      France      | https://www.lejsl.com                   |
 |      France      | https://www.leprogres.fr                |
 |      France      | https://www.lesnumeriques.com           |
 |      France      | https://www.lessorsavoyard.fr           |
 |      France      | https://www.letelegramme.fr             |
 |      France      | https://www.linguee.fr                  |
 |      France      | https://www.lyonmag.com                 |
+|      France      | https://www.lyonne.fr                   |
 |      France      | https://maligue2.fr                     |
 |      France      | https://www.midilibre.fr                |
 |      France      | https://www.numerama.com                |
@@ -230,15 +239,21 @@ Our browser extension is likely to work on the following webpages:
 |     -------      | ----------------------                  |
 | 🇨🇭Switzerland  | https://20min.ch                        |
 |   Switzerland    | https://ricardo.ch                      |
-
+|     -------      | ----------------------                  |
 
 Conspiracy websites  (from https://archive.is/vvpf9 )
 | Languages | webpage |
 | ----------|---------|
 | 🇫🇷 France | https://wikistrike.com |
 | 🇺🇸 USA |  https://bongino.com/ |
+| ------- | ----------------------  |
 
-satirical websites
+Political blog
+|  | webpage |
+|UK Right-wing | Guido Rawkes https://order-order.com |
+
+
+Satirical websites
 | Languages | webpage |
 |-------|-----------------------|
 | FR    |https://www.legorafi.fr|
