@@ -1,0 +1,17 @@
+@import "../styles/fonts";
+@import "../styles/variables";
+
+body {
+  color: $black;
+  background-color: $greyWhite;
+}
+
+
+.error {
+  color: #c12020;
+  font-weight: bold;
+}
+.success {
+  color: #069129;
+  font-weight: bold;
+}

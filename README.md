@@ -49,8 +49,8 @@ Then:
 1. Go to one of the webpages in our [list of compatible webpages](#list-of-compatible-webpages)
 2. Wait for the page and its ads to finish loading
 3. Ad Radar shows:
-   1. a red banner next to the ads that it detected and show the prices that were paid for them
-   2. the number of detected ads on the icon of the extension
+  1. a red banner next to the ads that it detected and show the prices that were paid for them
+  2. the number of detected ads on the icon of the extension
 
 ## Understanding the banners
 Ad Radar shows a red banner next to the ads that it detected, showing the cost of the ad in CPM (cost per mille, e.g. the price paid for a thousand impressions).
@@ -63,183 +63,183 @@ There are 3 possibilities when Ad Radar detects an ad:
 ## List of compatible webpages
 Our browser extension is likely to work on the following webpages:
 
-| country | webpage |
-|:-------:|---------|
-| 🌐 International | https://accuweather.com |
-| International | https://www.businessinsider.com |
-| International | https://cnn.com |
-| International | https://context.reverso.net |
-| International | https://espn.com |
-| International | https://www.eurogamer.net |
-| International | https://futurism.com |
-| International | https://www.gamespot.com |
-| International | https://www.linguee.com |
-| International | https://www.metacritic.com |
-| International | https://www.researchgate.net |
-| International | https://www.reverso.net |
-| International | https://theguardian.com |
-| International | https://vice.com |
-| ------- | ----------------------  |
-| 🇧🇪 Belgium | https://www.dhnet.be |
-| Belgium | https://www.gva.be |
-| Belgium | https://www.hbvl.be |
-| Belgium | https://fr.metrotime.be |
-| Belgium | https://nl.metrotime.be |
-| Belgium | https://lacapitale.sudinfo.be |
-| Belgium | https://lanouvellegazette.sudinfo.be |
-| Belgium | https://lameuse.sudinfo.be |
-| Belgium | https://laprovince.sudinfo.be |
-| Belgium | https://levif.be |
-| Belgium | https://www.nieuwsblad.be |
-| Belgium | https://nordeclair.sudinfo.be |
-| Belgium | https://plusmagazine.knack.be |
-| Belgium | https://standaard.be |
-| ------- | ----------------------  |
-| 🇨🇦 Canada | https://www.lapresse.ca |
-| ------- | ----------------------  |
-| 🇫🇷 France | https://www.20minutes.fr |
-| France | https://www.750g.com |
-| France | https://lemonde.fr | 
-| France | https://actu.fr | 
-| France | https://www.actuabd.com |
-| France | https://www.allocine.fr | 
-| France | https://www.aufeminin.com |
-| France | https://www.bienpublic.com |
-| France | https://www.capital.fr |
-| France | https://www.courrierinternational.com |
-| France | https://www.courrier-picard.fr |
-| France | https://www.dna.fr  |
-| France | https://fr.euronews.com |
-| France | https://www.futura-sciences.com |
-| France | https://www.gala.fr |
-| France | https://www.gamekult.com |
-| France | https://www.hbrfrance.fr |
-| France | https://www.iphon.fr | 
-| France | https://www.jeuxvideo.com |  
-| France | https://www.lalsace.fr |
-| France | https://www.ladepeche.fr|
-| France | https://www.lamontagne.fr 
-| France | https://latribune.fr |
-| France | https://www.lavoixdunord.fr |
-| France | https://ledauphine.com |
-| France | https://www.lejdc.fr |
-| France | https://www.lejsl.com |
-| France | https://www.leprogres.fr |
-| France | https://www.lesnumeriques.com |
-| France | https://www.lessorsavoyard.fr |
-| France | https://www.letelegramme.fr |
-| France | https://www.linguee.fr |
-| France | https://www.lyonmag.com |
-| France | https://www.lyonne.fr |
-| France | https://maligue2.fr |
-| France | https://www.midilibre.fr |
-| France | https://www.numerama.com |
-| France | https://www.orange.fr | 
-| France | https://www.pcastuces.com/| 
-| France | https://www.programme-tv.net| 
-| France | https://www.psychologies.com |
-| France | https://www.purepeople.com | 
-| France | https://www.republicain-lorrain.fr |
-| France | http://www.slate.fr |
-| France | https://www.sudouest.fr  |
-| France | https://telestar.fr |
-| France | https://www.telerama.fr |
-| France | https://www.timeout.fr | 
-| France | https://www.tripadvisor.fr |
-| France | https://www.varmatin.com |
-| France | https://www.vinted.fr | 
-| France | https://www.vosgesmatin.fr |
-| ------- | ----------------------  |
-| 🇫🇮 Finland | https://aamuposti.fi |
-| Finland | https://www.deitti.net |
-| Finland | https://esaimaa.fi |
-| Finland | https://forssanlehti.fi |
-| Finland | https://hs.fi |
-| Finland | https://hameensanomat.fi |
-| Finland | https://iltalehti.fi |
-| Finland | https://www.inferno.fi |
-| Finland | https://ita-savo.fi |
-| Finland | https://is.fi |
-| Finland | https://kouvolansanomat.fi |
-| Finland | https://kraatti.fi |
-| Finland | https://loviisansanomat.fi |
-| Finland | https://lansi-savo.fi |
-| Finland | https://maaseuduntulevaisuus.fi |
-| Finland | https://savonsanomat.fi |
-| Finland | https://www.sijoitustieto.fi |
-| Finland | https://www.suomi24.fi |
-| Finland | https://uusisuomi.fi |
-| Finland | https://uusimaa.fi |
-| ------- | ----------------------  |
-| 🇩🇪 Germany |  https://www.auto-motor-und-sport.de |
-| Germany | https://www.bildderfrau.de |
-| Germany | https://www.abendblatt.de |
-| Germany | https://www.bunte.de |
-| Germany | https://www.express.de |
-| Germany | https://fnp.de |
-| Germany | https://ga.de |
-| Germany | https://www.heise.de |
-| Germany | https://www.hna.de |
-| Germany | https://www.mz.de |
-| Germany | https://www.nordbayern.de |
-| Germany | https://www.onmeda.de |
-| Germany | https://rp-online.de|
-| Germany | https://www.schwarzwaelder-bote.de |
-| Germany | https://www.stuttgarter-zeitung.de |
-| Germany | https://www.swp.de |
-| Germany | https://www.tv14.de |
-| Germany | https://www.tvdigital.de |
-| Germany | https://www.tvdirekt.de |
-| Germany | https://www.tz.de |
-| Germany | https://www.wa.de |
-| Germany | https://www.weser-kurier.de|
-| Germany | https://www.westfalen-blatt.de |
-| Germany | https://www.wn.de |
-| Germany | https://www.wp.de |
-| Germany | https://www.zeit.de |
-| ------- | ----------------------  |
-| Monaco  | https://www.monacomatin.mc |
-| ------- | ----------------------  |
-| 🇪🇸 Spain |https://www.20minutos.es |
-| Spain | https://www.abc.es  |
-| Spain | https://as.com |
-| Spain | https://www.atlantico.net |
-| Spain | https://cadenaser.com |
-| Spain | https://www.canarias7.es |
-| Spain | https://www.deia.eus |
-| Spain | http://www.diarioya.es |
-| Spain | https://www.diariodealmeria.es |
-| Spain | https://www.diariodeibiza.es |
-| Spain | https://www.diariodecadiz.es |
-| Spain | https://www.diariodesevilla.es
-| Spain | https://www.eldiario.es  |
-| Spain | https://www.elcorreo.com |
-| Spain | https://www.eldia.es |
-| Spain | https://www.elidealgallego.com |
-| Spain | https://www.elnortedecastilla.es |
-| Spain | https://www.elperiodicodearagon.com |
-| Spain | https://www.elperiodicomediterraneo.com |
-| Spain | https://www.europasur.es |
-| Spain | https://www.elmundo.es  |
-| Spain | https://elpais.com |
-| Spain | https://www.larazon.es |
-| Spain | https://www.lavanguardia.com |
-| Spain | https://www.marca.com |
-| Spain | https://www.niusdiario.es |
-| Spain | https://www.superdeporte.es |
-| Spain | https://www.farodevigo.es |
-| Spain | https://www.granadahoy.com |
-| Spain | https://www.laopiniondemurcia.es |
-| Spain | https://www.lasprovincias.es|
-| Spain | https://www.lne.es |
-| Spain | https://www.mundodeportivo.com |
-| Spain | https://www.segre.com |
-| Spain | https://www.sport.es|
-| Spain | https://www.ultimahora.es|
-| ------- | ----------------------  |
-| 🇨🇭Switzerland | https://20min.ch |
-| Switzerland | https://ricardo.ch |
-| ------- | ----------------------  |
+|     country      | webpage                                 |
+|:----------------:|-----------------------------------------|
+| 🌐 International | https://accuweather.com                 |
+|  International   | https://www.businessinsider.com         |
+|  International   | https://cnn.com                         |
+|  International   | https://context.reverso.net             |
+|  International   | https://espn.com                        |
+|  International   | https://www.eurogamer.net               |
+|  International   | https://futurism.com                    |
+|  International   | https://www.gamespot.com                |
+|  International   | https://www.linguee.com                 |
+|  International   | https://www.metacritic.com              |
+|  International   | https://www.researchgate.net            |
+|  International   | https://www.reverso.net                 |
+|  International   | https://theguardian.com                 |
+|  International   | https://vice.com                        |
+|     -------      | ----------------------                  |
+|   🇧🇪 Belgium   | https://www.dhnet.be                    |
+|     Belgium      | https://www.gva.be                      |
+|     Belgium      | https://www.hbvl.be                     |
+|     Belgium      | https://fr.metrotime.be                 |
+|     Belgium      | https://nl.metrotime.be                 |
+|     Belgium      | https://lacapitale.sudinfo.be           |
+|     Belgium      | https://lanouvellegazette.sudinfo.be    |
+|     Belgium      | https://lameuse.sudinfo.be              |
+|     Belgium      | https://laprovince.sudinfo.be           |
+|     Belgium      | https://levif.be                        |
+|     Belgium      | https://www.nieuwsblad.be               |
+|     Belgium      | https://nordeclair.sudinfo.be           |
+|     Belgium      | https://plusmagazine.knack.be           |
+|     Belgium      | https://standaard.be                    |
+|     -------      | ----------------------                  |
+|   🇨🇦 Canada    | https://www.lapresse.ca                 |
+|     -------      | ----------------------                  |
+|   🇫🇷 France    | https://www.20minutes.fr                |
+|      France      | https://www.750g.com                    |
+|      France      | https://lemonde.fr                      | 
+|      France      | https://actu.fr                         | 
+|      France      | https://www.actuabd.com                 |
+|      France      | https://www.allocine.fr                 | 
+|      France      | https://www.aufeminin.com               |
+|      France      | https://www.bienpublic.com              |
+|      France      | https://www.capital.fr                  |
+|      France      | https://www.courrierinternational.com   |
+|      France      | https://www.courrier-picard.fr          |
+|      France      | https://www.dna.fr                      |
+|      France      | https://fr.euronews.com                 |
+|      France      | https://www.futura-sciences.com         |
+|      France      | https://www.gala.fr                     |
+|      France      | https://www.gamekult.com                |
+|      France      | https://www.hbrfrance.fr                |
+|      France      | https://www.iphon.fr                    | 
+|      France      | https://www.jeuxvideo.com               |  
+|      France      | https://www.lalsace.fr                  |
+|      France      | https://www.ladepeche.fr                |
+|      France      | https://www.lamontagne.fr               |
+|      France      | https://latribune.fr                    |
+|      France      | https://www.lavoixdunord.fr             |
+|      France      | https://ledauphine.com                  |
+|      France      | https://www.lejdc.fr                    |
+|      France      | https://www.lejsl.com                   |
+|      France      | https://www.leprogres.fr                |
+|      France      | https://www.lesnumeriques.com           |
+|      France      | https://www.lessorsavoyard.fr           |
+|      France      | https://www.letelegramme.fr             |
+|      France      | https://www.linguee.fr                  |
+|      France      | https://www.lyonmag.com                 |
+|      France      | https://www.lyonne.fr                   |
+|      France      | https://maligue2.fr                     |
+|      France      | https://www.midilibre.fr                |
+|      France      | https://www.numerama.com                |
+|      France      | https://www.orange.fr                   | 
+|      France      | https://www.pcastuces.com/              | 
+|      France      | https://www.programme-tv.net            | 
+|      France      | https://www.psychologies.com            |
+|      France      | https://www.purepeople.com              | 
+|      France      | https://www.republicain-lorrain.fr      |
+|      France      | http://www.slate.fr                     |
+|      France      | https://www.sudouest.fr                 |
+|      France      | https://telestar.fr                     |
+|      France      | https://www.telerama.fr                 |
+|      France      | https://www.timeout.fr                  | 
+|      France      | https://www.tripadvisor.fr              |
+|      France      | https://www.varmatin.com                |
+|      France      | https://www.vinted.fr                   | 
+|      France      | https://www.vosgesmatin.fr              |
+|     -------      | ----------------------                  |
+|   🇫🇮 Finland   | https://aamuposti.fi                    |
+|     Finland      | https://www.deitti.net                  |
+|     Finland      | https://esaimaa.fi                      |
+|     Finland      | https://forssanlehti.fi                 |
+|     Finland      | https://hs.fi                           |
+|     Finland      | https://hameensanomat.fi                |
+|     Finland      | https://iltalehti.fi                    |
+|     Finland      | https://www.inferno.fi                  |
+|     Finland      | https://ita-savo.fi                     |
+|     Finland      | https://is.fi                           |
+|     Finland      | https://kouvolansanomat.fi              |
+|     Finland      | https://kraatti.fi                      |
+|     Finland      | https://loviisansanomat.fi              |
+|     Finland      | https://lansi-savo.fi                   |
+|     Finland      | https://maaseuduntulevaisuus.fi         |
+|     Finland      | https://savonsanomat.fi                 |
+|     Finland      | https://www.sijoitustieto.fi            |
+|     Finland      | https://www.suomi24.fi                  |
+|     Finland      | https://uusisuomi.fi                    |
+|     Finland      | https://uusimaa.fi                      |
+|     -------      | ----------------------                  |
+|   🇩🇪 Germany   | https://www.auto-motor-und-sport.de     |
+|     Germany      | https://www.bildderfrau.de              |
+|     Germany      | https://www.abendblatt.de               |
+|     Germany      | https://www.bunte.de                    |
+|     Germany      | https://www.express.de                  |
+|     Germany      | https://fnp.de                          |
+|     Germany      | https://ga.de                           |
+|     Germany      | https://www.heise.de                    |
+|     Germany      | https://www.hna.de                      |
+|     Germany      | https://www.mz.de                       |
+|     Germany      | https://www.nordbayern.de               |
+|     Germany      | https://www.onmeda.de                   |
+|     Germany      | https://rp-online.de                    |
+|     Germany      | https://www.schwarzwaelder-bote.de      |
+|     Germany      | https://www.stuttgarter-zeitung.de      |
+|     Germany      | https://www.swp.de                      |
+|     Germany      | https://www.tv14.de                     |
+|     Germany      | https://www.tvdigital.de                |
+|     Germany      | https://www.tvdirekt.de                 |
+|     Germany      | https://www.tz.de                       |
+|     Germany      | https://www.wa.de                       |
+|     Germany      | https://www.weser-kurier.de             |
+|     Germany      | https://www.westfalen-blatt.de          |
+|     Germany      | https://www.wn.de                       |
+|     Germany      | https://www.wp.de                       |
+|     Germany      | https://www.zeit.de                     |
+|     -------      | ----------------------                  |
+|      Monaco      | https://www.monacomatin.mc              |
+|     -------      | ----------------------                  |
+|    🇪🇸 Spain    | https://www.20minutos.es                |
+|      Spain       | https://www.abc.es                      |
+|      Spain       | https://as.com                          |
+|      Spain       | https://www.atlantico.net               |
+|      Spain       | https://cadenaser.com                   |
+|      Spain       | https://www.canarias7.es                |
+|      Spain       | https://www.deia.eus                    |
+|      Spain       | http://www.diarioya.es                  |
+|      Spain       | https://www.diariodealmeria.es          |
+|      Spain       | https://www.diariodeibiza.es            |
+|      Spain       | https://www.diariodecadiz.es            |
+|      Spain       | https://www.diariodesevilla.es          |
+|      Spain       | https://www.eldiario.es                 |
+|      Spain       | https://www.elcorreo.com                |
+|      Spain       | https://www.eldia.es                    |
+|      Spain       | https://www.elidealgallego.com          |
+|      Spain       | https://www.elnortedecastilla.es        |
+|      Spain       | https://www.elperiodicodearagon.com     |
+|      Spain       | https://www.elperiodicomediterraneo.com |
+|      Spain       | https://www.europasur.es                |
+|      Spain       | https://www.elmundo.es                  |
+|      Spain       | https://elpais.com                      |
+|      Spain       | https://www.larazon.es                  |
+|      Spain       | https://www.lavanguardia.com            |
+|      Spain       | https://www.marca.com                   |
+|      Spain       | https://www.niusdiario.es               |
+|      Spain       | https://www.superdeporte.es             |
+|      Spain       | https://www.farodevigo.es               |
+|      Spain       | https://www.granadahoy.com              |
+|      Spain       | https://www.laopiniondemurcia.es        |
+|      Spain       | https://www.lasprovincias.es            |
+|      Spain       | https://www.lne.es                      |
+|      Spain       | https://www.mundodeportivo.com          |
+|      Spain       | https://www.segre.com                   |
+|      Spain       | https://www.sport.es                    |
+|      Spain       | https://www.ultimahora.es               |
+|     -------      | ----------------------                  |
+| 🇨🇭Switzerland  | https://20min.ch                        |
+|   Switzerland    | https://ricardo.ch                      |
+|     -------      | ----------------------                  |
 
 Conspiracy websites  (from https://archive.is/vvpf9 )
 | Languages | webpage |
