@@ -3,6 +3,7 @@ import {browser, Storage} from 'webextension-polyfill-ts';
 import _ from 'lodash';
 import * as d3 from 'd3';
 import {JsObject} from '../Core/types';
+import {EXTENSION_NAME} from '../Core';
 
 // set the dimensions and margins of the graph
 const margin = {top: 30, right: 30, bottom: 70, left: 60};
@@ -16,7 +17,7 @@ function showHistory(rawAds: JsObject[]): void {
   if (rawAds?.length === 0) {
     const p = div.append('p');
     p.text(
-      'No information to display. Navigate the web with the Ad Radar extension and you will see your ad history here.'
+      `No information to display. Navigate the web with the ${EXTENSION_NAME} extension and you will see your ad history here.`
     );
     return;
   }

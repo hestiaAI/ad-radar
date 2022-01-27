@@ -47,7 +47,7 @@ export class MapWithCollectionValues<K, V, C extends Iterable<V>> {
   mapValues(key: K, func: (v: V) => V): void {
     this.set(
       key,
-      this.collectionConstructor(Array.from(this.get(key)).map(func)),
+      this.collectionConstructor(Array.from(this.get(key)).map(func))
     );
   }
 }
@@ -57,9 +57,11 @@ export class MapWithCollectionValues<K, V, C extends Iterable<V>> {
  * @returns {Map<any, Set<any>>}
  * @constructor creates an empty map
  */
-export class MapWithSetValues<K, V> extends MapWithCollectionValues<K,
+export class MapWithSetValues<K, V> extends MapWithCollectionValues<
+  K,
   V,
-  Set<V>> {
+  Set<V>
+> {
   emptyElement(): Set<V> {
     return new Set();
   }
@@ -78,9 +80,11 @@ export class MapWithSetValues<K, V> extends MapWithCollectionValues<K,
  * @returns {Map<any, Array<any>>}
  * @constructor creates an empty map
  */
-export class MapWithArrayValues<K, V> extends MapWithCollectionValues<K,
+export class MapWithArrayValues<K, V> extends MapWithCollectionValues<
+  K,
   V,
-  V[]> {
+  V[]
+> {
   emptyElement(): V[] {
     return [];
   }

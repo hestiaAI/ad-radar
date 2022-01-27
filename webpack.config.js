@@ -89,7 +89,7 @@ module.exports = {
         use: {
           loader: 'wext-manifest-loader',
           options: {
-            usePackageJSONVersion: true, // set to false to not use package.json version for manifest
+            usePackageJSONVersion: false, // set to false to not use package.json version for manifest
           },
         },
         exclude: /node_modules/,
