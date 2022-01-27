@@ -164,6 +164,7 @@ window.addEventListener('message', (event) => {
           {
             app: EXTENSION_NAME,
             destination: 'injected',
+            type: 'accessors',
             content: store.accessors,
           },
           '*'
@@ -175,11 +176,26 @@ window.addEventListener('message', (event) => {
 
 // Catch messages coming from the background script
 browser.runtime.onMessage.addListener((message) => {
-  if (
-    message?.app === EXTENSION_NAME &&
-    message.destination === 'content' &&
-    message.type === 'request'
-  ) {
-    id2units.keys().forEach((id) => showBanner(id));
+  if (message?.app === EXTENSION_NAME) {
+    if (message.destination === 'content' && message.type === 'request') {
+      id2units.keys().forEach((id) => showBanner(id));
+    } else if (message.destination === 'injected') {
+      console.log(`[${EXTENSION_NAME} relaying message to injected`);
+      window.postMessage(message, '*');
+    }
+  }
+});
+
+browser.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === 'local' && changes.accessors) {
+    window.postMessage(
+      {
+        app: EXTENSION_NAME,
+        destination: 'injected',
+        type: 'accessors',
+        content: changes.accessors.newValue,
+      },
+      '*'
+    );
   }
 });

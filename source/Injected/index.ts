@@ -52,7 +52,11 @@ let accessors: Accessors;
 sendMessage({destination: 'content', type: 'getAccessors', content: {}});
 window.addEventListener('message', (event: MessageEvent) => {
   const message = event.data;
-  if (message.app === EXTENSION_NAME && message.destination === 'injected') {
+  if (
+    message.app === EXTENSION_NAME &&
+    message.destination === 'injected' &&
+    message.type === 'accessors'
+  ) {
     accessors = message.content;
   }
 });
@@ -69,9 +73,7 @@ function getAllFields(object: JsObject, maxDepth = 7): JsObject {
       return JSON.parse(JSON.stringify(val));
     }
     if (typeof val === 'function') {
-      const result: {code: string; result?: JsValue; error?: string} = {
-        code: val.toString(),
-      };
+      const result: {result?: JsValue; error?: string} = {};
       if (val.length === 0 && key.startsWith('get')) {
         try {
           const f = val as () => JsValue;
