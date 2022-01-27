@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Ad Radar",
   "description": "An extension that shows you information about the ads you see online.",
-  "version": "1.0.0",
+  "version": "1.0.1",
 
   "icons": {
     "128": "assets/icons/color-128.png"

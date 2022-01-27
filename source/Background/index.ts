@@ -48,7 +48,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
       setProperties({
         tabId: sender.tab?.id ?? 0,
         title: `Analysed ${message.content} ads on this page`,
-        text: message.numberOfAds.toString(),
+        text: message.content.toString(),
       });
     } else if (message.type === 'ad') {
       browser.storage.local

@@ -98,7 +98,7 @@ function showBanner(id: string): void {
     app: EXTENSION_NAME,
     destination: 'background',
     type: 'numberOfAds',
-    numberOfAds: document.querySelectorAll(`.${BANNER_CLASS}`).length,
+    content: document.querySelectorAll(`.${BANNER_CLASS}`).length,
   });
 }
 
