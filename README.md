@@ -23,19 +23,20 @@ There are two ways to install Ad Radar on your browser:
 #### Mozilla Firefox
 https://addons.mozilla.org/en-US/firefox/addon/ad-radar/
 
-#### Google Chrome
+#### Google Chrome (and other Chromium-based browsers)
 https://chrome.google.com/webstore/detail/ad-radar/glckjmlmkoofofclahanidfhaoihodjc
 
 ### b) Manually
-Download the files of this repository into a folder called `Ad Radar`.
-To do this, you can go to [`Code > Download ZIP`](https://github.com/hestiaAI/ad-radar/archive/refs/heads/main.zip) and then unzip the file on your computer.
+Select the latest release of `Ad Radar` on the right panel of the main GitHub page (or just click [here](https://github.com/hestiaAI/ad-radar/releases/latest)).
+Then, download the release file corresponding to your browser.
 
 The next steps depend on your web browser:
 #### Mozilla Firefox
-Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `Ad Radar/src/manifest.json`.
+Go to `Settings > Extensions & Themes > Tools for all add-ons > Debug Add-ons > Load Temporary Add-on` and choose the file `firefox.xpi`.
 Note that Ad Radar will be uninstalled whenever you close the browser.
 #### Google Chrome
-Go to `Settings > Extensions`.
+First of all, unzip the file `chrome.zip` into a folder called `Ad Radar`.
+Then, go to `Settings > Extensions`.
 Activate developer mode by clicking on `Developer mode`.
 Click on `Load unpacked` and select the `Ad Radar/src` folder.
 
@@ -258,14 +259,15 @@ Satirical websites
 |-------|-----------------------|
 | FR    |https://www.legorafi.fr|
 
+## Developers
+Ad Radar was built using the framework https://github.com/abhijithvijayan/web-extension-starter.
+See their `README` for instructions on how to build the release files.
 
-
-
-
-
+To make sure that everything works, we recommend developping with the versions `npm 8.1.2`, `node v16.13.2` and `yarn 1.22.15`.
 
 ## License
 Ad Radar is under the GNU Affero General Public License.
+See https://github.com/hestiaAI/ad-radar/blob/main/LICENCE for more details.
 
 ## Partners
 Ad Radar was built under the banner of [_The Eyeballs_](https://eyeballs.hestialabs.org), a project that is part of the [HestiaLabs](https://www.hestialabs.org) project.
