@@ -238,7 +238,7 @@ Our browser extension is likely to work on the following webpages:
 |        Spain        | https://www.sport.es                    |
 |        Spain        | https://www.ultimahora.es               |
 |       -------       | ----------------------                  |
-|   🇨🇭Switzerland   | https://20min.ch                        |
+|  🇨🇭 Switzerland   | https://20min.ch                        |
 |     Switzerland     | https://ricardo.ch                      |
 
 Conspiracy websites  (from https://archive.is/vvpf9 )
@@ -246,7 +246,6 @@ Conspiracy websites  (from https://archive.is/vvpf9 )
 | ----------|---------|
 | 🇫🇷 France | https://wikistrike.com |
 | 🇺🇸 USA |  https://bongino.com/ |
-| ------- | ----------------------  |
 
 Political blog
 |  | webpage |
