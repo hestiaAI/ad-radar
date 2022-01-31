@@ -14,7 +14,7 @@ The only thing that the browser sees are the ads that won the auction, and we ca
 With *Header Bidding*, an auction for the different ad spaces of the webpage also takes place in real time, but all the bids coming from the advertisers are gathered in the browser.
 In this case, Ad Radar can observe the (pre)bids that were received for each ad space, and display the value of these bids.
 
-Ad Radar checks if the visited webpage uses an open-source library called *Prebid.js* (often imported as `pbjs`) that implements Header Bidding, and thus only works on webpages that do.
+Ad Radar checks if the visited webpage uses some library that implements Header Bidding (for instance *Prebid.js*, often imported as `pbjs`), and thus only works on webpages that do.
 
 ## Installation
 
