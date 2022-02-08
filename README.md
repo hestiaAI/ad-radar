@@ -75,7 +75,7 @@ Our browser extension is likely to work on the following webpages:
 |    International    | https://futurism.com                    |
 |    International    | https://www.gamespot.com                |
 |    International    | https://www.linguee.com                 |
-|    International    | https://www.metacritic.com              |
+|    International    | https://www.metacritic.com  |
 |    International    | https://www.researchgate.net            |
 |    International    | https://www.reverso.net                 |
 |    International    | https://theguardian.com                 |
@@ -91,6 +91,7 @@ Our browser extension is likely to work on the following webpages:
 |       Belgium       | https://lameuse.sudinfo.be              |
 |       Belgium       | https://laprovince.sudinfo.be           |
 |       Belgium       | https://levif.be                        |
+|       Belgium       | https://www.moustique.be                |
 |       Belgium       | https://www.nieuwsblad.be               |
 |       Belgium       | https://nordeclair.sudinfo.be           |
 |       Belgium       | https://plusmagazine.knack.be           |
@@ -107,6 +108,7 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.aufeminin.com               |
 |       France        | https://www.bienpublic.com              |
 |       France        | https://www.capital.fr                  |
+|       France        | https://www.clubic.com                  |
 |       France        | https://www.courrierinternational.com   |
 |       France        | https://www.courrier-picard.fr          |
 |       France        | https://www.dna.fr                      |
@@ -124,6 +126,7 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.lavoixdunord.fr             |
 |       France        | https://ledauphine.com                  |
 |       France        | https://www.lejdc.fr                    |
+|       France        | https://www.lejournaleconomique.com     |
 |       France        | https://www.lejsl.com                   |
 |       France        | https://www.leprogres.fr                |
 |       France        | https://www.lesnumeriques.com           |
