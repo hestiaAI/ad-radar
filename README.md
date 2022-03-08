@@ -125,6 +125,7 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.lalsace.fr                  |
 |       France        | https://www.ladepeche.fr                |
 |       France        | https://www.lamontagne.fr               |
+|       France        | https://www.larepubliquedespyrenees.fr  |
 |       France        | https://latribune.fr                    |
 |       France        | https://www.lavoixdunord.fr             |
 |       France        | https://www.leberry.fr                  |
@@ -145,6 +146,7 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.lyonne.fr                   |
 |       France        | https://maligue2.fr                     |
 |       France        | https://www.midilibre.fr                |
+|       France        | https://www.nordlittoral.fr             |          
 |       France        | https://www.numerama.com                |
 |       France        | https://www.orange.fr                   |
 |       France        | https://www.paris-normandie.fr          |
@@ -152,7 +154,8 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.programme-tv.net            |
 |       France        | https://www.psychologies.com            |
 |       France        | https://www.purepeople.com              |
-|       France        | https://www.republicain-lorrain.fr      |
+|       France        | https://www.
+blicain-lorrain.fr      |
 |       France        | http://www.slate.fr                     |
 |       France        | https://www.sudouest.fr                 |
 |       France        | https://telestar.fr                     |
