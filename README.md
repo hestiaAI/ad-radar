@@ -106,6 +106,7 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.aisnenouvelle.fr            |
 |       France        | https://www.allocine.fr                 |
 |       France        | https://www.aufeminin.com               |
+|       France        | https://www.autohebdo.fr                |
 |       France        | https://www.bienpublic.com              |
 |       France        | https://www.capital.fr                  |
 |       France        | https://www.centre-presse.fr            |
@@ -130,6 +131,8 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.lavoixdunord.fr             |
 |       France        | https://www.leberry.fr                  |
 |       France        | https://ledauphine.com                  |
+|       France        | https://www.lest-eclair.fr              |
+|       France        | https://www.leveil.fr                   |
 |       France        | https://www.lejdc.fr                    |
 |       France        | https://www.lejournaleconomique.com     |
 |       France        | https://www.lejsl.com                   |
@@ -146,6 +149,8 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.lyonne.fr                   |
 |       France        | https://maligue2.fr                     |
 |       France        | https://www.midilibre.fr                |
+|       France        | https://moto-station.com                |
+|       France        | https://www.nordeclair.fr               |
 |       France        | https://www.nordlittoral.fr             |          
 |       France        | https://www.numerama.com                |
 |       France        | https://www.orange.fr                   |
