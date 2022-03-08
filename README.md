@@ -154,8 +154,7 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.programme-tv.net            |
 |       France        | https://www.psychologies.com            |
 |       France        | https://www.purepeople.com              |
-|       France        | https://www.
-blicain-lorrain.fr      |
+|       France        | https://www.republicain-lorrain.fr      |
 |       France        | http://www.slate.fr                     |
 |       France        | https://www.sudouest.fr                 |
 |       France        | https://telestar.fr                     |
