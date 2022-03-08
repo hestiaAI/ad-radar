@@ -101,17 +101,20 @@ Our browser extension is likely to work on the following webpages:
 |       -------       | ----------------------                  |
 |     🇫🇷 France     | https://www.20minutes.fr                |
 |       France        | https://www.750g.com                    |
-|       France        | https://lemonde.fr                      |
 |       France        | https://actu.fr                         |
 |       France        | https://www.actuabd.com                 |
+|       France        | https://www.aisnenouvelle.fr            |
 |       France        | https://www.allocine.fr                 |
 |       France        | https://www.aufeminin.com               |
 |       France        | https://www.bienpublic.com              |
 |       France        | https://www.capital.fr                  |
+|       France        | https://www.centre-presse.fr            |
+|       France        | https://www.charentelibre.fr            |
 |       France        | https://www.clubic.com                  |
 |       France        | https://www.courrierinternational.com   |
 |       France        | https://www.courrier-picard.fr          |
 |       France        | https://www.dna.fr                      |
+|       France        | https://www.estrepublicain.fr|          |
 |       France        | https://fr.euronews.com                 |
 |       France        | https://www.futura-sciences.com         |
 |       France        | https://www.gala.fr                     |
@@ -124,11 +127,14 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.lamontagne.fr               |
 |       France        | https://latribune.fr                    |
 |       France        | https://www.lavoixdunord.fr             |
+|       France        | https://www.leberry.fr                  |
 |       France        | https://ledauphine.com                  |
 |       France        | https://www.lejdc.fr                    |
 |       France        | https://www.lejournaleconomique.com     |
 |       France        | https://www.lejsl.com                   |
+|       France        | https://lemonde.fr                      |
 |       France        | https://www.leparisien.fr               |
+|       France        | https://www.lepopulaire.fr              |
 |       France        | https://www.leprogres.fr                |
 |       France        | https://www.lesnumeriques.com           |
 |       France        | https://www.lessorsavoyard.fr           |
