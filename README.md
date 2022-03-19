@@ -21,7 +21,7 @@ Ad Radar checks if the visited webpage uses some library that implements Header 
 There are two ways to install Ad Radar on your browser:
 ### a) Through the extension stores
 #### Mozilla Firefox
-https://addons.mozilla.org/en-US/firefox/addon/ad-radar/
+https://addons.mozilla.org/firefox/addon/ad-radar/
 
 #### Google Chrome (and other Chromium-based browsers)
 https://chrome.google.com/webstore/detail/ad-radar/glckjmlmkoofofclahanidfhaoihodjc
