@@ -260,6 +260,8 @@ Our browser extension is likely to work on the following webpages:
 |       -------       | ----------------------                  |
 |  🇨🇭 Switzerland   | https://20min.ch                        |
 |     Switzerland     | https://ricardo.ch                      |
+|       -------       | ----------------------                  |
+|  🇬🇧 UK    | https://www.standard.co.uk/                    |
 
 Conspiracy websites  (from https://archive.is/vvpf9 )
 | Languages | webpage |
