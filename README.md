@@ -79,6 +79,7 @@ Our browser extension is likely to work on the following webpages:
 |    International    | https://www.researchgate.net            |
 |    International    | https://www.reverso.net                 |
 |    International    | https://theguardian.com                 |
+|    International    | https://www.independent.co.uk           |
 |    International    | https://usatoday.com                    |
 |    International    | https://vice.com                        |
 |       -------       | ----------------------                  |
@@ -115,8 +116,9 @@ Our browser extension is likely to work on the following webpages:
 |       France        | https://www.clubic.com                  |
 |       France        | https://www.courrierinternational.com   |
 |       France        | https://www.courrier-picard.fr          |
+|       France        | https://www.definitions-marketing.com   |
 |       France        | https://www.dna.fr                      |
-|       France        | https://www.estrepublicain.fr|          |
+|       France        | https://www.estrepublicain.fr           |
 |       France        | https://fr.euronews.com                 |
 |       France        | https://www.futura-sciences.com         |
 |       France        | https://www.gala.fr                     |
