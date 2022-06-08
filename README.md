@@ -280,6 +280,7 @@ Satirical websites
 | Languages | webpage |
 |-------|-----------------------|
 | FR    |https://www.legorafi.fr|
+| EN     |https://www.theonion.com|
 
 ## Developers
 Ad Radar was built using the framework https://github.com/abhijithvijayan/web-extension-starter.
