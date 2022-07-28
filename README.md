@@ -99,9 +99,10 @@ Our browser extension is likely to work on the following webpages:
 |       Belgium       | https://plusmagazine.knack.be           |
 |       Belgium       | https://standaard.be                    |
 |       -------       | ----------------------                  |
-|     🇨🇦 Canada     | https://www.lapresse.ca                 |
+|     🇨🇦 Canada       | https://www.lapresse.ca                 |
+|       Canada        | https://whoacanada.ca                   |
 |       -------       | ----------------------                  |
-|     🇫🇷 France     | https://www.20minutes.fr                |
+|     🇫🇷 France       | https://www.20minutes.fr                |
 |       France        | https://www.750g.com                    |
 |       France        | https://actu.fr                         |
 |       France        | https://www.actuabd.com                 |
